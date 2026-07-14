@@ -62,6 +62,8 @@ defaults write com.james.ClipStack SettingsHotKeyModifiers -int 256
 
 全局 `~/.claude/CLAUDE.md` 的 **Clipboard Delivery** 规则会让 Claude 在产出「复制粘贴型交付物」（客户回复、邮件、env、配置、命令、文案等）时自动 `pbcopy < file`。多段内容会以 ≥1s 间隔依次复制——每段都被 ClipStack 抓进历史，⇧⌘V 即可在几段之间切换粘贴。
 
+规则全文见 [clipboard-delivery-rule.md](./clipboard-delivery-rule.md)，复制进你自己的 `~/.claude/CLAUDE.md` 即可使用。
+
 ## 项目结构
 
 ```

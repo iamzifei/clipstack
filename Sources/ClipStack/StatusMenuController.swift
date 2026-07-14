@@ -35,15 +35,9 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
         statusItem.menu = menu
     }
 
-    /// Custom template glyph from the bundle; SF Symbol fallback when
-    /// running unbundled (swift run).
+    /// v1.0-style SF Symbol glyph. Template image, so macOS recolors it
+    /// automatically for light/dark menu bars and the highlighted state.
     private static func menuBarImage() -> NSImage? {
-        if let url = Bundle.main.url(forResource: "MenuBarIcon", withExtension: "tiff"),
-           let image = NSImage(contentsOf: url) {
-            image.isTemplate = true
-            image.size = NSSize(width: 18, height: 18)
-            return image
-        }
         let symbol = NSImage(systemSymbolName: "doc.on.clipboard", accessibilityDescription: "ClipStack")
         symbol?.isTemplate = true
         return symbol

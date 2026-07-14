@@ -159,6 +159,13 @@ struct SettingsView: View {
                     Spacer()
                     Text(appVersion).foregroundStyle(.secondary)
                 }
+                HStack {
+                    Text("GitHub")
+                    Spacer()
+                    Link("github.com/iamzifei/clipstack",
+                         destination: URL(string: "https://github.com/iamzifei/clipstack")!)
+                        .font(.system(size: 12))
+                }
             }
         }
         .formStyle(.grouped)

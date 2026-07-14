@@ -1,6 +1,8 @@
 .build/
 build/
 dist/
+windows/ClipStack.Win/bin/
+windows/ClipStack.Win/obj/
 .DS_Store
 *.xcodeproj
 .swiftpm/

@@ -19,7 +19,6 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp .build/release/ClipStack "$APP/Contents/MacOS/ClipStack"
 cp Resources/Info.plist "$APP/Contents/Info.plist"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
-cp Resources/MenuBarIcon.tiff "$APP/Contents/Resources/MenuBarIcon.tiff"
 for lproj in Resources/*.lproj; do
   plutil -lint "$lproj/Localizable.strings" >/dev/null
   cp -R "$lproj" "$APP/Contents/Resources/"

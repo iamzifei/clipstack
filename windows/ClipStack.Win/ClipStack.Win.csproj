@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- Allows building this Windows-only project on macOS/Linux CI -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AssemblyName>ClipStack</AssemblyName>
+    <RootNamespace>ClipStack.Win</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Version>1.1.1</Version>
+    <Company>ClipStack</Company>
+    <Product>ClipStack</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="app.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
