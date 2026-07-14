@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><title>ClipStack (mono)</title>
+  <!-- Monochrome glyph variant: black on transparent. Interior details are
+       punched out via mask so the mark works on any background. -->
+  <defs>
+    <mask id="cut">
+      <rect width="1024" height="1024" fill="#fff"/>
+      <!-- clip slot -->
+      <rect x="476" y="261" width="72" height="26" rx="13" fill="#000"/>
+      <!-- history bars -->
+      <rect x="366" y="392" width="248" height="46" rx="23" fill="#000"/>
+      <rect x="366" y="480" width="176" height="46" rx="23" fill="#000"/>
+      <rect x="366" y="568" width="212" height="46" rx="23" fill="#000"/>
+    </mask>
+  </defs>
+  <g fill="#1a1a1a" mask="url(#cut)">
+    <!-- front card -->
+    <rect x="304" y="290" width="416" height="420" rx="48"/>
+    <!-- clip straddling the top edge -->
+    <rect x="420" y="244" width="184" height="92" rx="46"/>
+  </g>
+  <!-- stack layers peeking below (real gaps, no seams needed) -->
+  <rect x="348" y="732" width="328" height="44" rx="22" fill="#1a1a1a"/>
+  <rect x="392" y="798" width="240" height="44" rx="22" fill="#1a1a1a"/>
+</svg>

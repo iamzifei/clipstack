@@ -1,0 +1,9 @@
+.build/
+build/
+dist/
+.DS_Store
+*.xcodeproj
+.swiftpm/
+
+# internal working docs (scan reports quote private conversations; keep local)
+docs/
