@@ -13,6 +13,8 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
     private let model: SwitcherModel
     private let store: HistoryStore
     private var keyMonitor: Any?
+    /// Called after an item was written back to the pasteboard (UI feedback).
+    var onCopied: ((ClipItem) -> Void)?
 
     init(store: HistoryStore) {
         self.store = store
@@ -40,6 +42,7 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
             guard let self else { return }
             PasteboardWriter.write(item, store: self.store)
             self.hide()
+            self.onCopied?(item)
         }
         model.onClose = { [weak self] in self?.hide() }
     }

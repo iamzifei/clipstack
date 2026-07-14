@@ -2,7 +2,8 @@ import AppKit
 import Carbon.HIToolbox
 
 /// Minimal Carbon-based global hotkey registry (no Accessibility permission
-/// required, unlike CGEvent taps).
+/// required, unlike CGEvent taps). Supports unregistering so hotkeys can be
+/// rebound at runtime from the settings panel.
 final class HotKeyCenter {
     static let shared = HotKeyCenter()
 
@@ -17,8 +18,10 @@ final class HotKeyCenter {
         return value
     }()
 
+    /// Registers a global hotkey. Returns a token for `unregister(id:)`,
+    /// or 0 when registration fails (e.g. combo taken by another app).
     @discardableResult
-    func register(keyCode: UInt32, carbonModifiers: UInt32, handler: @escaping () -> Void) -> Bool {
+    func register(keyCode: UInt32, carbonModifiers: UInt32, handler: @escaping () -> Void) -> UInt32 {
         installHandlerIfNeeded()
         let id = nextID
         nextID += 1
@@ -27,11 +30,18 @@ final class HotKeyCenter {
         let status = RegisterEventHotKey(keyCode, carbonModifiers, hotKeyID, GetApplicationEventTarget(), 0, &ref)
         guard status == noErr, let ref else {
             NSLog("ClipStack: RegisterEventHotKey failed with status \(status)")
-            return false
+            return 0
         }
         handlers[id] = handler
         hotKeyRefs[id] = ref
-        return true
+        return id
+    }
+
+    func unregister(id: UInt32) {
+        if let ref = hotKeyRefs.removeValue(forKey: id) {
+            UnregisterEventHotKey(ref)
+        }
+        handlers.removeValue(forKey: id)
     }
 
     fileprivate func fire(id: UInt32) {

@@ -39,11 +39,11 @@ struct SwitcherView: View {
         HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.secondary)
-            TextField("搜索剪贴板历史…", text: $model.query)
+            TextField(L("search_placeholder"), text: $model.query)
                 .textFieldStyle(.plain)
                 .font(.system(size: 16))
                 .focused($searchFocused)
-            Text("\(model.filtered.count) 条")
+            Text(String(format: L("items_count"), model.filtered.count))
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .monospacedDigit()
@@ -128,13 +128,13 @@ struct SwitcherView: View {
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
                     if let app = item.sourceApp {
-                        Text("来自 \(app)")
+                        Text(String(format: L("from_app"), app))
                             .font(.system(size: 11))
                             .foregroundStyle(.secondary)
                     }
                     Spacer()
                     if item.pinned {
-                        Label("已置顶", systemImage: "pin.fill").font(.system(size: 10))
+                        Label(L("pinned"), systemImage: "pin.fill").font(.system(size: 10))
                     }
                 }
                 Divider()
@@ -147,7 +147,7 @@ struct SwitcherView: View {
                 Image(systemName: "doc.on.clipboard")
                     .font(.system(size: 28))
                     .foregroundStyle(.tertiary)
-                Text(model.query.isEmpty ? "剪贴板历史为空" : "没有匹配「\(model.query)」的记录")
+                Text(model.query.isEmpty ? L("empty_history") : String(format: L("no_match"), model.query))
                     .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -171,7 +171,7 @@ struct SwitcherView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                Text("图片文件缺失").foregroundStyle(.secondary)
+                Text(L("image_missing")).foregroundStyle(.secondary)
             }
         case .file:
             ScrollView {
@@ -189,11 +189,11 @@ struct SwitcherView: View {
 
     private var footer: some View {
         HStack(spacing: 14) {
-            hint("↩", "复制")
-            hint("⌘1–9", "快速复制")
-            hint("⌘P", "置顶")
-            hint("⌘⌫", "删除")
-            hint("esc", "关闭")
+            hint("↩", L("hint_copy"))
+            hint("⌘1–9", L("hint_quick"))
+            hint("⌘P", L("hint_pin"))
+            hint("⌘⌫", L("hint_delete"))
+            hint("esc", L("hint_close"))
             Spacer()
             Text("ClipStack")
                 .font(.system(size: 10))
@@ -228,9 +228,9 @@ struct SwitcherView: View {
 
     private func kindLabel(_ kind: ClipKind) -> String {
         switch kind {
-        case .text: return "文本"
-        case .image: return "图片"
-        case .file: return "文件"
+        case .text: return L("kind_text")
+        case .image: return L("kind_image")
+        case .file: return L("kind_file")
         }
     }
 
@@ -247,7 +247,7 @@ struct SwitcherView: View {
     }()
 
     static func relative(_ date: Date) -> String {
-        if date.timeIntervalSinceNow > -60 { return "刚刚" }
+        if date.timeIntervalSinceNow > -60 { return L("just_now") }
         return relativeFormatter.localizedString(for: date, relativeTo: Date())
     }
 

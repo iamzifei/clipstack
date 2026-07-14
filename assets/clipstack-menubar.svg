@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><title>ClipStack menu bar glyph</title>
+  <!-- Simplified monochrome glyph for the 18pt menu bar slot: solid clip
+       (no slot hole), 3 thick punched bars, single stack strip below.
+       Rendered as an NSImage template so macOS recolors it for the current
+       menu bar appearance (light/dark) automatically. -->
+  <defs>
+    <mask id="bars">
+      <rect width="1024" height="1024" fill="#fff"/>
+      <rect x="294" y="268" width="380" height="84" rx="42" fill="#000"/>
+      <rect x="294" y="398" width="264" height="84" rx="42" fill="#000"/>
+      <rect x="294" y="528" width="330" height="84" rx="42" fill="#000"/>
+    </mask>
+  </defs>
+  <g fill="#000000" mask="url(#bars)">
+    <rect x="182" y="120" width="660" height="650" rx="96"/>
+    <rect x="362" y="46" width="300" height="148" rx="74"/>
+  </g>
+  <rect x="252" y="836" width="520" height="84" rx="42" fill="#000000"/>
+</svg>

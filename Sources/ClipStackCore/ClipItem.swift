@@ -76,15 +76,15 @@ public struct ClipItem: Codable, Identifiable, Equatable {
             let flattened = (plainText ?? "")
                 .replacingOccurrences(of: "\n", with: " ⏎ ")
                 .trimmingCharacters(in: .whitespaces)
-            return flattened.isEmpty ? "(空白文本)" : String(flattened.prefix(90))
+            return flattened.isEmpty ? L("empty_text") : String(flattened.prefix(90))
         case .image:
             var dims = ""
             if let w = imagePixelWidth, let h = imagePixelHeight { dims = "\(w)×\(h) " }
-            return "图片 \(dims)(\(ByteFormat.string(byteSize)))"
+            return "\(L("kind_image")) \(dims)(\(ByteFormat.string(byteSize)))"
         case .file:
             let names = (fileURLs ?? []).map { URL(fileURLWithPath: $0).lastPathComponent }
             if names.count == 1 { return names[0] }
-            return "\(names.count) 个文件：" + names.prefix(3).joined(separator: ", ")
+            return String(format: L("files_count_prefix"), names.count) + names.prefix(3).joined(separator: ", ")
         }
     }
 
@@ -93,7 +93,7 @@ public struct ClipItem: Codable, Identifiable, Equatable {
         switch kind {
         case .text: return plainText ?? ""
         case .file: return (fileURLs ?? []).joined(separator: "\n")
-        case .image: return "image 图片 " + (sourceApp ?? "")
+        case .image: return "image 图片 \(L("kind_image")) " + (sourceApp ?? "")
         }
     }
 

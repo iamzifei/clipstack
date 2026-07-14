@@ -1,5 +1,4 @@
 import AppKit
-import Carbon.HIToolbox
 import ClipStackCore
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -7,6 +6,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var monitor: ClipboardMonitor!
     private var switcher: SwitcherWindowController!
     private var statusMenu: StatusMenuController!
+    private var settings: SettingsWindowController!
+    private var toast: ToastController!
+    private var hotKeys: HotKeys!
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Single-instance guard: a second launch just quits itself.
@@ -19,7 +21,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let supportDir = FileManager.default
             .urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("ClipStack", isDirectory: true)
-        let maxItems = UserDefaults.standard.object(forKey: "MaxItems") as? Int ?? 300
+        let maxItems = UserDefaults.standard.object(forKey: PrefKey.maxItems) as? Int ?? 300
         do {
             store = try HistoryStore(directory: supportDir, maxItems: maxItems)
         } catch {
@@ -28,23 +30,31 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
+        toast = ToastController()
         monitor = ClipboardMonitor(store: store)
         switcher = SwitcherWindowController(store: store)
-        statusMenu = StatusMenuController(store: store, monitor: monitor, switcher: switcher)
+        switcher.onCopied = { [weak self] item in
+            self?.toast.showCopied(detail: String(item.previewLine.prefix(48)))
+        }
+        settings = SettingsWindowController()
+        statusMenu = StatusMenuController(
+            store: store,
+            monitor: monitor,
+            switcher: switcher,
+            settings: settings,
+            toast: toast
+        )
         store.onChange = { [weak self] in self?.switcher.refreshIfVisible() }
         monitor.start()
 
-        // Global hotkey, default ⇧⌘V. Overridable without a prefs UI:
-        //   defaults write com.james.ClipStack HotKeyKeyCode -int <keycode>
-        //   defaults write com.james.ClipStack HotKeyModifiers -int <carbon flags>
-        let keyCode = UInt32(UserDefaults.standard.object(forKey: "HotKeyKeyCode") as? Int ?? kVK_ANSI_V)
-        let modifiers = UInt32(UserDefaults.standard.object(forKey: "HotKeyModifiers") as? Int ?? (cmdKey | shiftKey))
-        let registered = HotKeyCenter.shared.register(keyCode: keyCode, carbonModifiers: modifiers) { [weak self] in
-            self?.switcher.toggle()
-        }
-        if !registered {
-            NSLog("ClipStack: global hotkey registration failed (conflict?). Panel is still reachable from the menu bar icon.")
-        }
+        // Global hotkeys (⇧⌘V switcher, ⌘. settings by default) — rebindable
+        // from the settings window, stored in UserDefaults.
+        hotKeys = HotKeys()
+        hotKeys.openSwitcher = { [weak self] in self?.switcher.toggle() }
+        hotKeys.openSettings = { [weak self] in self?.settings.show() }
+        settings.model.onHotKeysChanged = { [weak self] in self?.hotKeys.reload() }
+        settings.model.suspendHotKeys = { [weak self] in self?.hotKeys.suspend() }
+        hotKeys.reload()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
