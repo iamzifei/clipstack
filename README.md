@@ -2,7 +2,21 @@
 
 macOS 菜单栏剪贴板历史管理器。为配合 Claude Code 的 Clipboard Delivery 规则而写（多段 `pbcopy` 输出全部留在历史里，随时切换），也是一个通用的轻量剪贴板管理器。
 
-> 成熟替代品：开源的 [Maccy](https://maccy.app)。ClipStack 是按本机工作流定制的极简版（无沙盒、无偏好界面、零依赖、约 1000 行 Swift）。
+> 成熟替代品：开源的 [Maccy](https://maccy.app)。ClipStack 是按本机工作流定制的极简版（无沙盒、零依赖、约 1000 行 Swift）。
+
+## 截图
+
+**⇧⌘V 历史切换面板** — 搜索、方向键切换、右侧完整预览，回车即复制：
+
+![ClipStack 历史切换面板：左侧历史列表，右侧原文预览](./assets/screenshot-switcher.png)
+
+**菜单栏**（template 图标随系统深浅色自动切换，最近 10 条一键复制）：
+
+![菜单栏下拉菜单](./assets/screenshot-menubar.jpg)
+
+**与 Claude Code 配合** — [Clipboard Delivery 规则](./clipboard-delivery-rule.md)让 Claude 把交付物直接放进剪贴板，多段内容全部留在 ClipStack 历史里随时切换：
+
+![Claude Code 终端](./assets/screenshot-claude-code.jpg)
 
 ## 功能
 
