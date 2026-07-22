@@ -47,3 +47,4 @@
 "alert_clear_all_msg" = "ピン留め項目を含むすべての項目が完全に削除されます。この操作は取り消せません。";
 "alert_clear_all_ok" = "すべて消去";
 "hk_clear_all" = "すべての履歴を消去";
+"hint_clear_all" = "すべて消去";

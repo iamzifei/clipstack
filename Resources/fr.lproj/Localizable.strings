@@ -47,3 +47,4 @@
 "alert_clear_all_msg" = "Toutes les entrées, y compris les épinglées, seront définitivement supprimées. Cette action est irréversible.";
 "alert_clear_all_ok" = "Tout effacer";
 "hk_clear_all" = "Effacer tout l'historique";
+"hint_clear_all" = "Tout effacer";

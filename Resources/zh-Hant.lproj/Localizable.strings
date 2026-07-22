@@ -47,3 +47,4 @@
 "alert_clear_all_msg" = "將永久刪除所有記錄，包括置頂記錄。此操作無法復原。";
 "alert_clear_all_ok" = "清除所有";
 "hk_clear_all" = "清除所有歷史";
+"hint_clear_all" = "清除所有";

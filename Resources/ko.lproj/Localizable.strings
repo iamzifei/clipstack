@@ -47,3 +47,4 @@
 "alert_clear_all_msg" = "고정 항목을 포함한 모든 항목이 영구적으로 삭제됩니다. 이 작업은 취소할 수 없습니다.";
 "alert_clear_all_ok" = "모두 지우기";
 "hk_clear_all" = "모든 기록 지우기";
+"hint_clear_all" = "모두 지우기";

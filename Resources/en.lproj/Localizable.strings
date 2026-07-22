@@ -47,3 +47,4 @@
 "alert_clear_all_msg" = "Every entry, including pinned ones, will be permanently deleted. This cannot be undone.";
 "alert_clear_all_ok" = "Clear All";
 "hk_clear_all" = "Clear all history";
+"hint_clear_all" = "Clear all";

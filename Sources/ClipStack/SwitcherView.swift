@@ -193,14 +193,26 @@ struct SwitcherView: View {
             hint("⌘1–9", L("hint_quick"))
             hint("⌘P", L("hint_pin"))
             hint("⌘⌫", L("hint_delete"))
+            // Global hotkey (fires even while the panel is focused); shows the
+            // user's current binding so a rebind stays in sync.
+            hint(clearAllKey, L("hint_clear_all"))
             hint("esc", L("hint_close"))
             Spacer()
-            Text("ClipStack")
+            Text("ClipStack \(appVersion)")
                 .font(.system(size: 10))
                 .foregroundStyle(.tertiary)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 8)
+    }
+
+    private var clearAllKey: String {
+        let combo = HotKeys.clearAllCombo
+        return KeyMap.displayString(keyCode: combo.code, carbonModifiers: UInt32(combo.mods))
+    }
+
+    private var appVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "dev"
     }
 
     private func hint(_ key: String, _ label: String) -> some View {
