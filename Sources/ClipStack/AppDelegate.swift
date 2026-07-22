@@ -47,11 +47,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         store.onChange = { [weak self] in self?.switcher.refreshIfVisible() }
         monitor.start()
 
-        // Global hotkeys (⇧⌘V switcher, ⌘. settings by default) — rebindable
-        // from the settings window, stored in UserDefaults.
+        // Global hotkeys (⇧⌘V switcher, ⌘, settings, ⇧⌘⌫ clear-all by
+        // default) — rebindable from the settings window, stored in UserDefaults.
         hotKeys = HotKeys()
         hotKeys.openSwitcher = { [weak self] in self?.switcher.toggle() }
         hotKeys.openSettings = { [weak self] in self?.settings.show() }
+        hotKeys.clearAll = { [weak self] in self?.statusMenu.confirmAndClearAll() }
         settings.model.onHotKeysChanged = { [weak self] in self?.hotKeys.reload() }
         settings.model.suspendHotKeys = { [weak self] in self?.hotKeys.suspend() }
         hotKeys.reload()

@@ -8,6 +8,7 @@ import ClipStackCore
 final class HotKeys {
     var openSwitcher: () -> Void = {}
     var openSettings: () -> Void = {}
+    var clearAll: () -> Void = {}
     private var registeredIDs: [UInt32] = []
 
     /// Switcher panel combo, default ⇧⌘V.
@@ -19,12 +20,21 @@ final class HotKeys {
         )
     }
 
-    /// Settings window combo, default ⌘. (Command+Period).
+    /// Settings window combo, default ⌘, (Command+Comma).
     static var settingsCombo: (code: Int, mods: Int) {
         let defaults = UserDefaults.standard
         return (
-            defaults.object(forKey: PrefKey.settingsHotKeyCode) as? Int ?? kVK_ANSI_Period,
+            defaults.object(forKey: PrefKey.settingsHotKeyCode) as? Int ?? kVK_ANSI_Comma,
             defaults.object(forKey: PrefKey.settingsHotKeyMods) as? Int ?? cmdKey
+        )
+    }
+
+    /// Clear-all-history combo, default ⇧⌘⌫ (Command+Shift+Delete).
+    static var clearAllCombo: (code: Int, mods: Int) {
+        let defaults = UserDefaults.standard
+        return (
+            defaults.object(forKey: PrefKey.clearAllHotKeyCode) as? Int ?? kVK_Delete,
+            defaults.object(forKey: PrefKey.clearAllHotKeyMods) as? Int ?? (cmdKey | shiftKey)
         )
     }
 
@@ -44,6 +54,13 @@ final class HotKeys {
             carbonModifiers: UInt32(settings.mods)
         ) { [weak self] in self?.openSettings() }
         if settingsID != 0 { registeredIDs.append(settingsID) }
+
+        let clear = Self.clearAllCombo
+        let clearID = HotKeyCenter.shared.register(
+            keyCode: UInt32(clear.code),
+            carbonModifiers: UInt32(clear.mods)
+        ) { [weak self] in self?.clearAll() }
+        if clearID != 0 { registeredIDs.append(clearID) }
     }
 
     /// Temporarily releases both hotkeys (used while the settings recorder

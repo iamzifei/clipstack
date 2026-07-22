@@ -6,6 +6,8 @@ public enum PrefKey {
     public static let hotKeyMods = "HotKeyModifiers"
     public static let settingsHotKeyCode = "SettingsHotKeyKeyCode" // settings window
     public static let settingsHotKeyMods = "SettingsHotKeyModifiers"
+    public static let clearAllHotKeyCode = "ClearAllHotKeyKeyCode"  // clear all history
+    public static let clearAllHotKeyMods = "ClearAllHotKeyModifiers"
     public static let maxItems = "MaxItems"
 }
 

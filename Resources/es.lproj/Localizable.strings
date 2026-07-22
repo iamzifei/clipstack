@@ -42,3 +42,8 @@
 "version" = "Versión";
 "empty_text" = "(texto vacío)";
 "files_count_prefix" = "%d archivos: ";
+"menu_clear_all" = "Borrar todo el historial (incluidos los fijados)…";
+"alert_clear_all_title" = "¿Borrar TODO el historial del portapapeles?";
+"alert_clear_all_msg" = "Se eliminarán permanentemente todas las entradas, incluidas las fijadas. Esta acción no se puede deshacer.";
+"alert_clear_all_ok" = "Borrar todo";
+"hk_clear_all" = "Borrar todo el historial";

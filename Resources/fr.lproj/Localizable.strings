@@ -42,3 +42,8 @@
 "version" = "Version";
 "empty_text" = "(texte vide)";
 "files_count_prefix" = "%d fichiers : ";
+"menu_clear_all" = "Effacer tout l'historique (y compris les épinglés)…";
+"alert_clear_all_title" = "Effacer TOUT l'historique du presse-papiers ?";
+"alert_clear_all_msg" = "Toutes les entrées, y compris les épinglées, seront définitivement supprimées. Cette action est irréversible.";
+"alert_clear_all_ok" = "Tout effacer";
+"hk_clear_all" = "Effacer tout l'historique";

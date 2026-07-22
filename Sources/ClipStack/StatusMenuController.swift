@@ -105,6 +105,18 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
         let clear = NSMenuItem(title: L("menu_clear"), action: #selector(clearHistory), keyEquivalent: "")
         clear.target = self
         menu.addItem(clear)
+
+        let clearAllCombo = HotKeys.clearAllCombo
+        let clearAll = NSMenuItem(
+            title: L("menu_clear_all"),
+            action: #selector(clearAllHistory),
+            keyEquivalent: KeyMap.keyEquivalentChar(forKeyCode: clearAllCombo.code) ?? ""
+        )
+        clearAll.keyEquivalentModifierMask = NSEvent.ModifierFlags(
+            rawValue: KeyMap.cocoaFlags(fromCarbon: UInt32(clearAllCombo.mods))
+        )
+        clearAll.target = self
+        menu.addItem(clearAll)
         menu.addItem(.separator())
 
         let quit = NSMenuItem(title: L("menu_quit"), action: #selector(quit), keyEquivalent: "q")
@@ -153,6 +165,28 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
         alert.alertStyle = .warning
         if alert.runModal() == .alertFirstButtonReturn {
             store.clear(keepPinned: true)
+        }
+    }
+
+    @objc private func clearAllHistory() {
+        confirmAndClearAll()
+    }
+
+    /// Wipe the entire history, including pinned entries. Reachable from both
+    /// the menu item and the global hotkey. Confirmed first because deleting
+    /// pinned entries is irreversible.
+    func confirmAndClearAll() {
+        // Nothing to do — avoid a pointless dialog when already empty.
+        guard !store.items.isEmpty else { return }
+        NSApp.activate(ignoringOtherApps: true)
+        let alert = NSAlert()
+        alert.messageText = L("alert_clear_all_title")
+        alert.informativeText = L("alert_clear_all_msg")
+        alert.addButton(withTitle: L("alert_clear_all_ok"))
+        alert.addButton(withTitle: L("alert_cancel"))
+        alert.alertStyle = .critical
+        if alert.runModal() == .alertFirstButtonReturn {
+            store.clear(keepPinned: false)
         }
     }
 

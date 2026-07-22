@@ -42,3 +42,8 @@
 "version" = "Version";
 "empty_text" = "(empty text)";
 "files_count_prefix" = "%d files: ";
+"menu_clear_all" = "Clear All History (Including Pinned)…";
+"alert_clear_all_title" = "Clear ALL clipboard history?";
+"alert_clear_all_msg" = "Every entry, including pinned ones, will be permanently deleted. This cannot be undone.";
+"alert_clear_all_ok" = "Clear All";
+"hk_clear_all" = "Clear all history";

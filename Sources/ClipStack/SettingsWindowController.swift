@@ -6,12 +6,14 @@ import ClipStackCore
 /// Backing model for the settings window: launch-at-login toggle plus a
 /// click-to-record editor for the two global hotkeys.
 final class SettingsModel: ObservableObject {
-    enum Target { case switcher, settings }
+    enum Target { case switcher, settings, clearAll }
 
     @Published var switcherCode: Int
     @Published var switcherMods: Int
     @Published var settingsCode: Int
     @Published var settingsMods: Int
+    @Published var clearAllCode: Int
+    @Published var clearAllMods: Int
     @Published var launchAtLogin = false
     @Published var loginError: String?
     @Published var recordingTarget: Target?
@@ -24,10 +26,13 @@ final class SettingsModel: ObservableObject {
     init() {
         let switcher = HotKeys.switcherCombo
         let settings = HotKeys.settingsCombo
+        let clearAll = HotKeys.clearAllCombo
         switcherCode = switcher.code
         switcherMods = switcher.mods
         settingsCode = settings.code
         settingsMods = settings.mods
+        clearAllCode = clearAll.code
+        clearAllMods = clearAll.mods
         refreshLoginState()
     }
 
@@ -58,6 +63,8 @@ final class SettingsModel: ObservableObject {
             return KeyMap.displayString(keyCode: switcherCode, carbonModifiers: UInt32(switcherMods))
         case .settings:
             return KeyMap.displayString(keyCode: settingsCode, carbonModifiers: UInt32(settingsMods))
+        case .clearAll:
+            return KeyMap.displayString(keyCode: clearAllCode, carbonModifiers: UInt32(clearAllMods))
         }
     }
 
@@ -89,8 +96,14 @@ final class SettingsModel: ObservableObject {
         }
         let code = Int(event.keyCode)
         let mods = Int(carbon)
-        let other = target == .switcher ? (settingsCode, settingsMods) : (switcherCode, switcherMods)
-        guard (code, mods) != other else {
+        // Reject a combo already bound to either of the other two hotkeys.
+        let others: [(Int, Int)]
+        switch target {
+        case .switcher: others = [(settingsCode, settingsMods), (clearAllCode, clearAllMods)]
+        case .settings: others = [(switcherCode, switcherMods), (clearAllCode, clearAllMods)]
+        case .clearAll: others = [(switcherCode, switcherMods), (settingsCode, settingsMods)]
+        }
+        guard !others.contains(where: { $0 == (code, mods) }) else {
             recordHint = L("hk_conflict")
             return
         }
@@ -107,6 +120,11 @@ final class SettingsModel: ObservableObject {
             settingsMods = mods
             defaults.set(code, forKey: PrefKey.settingsHotKeyCode)
             defaults.set(mods, forKey: PrefKey.settingsHotKeyMods)
+        case .clearAll:
+            clearAllCode = code
+            clearAllMods = mods
+            defaults.set(code, forKey: PrefKey.clearAllHotKeyCode)
+            defaults.set(mods, forKey: PrefKey.clearAllHotKeyMods)
         }
         endRecording()
     }
@@ -146,6 +164,7 @@ struct SettingsView: View {
             Section(L("hotkeys_section")) {
                 recorderRow(L("hk_switcher"), .switcher)
                 recorderRow(L("hk_settings"), .settings)
+                recorderRow(L("hk_clear_all"), .clearAll)
                 if let hint = model.recordHint {
                     Text(hint).font(.caption).foregroundStyle(.orange)
                 }
@@ -169,7 +188,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 420, height: 330)
+        .frame(width: 420, height: 374)
     }
 
     private var appVersion: String {
@@ -201,7 +220,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     func show() {
         if window == nil {
             let w = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 420, height: 330),
+                contentRect: NSRect(x: 0, y: 0, width: 420, height: 374),
                 styleMask: [.titled, .closable],
                 backing: .buffered,
                 defer: false
