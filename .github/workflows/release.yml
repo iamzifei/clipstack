@@ -21,6 +21,9 @@ on:
   push:
     tags:
       - "v*"
+  # Manual trigger: builds + signs + notarizes for verification, but skips
+  # the release-publish step (that only runs on a version tag).
+  workflow_dispatch:
 
 permissions:
   contents: write # needed for `gh release create`
@@ -52,7 +55,19 @@ jobs:
           # Let codesign/notarytool use the private key without a UI prompt.
           security set-key-partition-list -S apple-tool:,apple:,codesign: \
             -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+          # Add our keychain to the search list WITHOUT dropping the runner's
+          # existing keychains — otherwise Apple intermediate certs become
+          # unreachable and the Developer ID chain fails to validate.
+          EXISTING=$(security list-keychains -d user | xargs)
+          security list-keychains -d user -s "$KEYCHAIN_PATH" $EXISTING
+
+          # Import the Developer ID intermediate so the leaf → intermediate →
+          # Apple root chain builds (find-identity -v and codesign both need it).
+          curl -fsSL -o "$RUNNER_TEMP/DeveloperIDG2CA.cer" \
+            https://www.apple.com/certificateauthority/DeveloperIDG2CA.cer
+          security import "$RUNNER_TEMP/DeveloperIDG2CA.cer" \
+            -k "$KEYCHAIN_PATH" -t cert -f x509 || true
 
           # Export the keychain path so later steps can reach the profile/key.
           echo "SIGN_KEYCHAIN=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
@@ -62,16 +77,30 @@ jobs:
           OVERRIDE_IDENTITY: ${{ secrets.MACOS_SIGN_IDENTITY }}
         run: |
           set -euo pipefail
+          echo "── valid codesigning identities in keychain ──"
+          security find-identity -v -p codesigning "$SIGN_KEYCHAIN" || true
+          echo "── all identities (incl. chain-invalid) ──"
+          security find-identity -p codesigning "$SIGN_KEYCHAIN" || true
+          echo "──────────────────────────────────────────────"
+
           if [ -n "${OVERRIDE_IDENTITY:-}" ]; then
             IDENTITY="$OVERRIDE_IDENTITY"
           else
-            # Pick the single Developer ID Application identity from the keychain.
+            # Prefer a fully valid identity; fall back to any Developer ID
+            # Application entry so a missing-intermediate case still names it
+            # (codesign will surface the real chain error if it's broken).
             IDENTITY=$(security find-identity -v -p codesigning "$SIGN_KEYCHAIN" \
               | grep "Developer ID Application" | head -1 \
               | sed -E 's/.*"(.*)"$/\1/')
+            if [ -z "$IDENTITY" ]; then
+              IDENTITY=$(security find-identity -p codesigning "$SIGN_KEYCHAIN" \
+                | grep "Developer ID Application" | head -1 \
+                | sed -E 's/.*"(.*)"$/\1/')
+            fi
           fi
           if [ -z "$IDENTITY" ]; then
-            echo "No Developer ID Application identity found." >&2
+            echo "No Developer ID Application identity found in the imported .p12." >&2
+            echo "Check that MACOS_CERT_P12_BASE64 was exported from the CERTIFICATE row (cert + private key), not the key alone." >&2
             exit 1
           fi
           echo "Using identity: $IDENTITY"
@@ -100,6 +129,7 @@ jobs:
           ./make-dmg.sh
 
       - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
