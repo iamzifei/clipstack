@@ -9,6 +9,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var settings: SettingsWindowController!
     private var toast: ToastController!
     private var hotKeys: HotKeys!
+    private var updater: Updater!
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Single-instance guard: a second launch just quits itself.
@@ -37,12 +38,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self?.toast.showCopied(detail: String(item.previewLine.prefix(48)))
         }
         settings = SettingsWindowController()
+        // Sparkle auto-updater: starts background checks against the appcast
+        // feed configured in Info.plist. No-op when running unbundled.
+        updater = Updater()
         statusMenu = StatusMenuController(
             store: store,
             monitor: monitor,
             switcher: switcher,
             settings: settings,
-            toast: toast
+            toast: toast,
+            updater: updater
         )
         store.onChange = { [weak self] in self?.switcher.refreshIfVisible() }
         monitor.start()

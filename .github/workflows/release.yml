@@ -140,3 +140,41 @@ jobs:
           gh release create "$GITHUB_REF_NAME" "$DMG" \
             --title "ClipStack ${VERSION}" \
             --generate-notes
+
+      - name: Update Sparkle appcast
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          DMG="dist/ClipStack-${VERSION}.dmg"
+          BUILD=$(plutil -extract CFBundleVersion raw Resources/Info.plist)
+          MIN_SYS=$(plutil -extract LSMinimumSystemVersion raw Resources/Info.plist)
+
+          # Sparkle CLI tools (sign_update) — same zip SwiftPM uses, but we need
+          # the bin/ tools which the SwiftPM binary target doesn't expose.
+          curl -fsSL -o /tmp/sparkle.zip \
+            https://github.com/sparkle-project/Sparkle/releases/download/2.9.4/Sparkle-for-Swift-Package-Manager.zip
+          mkdir -p /tmp/sparkle && unzip -q /tmp/sparkle.zip -d /tmp/sparkle
+          printf '%s' "$SPARKLE_ED_PRIVATE_KEY" > /tmp/ed_private.key
+
+          # Move onto main so the appcast change lands there (the tag was cut
+          # from main, so appcast.xml is identical). dist/ is gitignored and
+          # survives the checkout.
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git checkout -B main origin/main
+
+          python3 scripts/update_appcast.py \
+            --appcast appcast.xml --dmg "$DMG" \
+            --version "$VERSION" --build "$BUILD" \
+            --url "https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/ClipStack-${VERSION}.dmg" \
+            --sign-tool /tmp/sparkle/bin/sign_update --key-file /tmp/ed_private.key \
+            --min-system "$MIN_SYS"
+
+          rm -f /tmp/ed_private.key
+          git add appcast.xml
+          git commit -m "chore: appcast for ${VERSION}" || { echo "no appcast change"; exit 0; }
+          git push origin main

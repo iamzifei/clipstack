@@ -11,6 +11,7 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
     private let switcher: SwitcherWindowController
     private let settings: SettingsWindowController
     private let toast: ToastController
+    private let updater: Updater
     private let menu = NSMenu()
 
     init(
@@ -18,13 +19,15 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
         monitor: ClipboardMonitor,
         switcher: SwitcherWindowController,
         settings: SettingsWindowController,
-        toast: ToastController
+        toast: ToastController,
+        updater: Updater
     ) {
         self.store = store
         self.monitor = monitor
         self.switcher = switcher
         self.settings = settings
         self.toast = toast
+        self.updater = updater
         self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         super.init()
 
@@ -78,6 +81,15 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
         )
         prefs.target = self
         menu.addItem(prefs)
+
+        let checkUpdates = NSMenuItem(
+            title: L("menu_check_updates"),
+            action: #selector(checkForUpdates),
+            keyEquivalent: ""
+        )
+        checkUpdates.target = self
+        checkUpdates.isEnabled = updater.canCheckForUpdates
+        menu.addItem(checkUpdates)
         menu.addItem(.separator())
 
         let recent = Array(store.items.prefix(10))
@@ -141,6 +153,10 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
 
     @objc private func openSettings() {
         settings.show()
+    }
+
+    @objc private func checkForUpdates() {
+        updater.checkForUpdates()
     }
 
     @objc private func copyRecent(_ sender: NSMenuItem) {

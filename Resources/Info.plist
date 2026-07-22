@@ -4,24 +4,16 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>ClipStack</string>
 	<key>CFBundleExecutable</key>
 	<string>ClipStack</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.james.ClipStack</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>ClipStack</string>
-	<key>CFBundleDisplayName</key>
-	<string>ClipStack</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleIconFile</key>
-	<string>AppIcon</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.2.1</string>
-	<key>CFBundleVersion</key>
-	<string>5</string>
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>en</string>
@@ -32,13 +24,29 @@
 		<string>es</string>
 		<string>fr</string>
 	</array>
+	<key>CFBundleName</key>
+	<string>ClipStack</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.3.0</string>
+	<key>CFBundleVersion</key>
+	<string>6</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>13.0</string>
 	<key>LSUIElement</key>
 	<true/>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://raw.githubusercontent.com/iamzifei/clipstack/main/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>CHSkSUupddRglHt3C2quzHtit8LMB29BMI44/O9aItg=</string>
+	<key>SUScheduledCheckInterval</key>
+	<integer>86400</integer>
 </dict>
 </plist>
