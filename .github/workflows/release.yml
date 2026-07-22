@@ -1,0 +1,112 @@
+name: Release
+
+# Build, Developer ID–sign, notarize and publish ClipStack when a version
+# tag is pushed. Tag the release commit with `vX.Y.Z` (matching the
+# CFBundleShortVersionString in Resources/Info.plist) and push the tag:
+#
+#   git tag v1.3.0 && git push origin v1.3.0
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   MACOS_CERT_P12_BASE64  base64 of your "Developer ID Application" .p12 export
+#   MACOS_CERT_PASSWORD    password protecting that .p12
+#   APPLE_ID               Apple ID email used for notarization
+#   APPLE_ID_PASSWORD      app-specific password for that Apple ID
+#   APPLE_TEAM_ID          10-char Apple Developer Team ID
+# Optional:
+#   MACOS_SIGN_IDENTITY    full identity string, e.g.
+#                          "Developer ID Application: Name (TEAMID)".
+#                          Auto-detected from the imported cert when unset.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write # needed for `gh release create`
+
+jobs:
+  release:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Import Developer ID certificate
+        env:
+          CERT_P12_BASE64: ${{ secrets.MACOS_CERT_P12_BASE64 }}
+          CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+        run: |
+          set -euo pipefail
+          CERT_PATH="$RUNNER_TEMP/cert.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+          # Random, throwaway password for the ephemeral CI keychain.
+          KEYCHAIN_PASSWORD="$(openssl rand -base64 24)"
+
+          echo -n "$CERT_P12_BASE64" | base64 --decode -o "$CERT_PATH"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$CERT_PASSWORD" \
+            -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          # Let codesign/notarytool use the private key without a UI prompt.
+          security set-key-partition-list -S apple-tool:,apple:,codesign: \
+            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+          # Export the keychain path so later steps can reach the profile/key.
+          echo "SIGN_KEYCHAIN=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+
+      - name: Resolve signing identity
+        env:
+          OVERRIDE_IDENTITY: ${{ secrets.MACOS_SIGN_IDENTITY }}
+        run: |
+          set -euo pipefail
+          if [ -n "${OVERRIDE_IDENTITY:-}" ]; then
+            IDENTITY="$OVERRIDE_IDENTITY"
+          else
+            # Pick the single Developer ID Application identity from the keychain.
+            IDENTITY=$(security find-identity -v -p codesigning "$SIGN_KEYCHAIN" \
+              | grep "Developer ID Application" | head -1 \
+              | sed -E 's/.*"(.*)"$/\1/')
+          fi
+          if [ -z "$IDENTITY" ]; then
+            echo "No Developer ID Application identity found." >&2
+            exit 1
+          fi
+          echo "Using identity: $IDENTITY"
+          echo "CODESIGN_IDENTITY=$IDENTITY" >> "$GITHUB_ENV"
+
+      - name: Store notarization credentials
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          set -euo pipefail
+          xcrun notarytool store-credentials "ci-notary" \
+            --apple-id "$APPLE_ID" \
+            --password "$APPLE_ID_PASSWORD" \
+            --team-id "$APPLE_TEAM_ID" \
+            --keychain "$SIGN_KEYCHAIN"
+          echo "NOTARY_PROFILE=ci-notary" >> "$GITHUB_ENV"
+
+      - name: Build, sign, notarize
+        # build.sh reads CODESIGN_IDENTITY; make-dmg.sh reads that plus
+        # NOTARY_PROFILE (found via the search-list keychain set up above).
+        run: |
+          set -euo pipefail
+          ./build.sh
+          ./make-dmg.sh
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          DMG="dist/ClipStack-${VERSION}.dmg"
+          test -f "$DMG"
+          gh release create "$GITHUB_REF_NAME" "$DMG" \
+            --title "ClipStack ${VERSION}" \
+            --generate-notes
