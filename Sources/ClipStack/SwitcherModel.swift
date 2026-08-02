@@ -9,6 +9,15 @@ final class SwitcherModel: ObservableObject {
     @Published var selectionIndex = 0
     /// Bumped whenever the underlying store mutates, to force a re-render.
     @Published private(set) var revision = 0
+    /// When on, the panel stays visible above other apps after it loses focus
+    /// or copies an entry — so it can serve as a reference sheet / notepad
+    /// while typing somewhere else. Persisted across launches.
+    @Published var keepOnTop = UserDefaults.standard.bool(forKey: PrefKey.keepOnTop) {
+        didSet {
+            guard keepOnTop != oldValue else { return }
+            UserDefaults.standard.set(keepOnTop, forKey: PrefKey.keepOnTop)
+        }
+    }
 
     let store: HistoryStore
     var onCommit: ((ClipItem) -> Void)?
@@ -20,7 +29,7 @@ final class SwitcherModel: ObservableObject {
 
     var filtered: [ClipItem] {
         _ = revision
-        let all = store.items
+        let all = store.orderedItems
         guard !query.isEmpty else { return all }
         return all.filter {
             $0.searchText.localizedCaseInsensitiveContains(query)
@@ -60,6 +69,12 @@ final class SwitcherModel: ObservableObject {
     func togglePinSelection() {
         guard let item = selected else { return }
         store.togglePin(id: item.id)
+        // Pinning re-orders the list (pinned entries float to the top), so
+        // follow the item to its new row instead of leaving the highlight
+        // sitting on whatever slid into the old index.
+        if let newIndex = filtered.firstIndex(where: { $0.id == item.id }) {
+            selectionIndex = newIndex
+        }
     }
 
     func refresh() {

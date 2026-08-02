@@ -16,6 +16,14 @@ public final class HistoryStore {
     /// Called after every mutation, on the caller's thread. Used by the UI.
     public var onChange: (() -> Void)?
 
+    /// Display order: pinned entries float to the top, each group keeping its
+    /// recency order. `items` itself stays in pure recency order so eviction
+    /// (`trimIfNeeded`) can still find the oldest entry by position.
+    public var orderedItems: [ClipItem] {
+        guard items.contains(where: { $0.pinned }) else { return items }
+        return items.filter { $0.pinned } + items.filter { !$0.pinned }
+    }
+
     public var imagesDirectory: URL { directory.appendingPathComponent("images", isDirectory: true) }
     private var historyFile: URL { directory.appendingPathComponent("history.json") }
 

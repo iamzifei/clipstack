@@ -12,6 +12,7 @@
 "hint_copy" = "Copiar";
 "hint_quick" = "Copia rápida";
 "hint_pin" = "Fijar";
+"hint_keep_on_top" = "Siempre encima";
 "hint_delete" = "Eliminar";
 "hint_close" = "Cerrar";
 "just_now" = "ahora";

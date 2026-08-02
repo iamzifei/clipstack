@@ -9,6 +9,7 @@ public enum PrefKey {
     public static let clearAllHotKeyCode = "ClearAllHotKeyKeyCode"  // clear all history
     public static let clearAllHotKeyMods = "ClearAllHotKeyModifiers"
     public static let maxItems = "MaxItems"
+    public static let keepOnTop = "KeepPanelOnTop"                  // switcher stays above other apps
 }
 
 /// Localized string lookup against the app bundle. Falls back to the key

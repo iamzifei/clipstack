@@ -59,6 +59,52 @@ final class HistoryStoreTests: XCTestCase {
         XCTAssertEqual(store.items[0].plainText, "one")
     }
 
+    // MARK: display order
+
+    func testOrderedItemsFloatsPinnedToTop() throws {
+        let store = try makeStore()
+        store.add(textItem("oldest"))
+        store.add(textItem("middle"))
+        store.add(textItem("newest"))
+        store.togglePin(id: store.items[2].id) // pin "oldest"
+        XCTAssertEqual(
+            store.orderedItems.compactMap(\.plainText),
+            ["oldest", "newest", "middle"],
+            "pinned entries lead, the rest stay in recency order"
+        )
+        // Raw storage stays recency-ordered so eviction still finds the oldest.
+        XCTAssertEqual(store.items.compactMap(\.plainText), ["newest", "middle", "oldest"])
+    }
+
+    func testOrderedItemsKeepsRecencyWhenNothingPinned() throws {
+        let store = try makeStore()
+        store.add(textItem("a"))
+        store.add(textItem("b"))
+        XCTAssertEqual(store.orderedItems.compactMap(\.plainText), ["b", "a"])
+    }
+
+    func testUnpinningRestoresRecencyPosition() throws {
+        let store = try makeStore()
+        store.add(textItem("a"))
+        store.add(textItem("b"))
+        store.add(textItem("c"))
+        let idOfA = store.items[2].id
+        store.togglePin(id: idOfA)
+        XCTAssertEqual(store.orderedItems[0].plainText, "a")
+        store.togglePin(id: idOfA)
+        XCTAssertEqual(store.orderedItems.compactMap(\.plainText), ["c", "b", "a"])
+    }
+
+    func testOrderedItemsPreservesRelativeOrderAmongPinned() throws {
+        let store = try makeStore()
+        store.add(textItem("a"))
+        store.add(textItem("b"))
+        store.add(textItem("c"))
+        store.togglePin(id: store.items[2].id) // "a"
+        store.togglePin(id: store.items[0].id) // "c"
+        XCTAssertEqual(store.orderedItems.compactMap(\.plainText), ["c", "a", "b"])
+    }
+
     // MARK: trimming
 
     func testTrimEvictsOldestUnpinned() throws {

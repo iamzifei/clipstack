@@ -92,7 +92,7 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
         menu.addItem(checkUpdates)
         menu.addItem(.separator())
 
-        let recent = Array(store.items.prefix(10))
+        let recent = Array(store.orderedItems.prefix(10))
         if recent.isEmpty {
             let empty = NSMenuItem(title: L("menu_empty"), action: nil, keyEquivalent: "")
             empty.isEnabled = false

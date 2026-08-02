@@ -12,6 +12,7 @@
 "hint_copy" = "복사";
 "hint_quick" = "빠른 복사";
 "hint_pin" = "고정";
+"hint_keep_on_top" = "항상 위에";
 "hint_delete" = "삭제";
 "hint_close" = "닫기";
 "just_now" = "방금";

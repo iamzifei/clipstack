@@ -192,6 +192,9 @@ struct SwitcherView: View {
             hint("↩", L("hint_copy"))
             hint("⌘1–9", L("hint_quick"))
             hint("⌘P", L("hint_pin"))
+            // Highlighted while on, so the current mode is readable at a glance
+            // even when the panel sits unfocused over another app.
+            hint("⌘T", L("hint_keep_on_top"), active: model.keepOnTop)
             hint("⌘⌫", L("hint_delete"))
             // Global hotkey (fires even while the panel is focused); shows the
             // user's current binding so a rebind stays in sync.
@@ -215,16 +218,20 @@ struct SwitcherView: View {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "dev"
     }
 
-    private func hint(_ key: String, _ label: String) -> some View {
+    private func hint(_ key: String, _ label: String, active: Bool = false) -> some View {
         HStack(spacing: 4) {
             Text(key)
                 .font(.system(size: 10, weight: .medium))
+                .foregroundStyle(active ? Color.accentColor : Color.primary)
                 .padding(.horizontal, 5)
                 .padding(.vertical, 1.5)
-                .background(Color.primary.opacity(0.08), in: RoundedRectangle(cornerRadius: 4))
+                .background(
+                    active ? Color.accentColor.opacity(0.20) : Color.primary.opacity(0.08),
+                    in: RoundedRectangle(cornerRadius: 4)
+                )
             Text(label)
                 .font(.system(size: 10))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(active ? Color.accentColor : Color.secondary)
         }
     }
 

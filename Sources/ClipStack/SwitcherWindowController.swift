@@ -41,7 +41,9 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
         model.onCommit = { [weak self] item in
             guard let self else { return }
             PasteboardWriter.write(item, store: self.store)
-            self.hide()
+            // In keep-on-top mode the panel is being used as a reference sheet
+            // while working in another app, so copying must not dismiss it.
+            if !self.model.keepOnTop { self.hide() }
             self.onCopied?(item)
         }
         model.onClose = { [weak self] in self?.hide() }
@@ -49,8 +51,17 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
 
     var isVisible: Bool { panel.isVisible }
 
+    /// Hotkey entry point. While keeping the panel on top it may be visible but
+    /// unfocused (the user is typing elsewhere); in that case the hotkey brings
+    /// focus back rather than dismissing what the user asked to keep around.
     func toggle() {
-        isVisible ? hide() : show()
+        if !isVisible {
+            show()
+        } else if model.keepOnTop && !panel.isKeyWindow {
+            panel.makeKeyAndOrderFront(nil)
+        } else {
+            hide()
+        }
     }
 
     func show() {
@@ -73,6 +84,8 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
     }
 
     func windowDidResignKey(_ notification: Notification) {
+        // Keep-on-top means "survive losing focus" — that is the whole feature.
+        guard !model.keepOnTop else { return }
         hide()
     }
 
@@ -127,6 +140,10 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
             if let chars = event.charactersIgnoringModifiers {
                 if chars == "p" {
                     model.togglePinSelection()
+                    return true
+                }
+                if chars == "t" {
+                    model.keepOnTop.toggle()
                     return true
                 }
                 if let n = Int(chars), (1...9).contains(n) {

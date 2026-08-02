@@ -12,6 +12,7 @@
 "hint_copy" = "コピー";
 "hint_quick" = "クイックコピー";
 "hint_pin" = "ピン留め";
+"hint_keep_on_top" = "最前面に固定";
 "hint_delete" = "削除";
 "hint_close" = "閉じる";
 "just_now" = "たった今";

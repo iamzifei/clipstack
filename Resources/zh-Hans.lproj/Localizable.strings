@@ -12,6 +12,7 @@
 "hint_copy" = "复制";
 "hint_quick" = "快速复制";
 "hint_pin" = "置顶";
+"hint_keep_on_top" = "窗口置顶";
 "hint_delete" = "删除";
 "hint_close" = "关闭";
 "just_now" = "刚刚";
