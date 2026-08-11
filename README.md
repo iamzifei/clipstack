@@ -1,5 +1,7 @@
 # ClipStack
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2T024VDBG)
+
 macOS 菜单栏剪贴板历史管理器。为配合 Claude Code 的 Clipboard Delivery 规则而写（多段 `pbcopy` 输出全部留在历史里，随时切换），也是一个通用的轻量剪贴板管理器。
 
 > 成熟替代品：开源的 [Maccy](https://maccy.app)。ClipStack 是按本机工作流定制的极简版（无沙盒、零依赖、约 1000 行 Swift）。
