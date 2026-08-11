@@ -90,3 +90,10 @@ Sources/ClipStackCore/   # 纯 Foundation：模型 + 持久化存储（可单测
 Sources/ClipStack/       # AppKit/SwiftUI：监控、热键、面板、菜单
 Tests/ClipStackTests/    # 全部单元测试
 ```
+
+## 同系列
+
+**[AudioSwitch](https://github.com/iamzifei/audioswitch)** — macOS 菜单栏音频设备切换器。
+一个面板里列出全部输入/输出设备并一键切换，带音量滑块、实时麦克风电平表、
+麦克风一键停用开关，以及防止会议软件抢占设备的设备锁定。
+同样是原生 Apple Silicon、零第三方依赖。
