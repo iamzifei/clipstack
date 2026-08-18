@@ -167,7 +167,7 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
     }
 
     @objc private func openSupport() {
-        NSWorkspace.shared.open(URL(string: "https://ko-fi.com/iamzifei")!)
+        NSWorkspace.shared.open(URL(string: "https://ko-fi.com/james_ai/tip")!)
     }
 
     @objc private func checkForUpdates() {
