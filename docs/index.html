@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ClipStack — clipboard history in the macOS menu bar</title>
+<meta name="description" content="A native macOS menu bar clipboard manager. ⇧⌘V brings up everything you have copied — text, images and files — searchable, with a full preview and one keystroke to copy it back. Apple silicon, zero dependencies, MIT.">
+<meta name="theme-color" content="#0c0e12">
+<link rel="icon" href="icon-256.png" sizes="256x256">
+<link rel="apple-touch-icon" href="icon-256.png">
+<link rel="canonical" href="https://getclipstack.app/">
+<link rel="alternate" hreflang="en" href="https://getclipstack.app/?lang=en">
+<link rel="alternate" hreflang="zh-Hans" href="https://getclipstack.app/?lang=zh-Hans">
+<link rel="alternate" hreflang="zh-Hant" href="https://getclipstack.app/?lang=zh-Hant">
+<link rel="alternate" hreflang="ja" href="https://getclipstack.app/?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://getclipstack.app/?lang=ko">
+<link rel="alternate" hreflang="de" href="https://getclipstack.app/?lang=de">
+<link rel="alternate" hreflang="fr" href="https://getclipstack.app/?lang=fr">
+<link rel="alternate" hreflang="es" href="https://getclipstack.app/?lang=es">
+<link rel="alternate" hreflang="x-default" href="https://getclipstack.app/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://getclipstack.app/">
+<meta property="og:title" content="ClipStack — clipboard history in the macOS menu bar">
+<meta property="og:description" content="⇧⌘V brings up everything you have copied — text, images and files — searchable, with a preview and one keystroke to copy it back.">
+<meta property="og:image" content="https://getclipstack.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+/* ---------------------------------------------------------------------------
+   ClipStack product page.
+
+   The app is a dark floating panel that appears over whatever you are doing,
+   so the page is dark-first rather than a light page with a dark screenshot
+   dropped into it — the product and the page are the same object.
+
+   Everything is one file and no request leaves the origin: system typeface,
+   inline styles, self-hosted video. The motif is the stack itself: cards that
+   settle into place on arrival, and a keycap for the shortcut that summons
+   them.
+   --------------------------------------------------------------------------- */
+
+:root {
+  color-scheme: dark;
+
+  --bg: #0c0e12;
+  --bg-soft: #12151b;
+  --bg-card: #171b23;
+  --ink: #eef0f5;
+  --ink-soft: #a3aab8;
+  --ink-faint: #6f7787;
+  --rule: #232833;
+  --accent: #5b9dff;
+  --accent-ink: #071018;
+  --accent-soft: rgba(91, 157, 255, 0.14);
+  --shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.9), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+  --section: clamp(4.5rem, 11vw, 9rem);
+  --measure: 34rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(90% 60% at 50% -10%, #182130 0%, rgba(24, 33, 48, 0) 60%),
+    var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Helvetica Neue", sans-serif;
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  line-height: 1.55;
+  letter-spacing: -0.006em;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Helvetica Neue", sans-serif;
+  font-weight: 700;
+  line-height: 1.07;
+  letter-spacing: -0.028em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(2.1rem, 1.3rem + 3.2vw, 3.7rem); }
+h2 { font-size: clamp(1.7rem, 1.15rem + 2.3vw, 2.7rem); }
+h3 { font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem); letter-spacing: -0.016em; line-height: 1.25; }
+p { margin: 0; }
+a { color: inherit; }
+
+.wrap { width: min(70rem, 100%); margin-inline: auto; padding-inline: var(--gutter); }
+section { padding-block: var(--section); }
+
+/* --- Language picker ----------------------------------------------------- */
+
+.langbar { display: flex; justify-content: flex-end; padding-top: clamp(0.9rem, 2.5vw, 1.4rem); }
+
+.langpick {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.3rem 0.35rem 0.3rem 0.7rem;
+  border: 1px solid var(--rule); border-radius: 980px;
+  color: var(--ink-soft); background: rgba(255, 255, 255, 0.02);
+}
+
+.langpick svg { flex: none; opacity: 0.7; }
+
+.langpick select {
+  appearance: none; -webkit-appearance: none;
+  font: inherit; font-size: 0.875rem; font-weight: 500;
+  color: inherit; background: transparent; border: 0; cursor: pointer;
+  padding: 0.1rem 1.35rem 0.1rem 0.1rem; border-radius: 980px;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: right 0.62rem center, right 0.35rem center;
+  background-size: 0.28rem 0.28rem, 0.28rem 0.28rem;
+  background-repeat: no-repeat;
+}
+
+.langpick select:hover { color: var(--ink); }
+.langpick option { color: initial; }
+
+/* --- Hero ---------------------------------------------------------------- */
+
+.hero { padding-block: clamp(2rem, 6vw, 4rem) clamp(3rem, 7vw, 5rem); text-align: center; }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-size: 0.8125rem; font-weight: 590; letter-spacing: 0.01em;
+  color: var(--ink-soft); margin-bottom: clamp(1.4rem, 4vw, 2rem);
+}
+
+.eyebrow img { width: 30px; height: 30px; border-radius: 7px; }
+
+.hero h1 span { color: var(--accent); }
+
+.lede {
+  max-width: var(--measure); margin: clamp(1.1rem, 3vw, 1.6rem) auto 0;
+  font-size: clamp(1.0625rem, 1rem + 0.45vw, 1.25rem);
+  color: var(--ink-soft); line-height: 1.5;
+}
+
+.actions {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 0.75rem 1.1rem; margin-top: clamp(1.6rem, 4vw, 2.2rem);
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.78rem 1.45rem; border-radius: 980px;
+  background: var(--accent); color: var(--accent-ink);
+  font-weight: 620; font-size: 1rem; text-decoration: none;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.25s ease;
+}
+
+.btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+.btn-outline {
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--rule); padding-block: calc(0.78rem - 1px);
+}
+
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); filter: none; }
+.btn-outline svg { color: #ff5e5b; }
+
+.btn-quiet {
+  background: transparent; color: var(--ink-soft); padding-inline: 0.3rem;
+  text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 0.35em;
+}
+
+.btn-quiet:hover { color: var(--ink); text-decoration-color: var(--accent); filter: none; }
+
+.fineprint { margin-top: 1.1rem; font-size: 0.875rem; color: var(--ink-faint); }
+
+/* The shortcut, drawn as the keys you actually press. */
+.keys { display: inline-flex; gap: 0.3rem; vertical-align: middle; }
+
+.key {
+  min-width: 2rem; padding: 0.2rem 0.5rem;
+  border-radius: 8px; border: 1px solid var(--rule);
+  background: linear-gradient(180deg, #1b2029 0%, #141821 100%);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  font-size: 0.95em; font-weight: 590; text-align: center;
+}
+
+/* --- The panel on stage -------------------------------------------------- */
+
+.stage { position: relative; margin-top: clamp(2.5rem, 7vw, 4.5rem); }
+
+/* Two slabs peeking out behind the video: the stack the app is named after. */
+.stage::before, .stage::after {
+  content: ""; position: absolute; left: 50%; translate: -50% 0;
+  border-radius: 18px; border: 1px solid var(--rule); background: var(--bg-card);
+}
+
+.stage::before { width: min(52rem, 92%); height: 60px; top: -14px; opacity: 0.55; }
+.stage::after { width: min(48rem, 86%); height: 60px; top: -28px; opacity: 0.3; }
+
+.panel-frame {
+  position: relative; width: min(56rem, 100%); margin-inline: auto;
+  border-radius: 20px; overflow: hidden; box-shadow: var(--shadow);
+  border: 1px solid var(--rule); background: var(--bg-soft);
+}
+
+.panel-frame video, .panel-frame img { display: block; width: 100%; height: auto; }
+
+.caption { margin: 1.1rem 0 0; font-size: 0.8125rem; color: var(--ink-faint); }
+
+/* --- Features ------------------------------------------------------------ */
+
+.section-head { max-width: 44rem; }
+.section-head p { margin-top: 0.9rem; color: var(--ink-soft); max-width: var(--measure); }
+
+.features { display: grid; gap: clamp(2rem, 5vw, 3.5rem); margin-top: clamp(2.5rem, 6vw, 3.5rem); }
+
+.feature { display: grid; gap: clamp(1.2rem, 3vw, 2.5rem); align-items: center; }
+
+@media (min-width: 52rem) {
+  .feature { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+  .feature:nth-child(even) > .feature-art { order: -1; }
+}
+
+.feature-art {
+  border-radius: 14px; overflow: hidden; border: 1px solid var(--rule);
+  background: var(--bg-soft); box-shadow: var(--shadow);
+}
+
+.feature-art img { display: block; width: 100%; height: auto; }
+.feature h3 { margin-bottom: 0.5rem; }
+.feature p { color: var(--ink-soft); }
+
+/* --- Shortcuts ----------------------------------------------------------- */
+
+.shortcuts { margin: clamp(2.2rem, 6vw, 3rem) 0 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+
+.shortcuts li {
+  display: grid; gap: 0.3rem 2rem; padding-block: clamp(0.9rem, 2.2vw, 1.2rem);
+  border-bottom: 1px solid var(--rule); align-items: baseline;
+}
+
+@media (min-width: 46rem) { .shortcuts li { grid-template-columns: 11rem minmax(0, 1fr); } }
+
+.shortcuts .keys { flex-wrap: wrap; }
+.shortcuts .desc { color: var(--ink-soft); }
+
+/* --- Privacy note -------------------------------------------------------- */
+
+.note-card {
+  margin-top: clamp(2rem, 5vw, 3rem); padding: clamp(1.4rem, 4vw, 2.2rem);
+  border: 1px solid var(--rule); border-radius: 18px;
+  background: linear-gradient(180deg, rgba(91, 157, 255, 0.06), rgba(91, 157, 255, 0));
+}
+
+.note-card h3 { margin-bottom: 0.6rem; }
+.note-card p { color: var(--ink-soft); max-width: 44rem; }
+.note-card p + p { margin-top: 0.7rem; }
+
+/* --- Siblings ------------------------------------------------------------ */
+
+.siblings { padding-block: clamp(2.5rem, 6vw, 4rem); }
+.sibling-label { font-size: 0.8125rem; font-weight: 590; color: var(--ink-faint); margin-bottom: 1.2rem; }
+.sibling-grid { display: grid; gap: 1rem; }
+@media (min-width: 46rem) { .sibling-grid { grid-template-columns: 1fr 1fr; } }
+
+.sibling {
+  display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem;
+  border: 1px solid var(--rule); border-radius: 16px; background: var(--bg-soft);
+  text-decoration: none; transition: border-color 0.25s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sibling:hover { border-color: var(--accent); transform: translateY(-2px); }
+.sibling img { width: 46px; height: 46px; border-radius: 11px; flex: none; }
+.sibling strong { display: block; font-weight: 590; }
+.sibling span { color: var(--ink-soft); font-size: 0.9375rem; }
+
+/* --- Footer -------------------------------------------------------------- */
+
+footer { padding-block: clamp(2.5rem, 6vw, 4rem); font-size: 0.875rem; color: var(--ink-faint); border-top: 1px solid var(--rule); }
+.footer-row { display: flex; flex-wrap: wrap; gap: 0.6rem 1.75rem; justify-content: space-between; align-items: center; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; }
+footer a { text-decoration: none; }
+footer a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 0.3em; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+/* --- Motion -------------------------------------------------------------- */
+
+.rise { opacity: 0; transform: translateY(16px); transition: opacity .85s cubic-bezier(.16,1,.3,1), transform .85s cubic-bezier(.16,1,.3,1); }
+.rise.seen { opacity: 1; transform: none; }
+.hero .rise { transition-delay: calc(var(--i, 0) * 70ms); }
+
+/* The stack settles: the two slabs slide out from under the panel on arrival. */
+.stage::before, .stage::after { transition: transform .9s cubic-bezier(.16,1,.3,1), opacity .9s ease; }
+.stage:not(.seen)::before { transform: translateY(26px); opacity: 0; }
+.stage:not(.seen)::after { transform: translateY(38px); opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rise { opacity: 1; transform: none; transition: none; }
+  .stage::before, .stage::after { transition: none; }
+  .stage:not(.seen)::before, .stage:not(.seen)::after { transform: none; opacity: .55; }
+  .btn, .sibling { transition: none; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap langbar">
+  <label class="langpick">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true">
+      <circle cx="8" cy="8" r="6.4"/><path d="M1.6 8h12.8M8 1.6a11 11 0 0 1 0 12.8 11 11 0 0 1 0-12.8"/>
+    </svg>
+    <select id="lang" aria-label="Language">
+      <option value="system">System</option>
+      <option value="en">English</option>
+      <option value="zh-Hans">简体中文</option>
+      <option value="zh-Hant">繁體中文</option>
+      <option value="ja">日本語</option>
+      <option value="ko">한국어</option>
+      <option value="de">Deutsch</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+    </select>
+  </label>
+</div>
+
+<main>
+  <header class="hero wrap">
+    <p class="eyebrow rise" style="--i:0">
+      <img src="icon-256.png" width="30" height="30" alt="" decoding="async">
+      <span data-i18n="brand">ClipStack for macOS</span>
+    </p>
+
+    <h1 class="rise" style="--i:1" data-i18n-html="h1">Everything you copied is still there. <span>⇧⌘V</span></h1>
+
+    <p class="lede rise" style="--i:2" data-i18n="lede">
+      macOS remembers exactly one thing you copied. ClipStack keeps the rest — text, images and
+      files — in a searchable panel that opens over whatever you are doing, previews the full
+      contents, and puts the one you want back on the clipboard with a single keystroke.
+    </p>
+
+    <div class="actions rise" style="--i:3">
+      <a class="btn" href="https://github.com/iamzifei/clipstack/releases/latest">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 1a.75.75 0 0 1 .75.75v7.19l2.22-2.22a.75.75 0 1 1 1.06 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0l-3.5-3.5a.75.75 0 0 1 1.06-1.06l2.22 2.22V1.75A.75.75 0 0 1 8 1Z"/>
+          <path d="M2.75 10.5a.75.75 0 0 1 .75.75v1.25c0 .14.11.25.25.25h8.5a.25.25 0 0 0 .25-.25V11.25a.75.75 0 0 1 1.5 0v1.25c0 .97-.78 1.75-1.75 1.75h-8.5A1.75 1.75 0 0 1 2 12.5v-1.25a.75.75 0 0 1 .75-.75Z"/>
+        </svg>
+        <span data-i18n="cta.download">Download for macOS</span>
+      </a>
+      <a class="btn btn-outline" href="https://ko-fi.com/iamzifei" rel="noopener">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M2.4 3h8.2c.3 0 .5.2.5.5V5h1.3A2.6 2.6 0 0 1 15 7.6a2.6 2.6 0 0 1-2.6 2.6h-1.4a3.6 3.6 0 0 1-3.5 2.7H5.4A3.6 3.6 0 0 1 1.9 9.3V3.5c0-.3.2-.5.5-.5Zm8.7 3.3v2.6h1.3a1.3 1.3 0 0 0 0-2.6h-1.3Z"/>
+        </svg>
+        <span data-i18n="cta.kofi">Support on Ko-fi</span>
+      </a>
+      <a class="btn btn-quiet" href="https://github.com/iamzifei/clipstack" data-i18n="cta.source">Source on GitHub</a>
+    </div>
+
+    <p class="fineprint rise" style="--i:4" data-i18n="fineprint">
+      macOS 14 or later · Apple silicon · MIT licensed · about 1000 lines of Swift, no dependencies
+    </p>
+
+    <div class="stage rise" style="--i:5">
+      <div class="panel-frame">
+        <video src="hero.mp4" poster="hero-poster.jpg" width="820" height="500"
+               autoplay muted loop playsinline preload="metadata"
+               data-i18n-aria="video.alt"
+               aria-label="The ClipStack panel: searching the history, arrowing through text, an image and files with a full preview, pinning an entry, and copying one back with Return."></video>
+      </div>
+      <p class="caption" data-i18n="caption">Real history, invented on purpose: every entry in this recording is demo data.</p>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <div class="section-head rise">
+      <h2 data-i18n="s1.h2">A clipboard that keeps up with you.</h2>
+      <p data-i18n="s1.p">Copy three things in a row and all three are waiting — not just the last one.</p>
+    </div>
+
+    <div class="features">
+      <article class="feature rise">
+        <div>
+          <h3 data-i18n="f1.h3">Search it, do not scroll it</h3>
+          <p data-i18n="f1.p">
+            Start typing and the list narrows as you go, Chinese input included. Arrow keys move
+            the selection, ⌘1–9 grabs one of the first nine outright, and Return copies the
+            selected entry and closes the panel.
+          </p>
+        </div>
+        <div class="feature-art"><img src="shot-search.webp" width="1100" height="670" loading="lazy" decoding="async" data-i18n-alt="f1.alt" alt="The ClipStack panel with a search term typed, narrowed to a single matching entry"></div>
+      </article>
+
+      <article class="feature rise">
+        <div>
+          <h3 data-i18n="f2.h3">Text, images and files</h3>
+          <p data-i18n="f2.p">
+            Rich text keeps its formatting, images stay images, and files copied in Finder come
+            back as files. The preview pane on the right shows the whole thing before you commit
+            to it — not a truncated line.
+          </p>
+        </div>
+        <div class="feature-art"><img src="shot-image.webp" width="1100" height="670" loading="lazy" decoding="async" data-i18n-alt="f2.alt" alt="An image entry selected in ClipStack, with the picture shown full size in the preview pane"></div>
+      </article>
+
+      <article class="feature rise">
+        <div>
+          <h3 data-i18n="f3.h3">Keep it on screen while you work</h3>
+          <p data-i18n="f3.p">
+            ⌘T pins the panel above every window and stops it closing when it loses focus or after
+            a copy. It becomes a reference card you read from while typing somewhere else — the
+            state survives a restart.
+          </p>
+        </div>
+        <div class="feature-art"><img src="shot-ontop.webp" width="1100" height="670" loading="lazy" decoding="async" data-i18n-alt="f3.alt" alt="The ClipStack panel in keep-on-top mode, with the mode highlighted in the footer"></div>
+      </article>
+
+      <article class="feature rise">
+        <div>
+          <h3 data-i18n="f4.h3">The ones you keep reusing, pinned</h3>
+          <p data-i18n="f4.p">
+            ⌘P pins an entry to the top of the list and out of the way of the 300-entry limit, so
+            the snippet you paste ten times a day never falls off the end.
+          </p>
+        </div>
+        <div class="feature-art"><img src="shot-panel.webp" width="1100" height="670" loading="lazy" decoding="async" data-i18n-alt="f4.alt" alt="The ClipStack panel with pinned entries at the top of the list"></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="section-head rise">
+      <h2 data-i18n="s2.h2">Every key, and where it goes.</h2>
+    </div>
+
+    <ul class="shortcuts rise">
+      <li><span class="keys"><span class="key">⇧</span><span class="key">⌘</span><span class="key">V</span></span><span class="desc" data-i18n="k1">Open the panel over whatever app you are in</span></li>
+      <li><span class="keys"><span class="key">↩</span></span><span class="desc" data-i18n="k2">Copy the selected entry and close</span></li>
+      <li><span class="keys"><span class="key">⌘</span><span class="key">1–9</span></span><span class="desc" data-i18n="k3">Copy one of the first nine directly</span></li>
+      <li><span class="keys"><span class="key">⌘</span><span class="key">P</span></span><span class="desc" data-i18n="k4">Pin or unpin the selected entry</span></li>
+      <li><span class="keys"><span class="key">⌘</span><span class="key">T</span></span><span class="desc" data-i18n="k5">Keep the panel on top and open</span></li>
+      <li><span class="keys"><span class="key">⌘</span><span class="key">⌫</span></span><span class="desc" data-i18n="k6">Delete the selected entry</span></li>
+      <li><span class="keys"><span class="key">⇧</span><span class="key">⌘</span><span class="key">⌫</span></span><span class="desc" data-i18n="k7">Clear the whole history, after a confirmation</span></li>
+      <li><span class="keys"><span class="key">⌘</span><span class="key">,</span></span><span class="desc" data-i18n="k8">Settings — launch at login, and all three shortcuts are re-recordable</span></li>
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <div class="note-card rise">
+      <h3 data-i18n="privacy.h3">It stays on your Mac</h3>
+      <p data-i18n="privacy.p1">
+        History lives in a plain folder in your Library and goes nowhere else. There is no account,
+        no sync, no analytics and no network call except the update check.
+      </p>
+      <p data-i18n="privacy.p2">
+        Anything a password manager marks as concealed or transient is never recorded, following the
+        nspasteboard.org convention — so the password you just copied does not end up in a list.
+      </p>
+    </div>
+  </section>
+
+  <section class="siblings wrap">
+    <p class="sibling-label rise" data-i18n="more.label">Also from the same menu bar</p>
+    <div class="sibling-grid rise">
+      <a class="sibling" href="https://audioswitch.dev" rel="noopener">
+        <img src="audioswitch.png" width="46" height="46" alt="" loading="lazy" decoding="async">
+        <span><strong data-i18n="as.name">AudioSwitch</strong><span data-i18n="as.desc">Every audio input and output in one panel, with a live microphone meter.</span></span>
+      </a>
+      <a class="sibling" href="https://getcandela.app" rel="noopener">
+        <img src="candela.png" width="46" height="46" alt="" loading="lazy" decoding="async">
+        <span><strong data-i18n="cd.name">Candela</strong><span data-i18n="cd.desc">Every display control macOS hides — DDC brightness, sharp HiDPI, brightness keys.</span></span>
+      </a>
+    </div>
+  </section>
+
+  <footer class="wrap">
+    <div class="footer-row">
+      <p data-i18n-html="footer.made">MIT licensed. Made by <a href="https://github.com/iamzifei">James</a>.</p>
+      <nav class="footer-links">
+        <a href="https://github.com/iamzifei/clipstack">GitHub</a>
+        <a href="https://github.com/iamzifei/clipstack/blob/main/README.md" data-i18n="footer.docs">Documentation</a>
+        <a href="https://github.com/iamzifei/clipstack/issues" data-i18n="footer.issue">Report an issue</a>
+        <a href="https://ko-fi.com/iamzifei" data-i18n="footer.kofi">Buy me a coffee</a>
+      </nav>
+    </div>
+  </footer>
+</main>
+
+<script>
+/* Language: English lives in the markup and is snapshotted at load, so it is
+   never duplicated in the dictionary; the others swap in place. */
+(function () {
+  var STRINGS = {
+      "zh-Hans": {
+          "html.lang": "zh-Hans",
+          "doc.title": "ClipStack —— macOS 菜单栏里的剪贴板历史",
+          "doc.desc": "原生 macOS 菜单栏剪贴板管理器。⇧⌘V 呼出你复制过的一切 —— 文本、图片、文件 —— 可搜索、有完整预览，一个回车就复制回去。Apple 芯片原生、零依赖、MIT 开源。",
+          "brand": "ClipStack for macOS",
+          "h1": "你复制过的东西，都还在。<span>⇧⌘V</span>",
+          "lede": "macOS 只记得你复制的最后一件东西。ClipStack 把其余的都留着 —— 文本、图片、文件 —— 放进一个可搜索的面板，浮在你正在做的事情上面，右侧显示完整内容，一个键就把想要的那条放回剪贴板。",
+          "cta.download": "下载 macOS 版",
+          "cta.kofi": "在 Ko-fi 支持我",
+          "cta.source": "在 GitHub 上看源码",
+          "fineprint": "macOS 14 或更高 · Apple 芯片 · MIT 许可 · 约 1000 行 Swift，零依赖",
+          "caption": "录屏里的每一条历史都是专门构造的演示数据，不是真实剪贴板内容。",
+          "video.alt": "ClipStack 面板演示：搜索历史、方向键在文本／图片／文件之间切换并查看完整预览、置顶某一条、回车复制回剪贴板。",
+          "s1.h2": "一个跟得上你的剪贴板。",
+          "s1.p": "连着复制三段，三段都在等你 —— 不是只剩最后一段。",
+          "f1.h3": "用搜索，不用翻",
+          "f1.p": "开始打字，列表就跟着收窄，中文输入法一样管用。方向键移动选择，⌘1–9 直接拿走前九条中的任意一条，回车复制选中项并关闭面板。",
+          "f1.alt": "ClipStack 面板里输入了搜索词，列表收窄到唯一匹配的一条",
+          "f2.h3": "文本、图片和文件",
+          "f2.p": "富文本保留格式，图片仍是图片，在访达里复制的文件贴回去还是文件。右侧预览显示完整内容，而不是被截断的一行。",
+          "f2.alt": "ClipStack 中选中一条图片记录，右侧预览完整显示这张图",
+          "f3.h3": "工作时让它留在屏幕上",
+          "f3.p": "⌘T 把面板钉在所有窗口之上，失焦不关、复制完也不关。它就变成一张对照卡片，你可以一边看一边在别的窗口里打字 —— 这个状态重启后仍然保留。",
+          "f3.alt": "ClipStack 面板处于窗口置顶模式，底部状态栏高亮显示该模式",
+          "f4.h3": "常用的那几条，钉在最上面",
+          "f4.p": "⌘P 把一条置顶到列表最前，并且不占 300 条上限的淘汰位 —— 你一天要贴十次的那段，永远不会被挤掉。",
+          "f4.alt": "ClipStack 面板，置顶的条目排在列表最前面",
+          "s2.h2": "每一个键，和它对应的事。",
+          "k1": "在任何 app 上面呼出面板",
+          "k2": "复制选中项并关闭",
+          "k3": "直接复制前九条中的一条",
+          "k4": "置顶／取消置顶选中项",
+          "k5": "面板保持置顶且不关闭",
+          "k6": "删除选中项",
+          "k7": "清空全部历史（有二次确认）",
+          "k8": "设置 —— 开机自启动，三个全局快捷键都可以重新录制",
+          "privacy.h3": "一切都留在你自己的 Mac 上",
+          "privacy.p1": "历史存在你资源库里的一个普通文件夹里，不会去任何别的地方。没有账号、没有同步、没有统计，除了检查更新不发任何网络请求。",
+          "privacy.p2": "密码管理器标记为「隐藏」或「临时」的内容一律不记录 —— 遵循 nspasteboard.org 的约定，所以你刚复制的密码不会出现在这个列表里。",
+          "more.label": "同一条菜单栏上的另外两个",
+          "as.name": "AudioSwitch",
+          "as.desc": "所有音频输入和输出在同一个面板里，带实时麦克风电平。",
+          "cd.name": "Candela",
+          "cd.desc": "macOS 藏起来的显示器控制 —— DDC 亮度、清晰 HiDPI、亮度键。",
+          "footer.made": "MIT 许可。作者 <a href=\"https://github.com/iamzifei\">James</a>。",
+          "footer.docs": "说明文档",
+          "footer.issue": "反馈问题",
+          "footer.kofi": "请我喝杯咖啡",
+          "lang.system": "跟随系统"
+      },
+      "zh-Hant": {
+          "html.lang": "zh-Hant",
+          "doc.title": "ClipStack —— macOS 選單列裡的剪貼簿歷史",
+          "doc.desc": "原生 macOS 選單列剪貼簿管理器。⇧⌘V 叫出你複製過的一切 —— 文字、圖片、檔案 —— 可搜尋、有完整預覽，一個 Return 就複製回去。Apple 晶片原生、零相依、MIT 開源。",
+          "brand": "ClipStack for macOS",
+          "h1": "你複製過的東西，都還在。<span>⇧⌘V</span>",
+          "lede": "macOS 只記得你複製的最後一樣東西。ClipStack 把其餘的都留著 —— 文字、圖片、檔案 —— 放進一個可搜尋的面板，浮在你正在做的事情上面，右側顯示完整內容，一個鍵就把想要的那條放回剪貼簿。",
+          "cta.download": "下載 macOS 版",
+          "cta.kofi": "在 Ko-fi 支持我",
+          "cta.source": "在 GitHub 上看原始碼",
+          "fineprint": "macOS 14 或以上 · Apple 晶片 · MIT 授權 · 約 1000 行 Swift，零相依",
+          "caption": "錄影裡的每一條歷史都是特地構造的示範資料，不是真實剪貼簿內容。",
+          "video.alt": "ClipStack 面板示範：搜尋歷史、用方向鍵在文字／圖片／檔案之間切換並看完整預覽、釘選某一條、按 Return 複製回剪貼簿。",
+          "s1.h2": "一個跟得上你的剪貼簿。",
+          "s1.p": "連著複製三段，三段都在等你 —— 不是只剩最後一段。",
+          "f1.h3": "用搜尋，不用翻",
+          "f1.p": "開始打字，清單就跟著收窄，中文輸入法一樣好用。方向鍵移動選擇，⌘1–9 直接取走前九條中的任一條，Return 複製選取項並關閉面板。",
+          "f1.alt": "ClipStack 面板裡輸入了搜尋字詞，清單收窄到唯一符合的一條",
+          "f2.h3": "文字、圖片與檔案",
+          "f2.p": "格式文字保留格式，圖片仍是圖片，在 Finder 裡複製的檔案貼回去還是檔案。右側預覽顯示完整內容，而不是被截斷的一行。",
+          "f2.alt": "ClipStack 中選取一條圖片記錄，右側預覽完整顯示這張圖",
+          "f3.h3": "工作時讓它留在畫面上",
+          "f3.p": "⌘T 把面板釘在所有視窗之上，失去焦點不關、複製完也不關。它於是成為一張對照卡片，可以一邊看一邊在別的視窗裡打字 —— 這個狀態重新開機後仍然保留。",
+          "f3.alt": "ClipStack 面板處於視窗置頂模式，底部狀態列高亮顯示該模式",
+          "f4.h3": "常用的那幾條，釘在最上面",
+          "f4.p": "⌘P 把一條釘到清單最前，而且不佔 300 條上限的淘汰名額 —— 你一天要貼十次的那段，永遠不會被擠掉。",
+          "f4.alt": "ClipStack 面板，釘選的項目排在清單最前面",
+          "s2.h2": "每一個鍵，和它對應的事。",
+          "k1": "在任何 App 上面叫出面板",
+          "k2": "複製選取項並關閉",
+          "k3": "直接複製前九條中的一條",
+          "k4": "釘選／取消釘選選取項",
+          "k5": "面板保持置頂且不關閉",
+          "k6": "刪除選取項",
+          "k7": "清空全部歷史（有二次確認）",
+          "k8": "設定 —— 登入時啟動，三個全域快速鍵都可以重新錄製",
+          "privacy.h3": "一切都留在你自己的 Mac 上",
+          "privacy.p1": "歷史存在你資源庫裡的一個普通檔案夾中，不會去任何別的地方。沒有帳號、沒有同步、沒有統計，除了檢查更新不發任何網路請求。",
+          "privacy.p2": "密碼管理器標記為「隱藏」或「暫存」的內容一律不記錄 —— 遵循 nspasteboard.org 的約定，所以你剛複製的密碼不會出現在這份清單裡。",
+          "more.label": "同一條選單列上的另外兩個",
+          "as.name": "AudioSwitch",
+          "as.desc": "所有音訊輸入與輸出都在同一個面板，附即時麥克風電平。",
+          "cd.name": "Candela",
+          "cd.desc": "macOS 藏起來的顯示器控制 —— DDC 亮度、清晰 HiDPI、亮度鍵。",
+          "footer.made": "MIT 授權。作者 <a href=\"https://github.com/iamzifei\">James</a>。",
+          "footer.docs": "說明文件",
+          "footer.issue": "回報問題",
+          "footer.kofi": "請我喝杯咖啡",
+          "lang.system": "跟隨系統"
+      },
+      "ja": {
+          "html.lang": "ja",
+          "doc.title": "ClipStack — macOS のメニューバーに置くクリップボード履歴",
+          "doc.desc": "ネイティブな macOS メニューバー用クリップボードマネージャ。⇧⌘V でコピーしたものすべて（テキスト・画像・ファイル）を検索でき、全文プレビュー付きで、キー 1 つでクリップボードに戻せます。Apple シリコンネイティブ、依存ゼロ、MIT ライセンス。",
+          "brand": "ClipStack for macOS",
+          "h1": "コピーしたものは、まだ残っています。<span>⇧⌘V</span>",
+          "lede": "macOS が覚えているのは最後にコピーした 1 つだけ。ClipStack は残りを保持します。テキストも画像もファイルも、検索できるパネルに入れて、作業中の画面の上に開き、中身を丸ごと表示し、選んだものをキー 1 つでクリップボードに戻します。",
+          "cta.download": "macOS 版をダウンロード",
+          "cta.kofi": "Ko-fi で支援する",
+          "cta.source": "GitHub でソースを見る",
+          "fineprint": "macOS 14 以降 · Apple シリコン · MIT ライセンス · 約 1000 行の Swift、依存ゼロ",
+          "caption": "この録画に映る履歴はすべて、この撮影のために作った架空のデータです。",
+          "video.alt": "ClipStack のパネル操作: 履歴の検索、テキスト・画像・ファイルを矢印キーで切り替えながら全文プレビュー、項目のピン留め、Return でクリップボードに戻す。",
+          "s1.h2": "手の速さに追いつくクリップボード。",
+          "s1.p": "続けて 3 つコピーすれば、3 つとも残っています。最後の 1 つだけ、ではなく。",
+          "f1.h3": "スクロールではなく検索で",
+          "f1.p": "入力を始めるとリストが絞り込まれます。日本語入力でも同じです。矢印キーで選択を移動し、⌘1–9 で上位 9 件を直接取得、Return で選択中の項目をコピーしてパネルを閉じます。",
+          "f1.alt": "検索語を入力した ClipStack のパネル。一致する 1 件だけに絞り込まれている",
+          "f2.h3": "テキストも画像もファイルも",
+          "f2.p": "リッチテキストは書式を保ち、画像は画像のまま、Finder でコピーしたファイルはファイルとして戻ります。右側のプレビューは切り詰めた 1 行ではなく、中身を丸ごと見せます。",
+          "f2.alt": "ClipStack で画像の項目を選択し、右側のプレビューに画像が原寸で表示されている",
+          "f3.h3": "作業中も画面に出したままに",
+          "f3.p": "⌘T でパネルをすべてのウインドウの上に固定し、フォーカスを失っても、コピーしても閉じないようにします。別のウインドウで入力しながら参照できるカードになり、この状態は再起動後も保たれます。",
+          "f3.alt": "最前面固定モードの ClipStack パネル。フッターでそのモードが強調表示されている",
+          "f4.h3": "何度も使うものはピン留め",
+          "f4.p": "⌘P で項目をリストの先頭に固定します。300 件の上限からも外れるので、1 日に 10 回貼り付けるスニペットが押し出されることはありません。",
+          "f4.alt": "ピン留めされた項目がリストの先頭に並んだ ClipStack のパネル",
+          "s2.h2": "キーと、その役割。",
+          "k1": "どのアプリの上でもパネルを開く",
+          "k2": "選択中の項目をコピーして閉じる",
+          "k3": "上位 9 件のいずれかを直接コピー",
+          "k4": "選択中の項目をピン留め／解除",
+          "k5": "パネルを最前面に固定したままにする",
+          "k6": "選択中の項目を削除",
+          "k7": "履歴をすべて消去（確認あり）",
+          "k8": "設定 — ログイン時に起動、3 つのショートカットはすべて再登録可能",
+          "privacy.h3": "すべてあなたの Mac の中に",
+          "privacy.p1": "履歴はライブラリ内の通常のフォルダに保存され、そこから外には出ません。アカウントも同期も解析もなく、更新確認以外の通信は行いません。",
+          "privacy.p2": "パスワードマネージャが「秘匿」「一時的」と印を付けた内容は記録しません。nspasteboard.org の慣行に従っているので、いまコピーしたパスワードが一覧に残ることはありません。",
+          "more.label": "同じメニューバーのもう 2 つ",
+          "as.name": "AudioSwitch",
+          "as.desc": "すべてのオーディオ入力と出力を 1 つのパネルに。リアルタイムのマイクレベル付き。",
+          "cd.name": "Candela",
+          "cd.desc": "macOS が隠しているディスプレイ設定 — DDC 輝度、くっきり HiDPI、輝度キー。",
+          "footer.made": "MIT ライセンス。制作 <a href=\"https://github.com/iamzifei\">James</a>。",
+          "footer.docs": "ドキュメント",
+          "footer.issue": "問題を報告",
+          "footer.kofi": "コーヒーを奢る",
+          "lang.system": "システムに合わせる"
+      },
+      "ko": {
+          "html.lang": "ko",
+          "doc.title": "ClipStack — macOS 메뉴 막대의 클립보드 기록",
+          "doc.desc": "네이티브 macOS 메뉴 막대 클립보드 관리자. ⇧⌘V로 복사한 모든 것(텍스트·이미지·파일)을 검색하고, 전체 미리보기를 보고, 키 하나로 다시 클립보드에 넣습니다. Apple 실리콘 네이티브, 의존성 없음, MIT.",
+          "brand": "ClipStack for macOS",
+          "h1": "복사한 것들은 아직 거기 있습니다. <span>⇧⌘V</span>",
+          "lede": "macOS는 마지막으로 복사한 하나만 기억합니다. ClipStack은 나머지를 남겨 둡니다 — 텍스트, 이미지, 파일을 검색 가능한 패널에 담아 지금 하던 작업 위에 띄우고, 내용을 통째로 보여 주고, 원하는 항목을 키 한 번으로 클립보드에 되돌립니다.",
+          "cta.download": "macOS용 다운로드",
+          "cta.kofi": "Ko-fi에서 후원하기",
+          "cta.source": "GitHub에서 소스 보기",
+          "fineprint": "macOS 14 이상 · Apple 실리콘 · MIT 라이선스 · 약 1000줄의 Swift, 의존성 없음",
+          "caption": "이 녹화에 보이는 기록은 모두 촬영을 위해 만든 가상의 데이터입니다.",
+          "video.alt": "ClipStack 패널 시연: 기록 검색, 화살표 키로 텍스트·이미지·파일을 오가며 전체 미리보기 확인, 항목 고정, Return으로 클립보드에 다시 복사.",
+          "s1.h2": "손 빠르기를 따라오는 클립보드.",
+          "s1.p": "연달아 세 개를 복사하면 세 개가 모두 기다리고 있습니다 — 마지막 하나만이 아니라.",
+          "f1.h3": "스크롤 대신 검색",
+          "f1.p": "입력을 시작하면 목록이 좁혀집니다. 한글·중국어 입력도 마찬가지입니다. 화살표 키로 선택을 옮기고, ⌘1–9로 상위 9개를 바로 가져오고, Return으로 선택한 항목을 복사한 뒤 패널이 닫힙니다.",
+          "f1.alt": "검색어를 입력해 일치하는 항목 하나로 좁혀진 ClipStack 패널",
+          "f2.h3": "텍스트, 이미지, 파일",
+          "f2.p": "서식 있는 텍스트는 서식을 유지하고, 이미지는 이미지로, Finder에서 복사한 파일은 파일로 돌아갑니다. 오른쪽 미리보기는 잘린 한 줄이 아니라 전체 내용을 보여 줍니다.",
+          "f2.alt": "ClipStack에서 이미지 항목을 선택해 오른쪽 미리보기에 그림이 전체 크기로 표시된 모습",
+          "f3.h3": "작업하는 동안 화면에 두기",
+          "f3.p": "⌘T는 패널을 모든 창 위에 고정하고, 포커스를 잃거나 복사한 뒤에도 닫히지 않게 합니다. 다른 창에서 타이핑하며 참고하는 카드가 되고, 이 상태는 재시동 후에도 유지됩니다.",
+          "f3.alt": "항상 위 모드의 ClipStack 패널. 하단 바에 해당 모드가 강조되어 있습니다",
+          "f4.h3": "자주 쓰는 것은 고정",
+          "f4.p": "⌘P는 항목을 목록 맨 위에 고정하고 300개 제한에서도 빼 줍니다. 하루에 열 번 붙여 넣는 조각이 밀려나는 일이 없습니다.",
+          "f4.alt": "고정된 항목이 목록 맨 위에 있는 ClipStack 패널",
+          "s2.h2": "키 하나하나가 하는 일.",
+          "k1": "어떤 앱 위에서든 패널 열기",
+          "k2": "선택한 항목을 복사하고 닫기",
+          "k3": "상위 9개 중 하나를 바로 복사",
+          "k4": "선택한 항목 고정 / 고정 해제",
+          "k5": "패널을 항상 위에 열어 두기",
+          "k6": "선택한 항목 삭제",
+          "k7": "기록 전체 삭제 (확인 후)",
+          "k8": "설정 — 로그인 시 실행, 세 단축키 모두 다시 지정 가능",
+          "privacy.h3": "전부 당신의 Mac 안에",
+          "privacy.p1": "기록은 라이브러리 안의 평범한 폴더에 저장되고 그 밖으로 나가지 않습니다. 계정도, 동기화도, 분석도 없고 업데이트 확인 외에는 어떤 통신도 하지 않습니다.",
+          "privacy.p2": "비밀번호 관리자가 감춤 또는 임시로 표시한 내용은 기록하지 않습니다. nspasteboard.org 관례를 따르므로 방금 복사한 비밀번호가 목록에 남지 않습니다.",
+          "more.label": "같은 메뉴 막대의 다른 두 앱",
+          "as.name": "AudioSwitch",
+          "as.desc": "모든 오디오 입력과 출력을 한 패널에, 실시간 마이크 레벨과 함께.",
+          "cd.name": "Candela",
+          "cd.desc": "macOS가 숨긴 디스플레이 제어 — DDC 밝기, 또렷한 HiDPI, 밝기 키.",
+          "footer.made": "MIT 라이선스. 만든 사람 <a href=\"https://github.com/iamzifei\">James</a>.",
+          "footer.docs": "문서",
+          "footer.issue": "문제 신고",
+          "footer.kofi": "커피 사주기",
+          "lang.system": "시스템 설정 따르기"
+      },
+      "de": {
+          "html.lang": "de",
+          "doc.title": "ClipStack — Zwischenablage-Verlauf in der macOS-Menüleiste",
+          "doc.desc": "Ein nativer Zwischenablage-Manager für die macOS-Menüleiste. ⇧⌘V holt alles Kopierte zurück — Text, Bilder und Dateien — durchsuchbar, mit voller Vorschau und einem Tastendruck zurück in die Zwischenablage. Apple Silicon, keine Abhängigkeiten, MIT.",
+          "brand": "ClipStack für macOS",
+          "h1": "Alles Kopierte ist noch da. <span>⇧⌘V</span>",
+          "lede": "macOS merkt sich genau eine kopierte Sache. ClipStack behält den Rest — Text, Bilder und Dateien — in einem durchsuchbaren Panel, das sich über Ihre Arbeit legt, den vollen Inhalt zeigt und das Gewünschte mit einem Tastendruck zurück in die Zwischenablage legt.",
+          "cta.download": "Für macOS laden",
+          "cta.kofi": "Auf Ko-fi unterstützen",
+          "cta.source": "Quellcode auf GitHub",
+          "fineprint": "macOS 14 oder neuer · Apple Silicon · MIT-Lizenz · rund 1000 Zeilen Swift, keine Abhängigkeiten",
+          "caption": "Echter Verlauf, absichtlich erfunden: jeder Eintrag in dieser Aufnahme ist Demomaterial.",
+          "video.alt": "Das ClipStack-Panel: den Verlauf durchsuchen, mit den Pfeiltasten durch Text, ein Bild und Dateien gehen, jeweils mit voller Vorschau, einen Eintrag anheften und ihn mit Return zurückkopieren.",
+          "s1.h2": "Eine Zwischenablage, die mitkommt.",
+          "s1.p": "Drei Dinge hintereinander kopiert, und alle drei warten — nicht nur das letzte.",
+          "f1.h3": "Suchen statt scrollen",
+          "f1.p": "Tippen Sie los, und die Liste wird enger, auch bei chinesischer Eingabe. Pfeiltasten bewegen die Auswahl, ⌘1–9 greift eines der ersten neun direkt, und Return kopiert den ausgewählten Eintrag und schließt das Panel.",
+          "f1.alt": "Das ClipStack-Panel mit eingetippter Suche, eingegrenzt auf einen einzigen Treffer",
+          "f2.h3": "Text, Bilder und Dateien",
+          "f2.p": "Formatierter Text behält seine Formatierung, Bilder bleiben Bilder, und im Finder kopierte Dateien kommen als Dateien zurück. Die Vorschau rechts zeigt das Ganze, nicht eine abgeschnittene Zeile.",
+          "f2.alt": "Ein ausgewählter Bildeintrag in ClipStack, das Bild in voller Größe in der Vorschau",
+          "f3.h3": "Beim Arbeiten sichtbar lassen",
+          "f3.p": "⌘T heftet das Panel über alle Fenster und verhindert, dass es beim Fokuswechsel oder nach dem Kopieren zugeht. Es wird zur Karteikarte, aus der Sie ablesen, während Sie anderswo tippen — der Zustand übersteht einen Neustart.",
+          "f3.alt": "Das ClipStack-Panel im Immer-oben-Modus, der Modus in der Fußzeile hervorgehoben",
+          "f4.h3": "Was Sie ständig brauchen, angeheftet",
+          "f4.p": "⌘P heftet einen Eintrag an den Anfang der Liste und nimmt ihn aus dem 300er-Limit heraus. Der Baustein, den Sie zehnmal am Tag einfügen, fällt so nie hinten heraus.",
+          "f4.alt": "Das ClipStack-Panel mit angehefteten Einträgen am Anfang der Liste",
+          "s2.h2": "Jede Taste und wohin sie führt.",
+          "k1": "Das Panel über jeder App öffnen",
+          "k2": "Ausgewählten Eintrag kopieren und schließen",
+          "k3": "Eines der ersten neun direkt kopieren",
+          "k4": "Ausgewählten Eintrag anheften oder lösen",
+          "k5": "Panel oben und geöffnet halten",
+          "k6": "Ausgewählten Eintrag löschen",
+          "k7": "Ganzen Verlauf löschen, nach Rückfrage",
+          "k8": "Einstellungen — Start bei Anmeldung, alle drei Kurzbefehle neu belegbar",
+          "privacy.h3": "Es bleibt auf Ihrem Mac",
+          "privacy.p1": "Der Verlauf liegt in einem gewöhnlichen Ordner in Ihrer Library und geht nirgendwo sonst hin. Kein Konto, keine Synchronisierung, keine Analytik und kein Netzwerkzugriff außer der Update-Prüfung.",
+          "privacy.p2": "Was ein Passwortmanager als verborgen oder flüchtig markiert, wird nie aufgezeichnet — nach der Konvention von nspasteboard.org. Das eben kopierte Passwort landet also nicht in einer Liste.",
+          "more.label": "Auch aus derselben Menüleiste",
+          "as.name": "AudioSwitch",
+          "as.desc": "Alle Audioein- und -ausgänge in einem Panel, mit Live-Mikrofonanzeige.",
+          "cd.name": "Candela",
+          "cd.desc": "Alle Display-Regler, die macOS versteckt — DDC-Helligkeit, scharfes HiDPI, Helligkeitstasten.",
+          "footer.made": "MIT-Lizenz. Gemacht von <a href=\"https://github.com/iamzifei\">James</a>.",
+          "footer.docs": "Dokumentation",
+          "footer.issue": "Problem melden",
+          "footer.kofi": "Einen Kaffee spendieren",
+          "lang.system": "System"
+      },
+      "fr": {
+          "html.lang": "fr",
+          "doc.title": "ClipStack — l'historique du presse-papiers dans la barre des menus macOS",
+          "doc.desc": "Un gestionnaire de presse-papiers natif pour la barre des menus macOS. ⇧⌘V rappelle tout ce que vous avez copié — texte, images et fichiers — avec recherche, aperçu complet et un raccourci pour le remettre dans le presse-papiers. Apple silicon, sans dépendances, MIT.",
+          "brand": "ClipStack pour macOS",
+          "h1": "Tout ce que vous avez copié est toujours là. <span>⇧⌘V</span>",
+          "lede": "macOS ne retient qu'une seule chose copiée. ClipStack garde le reste — texte, images et fichiers — dans un panneau consultable qui s'ouvre par-dessus votre travail, affiche le contenu en entier et remet l'élément voulu dans le presse-papiers d'une seule touche.",
+          "cta.download": "Télécharger pour macOS",
+          "cta.kofi": "Soutenir sur Ko-fi",
+          "cta.source": "Code source sur GitHub",
+          "fineprint": "macOS 14 ou ultérieur · Apple silicon · licence MIT · environ 1000 lignes de Swift, sans dépendances",
+          "caption": "Un historique réel, inventé exprès : chaque entrée de cet enregistrement est une donnée de démonstration.",
+          "video.alt": "Le panneau ClipStack : recherche dans l'historique, parcours au clavier du texte, d'une image et de fichiers avec aperçu complet, épinglage d'une entrée et copie par la touche Retour.",
+          "s1.h2": "Un presse-papiers qui vous suit.",
+          "s1.p": "Copiez trois choses de suite : les trois vous attendent, pas seulement la dernière.",
+          "f1.h3": "Chercher plutôt que faire défiler",
+          "f1.p": "Commencez à taper et la liste se resserre, saisie chinoise comprise. Les flèches déplacent la sélection, ⌘1–9 prend directement l'un des neuf premiers, et Retour copie l'élément sélectionné puis ferme le panneau.",
+          "f1.alt": "Le panneau ClipStack avec une recherche saisie, réduit à une seule entrée correspondante",
+          "f2.h3": "Texte, images et fichiers",
+          "f2.p": "Le texte enrichi garde sa mise en forme, les images restent des images, et les fichiers copiés dans le Finder reviennent comme des fichiers. L'aperçu de droite montre l'ensemble, pas une ligne tronquée.",
+          "f2.alt": "Une entrée image sélectionnée dans ClipStack, l'image affichée en entier dans l'aperçu",
+          "f3.h3": "Le garder à l'écran pendant que vous travaillez",
+          "f3.p": "⌘T épingle le panneau au-dessus de toutes les fenêtres et l'empêche de se fermer quand il perd le focus ou après une copie. Il devient une fiche que vous lisez en tapant ailleurs, et l'état survit à un redémarrage.",
+          "f3.alt": "Le panneau ClipStack en mode toujours visible, le mode mis en évidence dans le pied de page",
+          "f4.h3": "Ce qui resserre, épinglé",
+          "f4.p": "⌘P épingle une entrée en haut de la liste et la sort de la limite de 300 : le fragment que vous collez dix fois par jour ne tombe jamais du bout de la liste.",
+          "f4.alt": "Le panneau ClipStack avec les entrées épinglées en haut de la liste",
+          "s2.h2": "Chaque touche, et ce qu'elle fait.",
+          "k1": "Ouvrir le panneau par-dessus n'importe quelle app",
+          "k2": "Copier l'élément sélectionné et fermer",
+          "k3": "Copier directement l'un des neuf premiers",
+          "k4": "Épingler ou désépingler l'élément sélectionné",
+          "k5": "Garder le panneau au premier plan et ouvert",
+          "k6": "Supprimer l'élément sélectionné",
+          "k7": "Effacer tout l'historique, après confirmation",
+          "k8": "Réglages — ouverture à la session, et les trois raccourcis sont réenregistrables",
+          "privacy.h3": "Tout reste sur votre Mac",
+          "privacy.p1": "L'historique tient dans un dossier ordinaire de votre bibliothèque et ne va nulle part ailleurs. Pas de compte, pas de synchronisation, pas d'analytique et aucun appel réseau en dehors de la vérification des mises à jour.",
+          "privacy.p2": "Ce qu'un gestionnaire de mots de passe marque comme masqué ou transitoire n'est jamais enregistré, suivant la convention nspasteboard.org : le mot de passe que vous venez de copier ne se retrouve pas dans une liste.",
+          "more.label": "Également depuis la même barre des menus",
+          "as.name": "AudioSwitch",
+          "as.desc": "Toutes les entrées et sorties audio dans un panneau, avec un indicateur de micro en direct.",
+          "cd.name": "Candela",
+          "cd.desc": "Tous les réglages d'écran que macOS cache — luminosité DDC, HiDPI net, touches de luminosité.",
+          "footer.made": "Sous licence MIT. Réalisé par <a href=\"https://github.com/iamzifei\">James</a>.",
+          "footer.docs": "Documentation",
+          "footer.issue": "Signaler un problème",
+          "footer.kofi": "Offrir un café",
+          "lang.system": "Système"
+      },
+      "es": {
+          "html.lang": "es",
+          "doc.title": "ClipStack — el historial del portapapeles en la barra de menús de macOS",
+          "doc.desc": "Un gestor de portapapeles nativo para la barra de menús de macOS. ⇧⌘V recupera todo lo que has copiado —texto, imágenes y archivos— con búsqueda, vista previa completa y una tecla para devolverlo al portapapeles. Apple silicon, sin dependencias, MIT.",
+          "brand": "ClipStack para macOS",
+          "h1": "Todo lo que copiaste sigue ahí. <span>⇧⌘V</span>",
+          "lede": "macOS recuerda exactamente una cosa copiada. ClipStack conserva el resto —texto, imágenes y archivos— en un panel con búsqueda que se abre sobre lo que estés haciendo, muestra el contenido entero y devuelve al portapapeles el que quieras con una sola tecla.",
+          "cta.download": "Descargar para macOS",
+          "cta.kofi": "Apoyar en Ko-fi",
+          "cta.source": "Código en GitHub",
+          "fineprint": "macOS 14 o posterior · Apple silicon · licencia MIT · unas 1000 líneas de Swift, sin dependencias",
+          "caption": "Historial real, inventado a propósito: cada entrada de esta grabación es material de demostración.",
+          "video.alt": "El panel de ClipStack: buscar en el historial, recorrer con las flechas texto, una imagen y archivos con vista previa completa, fijar una entrada y copiarla de vuelta con Retorno.",
+          "s1.h2": "Un portapapeles que te sigue el ritmo.",
+          "s1.p": "Copia tres cosas seguidas y las tres te esperan, no solo la última.",
+          "f1.h3": "Buscar en vez de desplazarte",
+          "f1.p": "Empieza a escribir y la lista se estrecha, también con entrada en chino. Las flechas mueven la selección, ⌘1–9 toma directamente una de las nueve primeras y Retorno copia la entrada seleccionada y cierra el panel.",
+          "f1.alt": "El panel de ClipStack con un término de búsqueda escrito, reducido a una única coincidencia",
+          "f2.h3": "Texto, imágenes y archivos",
+          "f2.p": "El texto con formato lo conserva, las imágenes siguen siendo imágenes y los archivos copiados en el Finder vuelven como archivos. La vista previa de la derecha enseña el contenido entero, no una línea recortada.",
+          "f2.alt": "Una entrada de imagen seleccionada en ClipStack, con la imagen a tamaño completo en la vista previa",
+          "f3.h3": "Déjalo a la vista mientras trabajas",
+          "f3.p": "⌘T fija el panel por encima de todas las ventanas y evita que se cierre al perder el foco o después de copiar. Se convierte en una ficha de consulta mientras escribes en otro sitio, y el estado sobrevive a un reinicio.",
+          "f3.alt": "El panel de ClipStack en modo siempre visible, con el modo resaltado en el pie",
+          "f4.h3": "Lo que reutilizas, fijado",
+          "f4.p": "⌘P fija una entrada al principio de la lista y la saca del límite de 300, así el fragmento que pegas diez veces al día nunca se cae por el final.",
+          "f4.alt": "El panel de ClipStack con las entradas fijadas al principio de la lista",
+          "s2.h2": "Cada tecla y a dónde lleva.",
+          "k1": "Abrir el panel sobre cualquier app",
+          "k2": "Copiar la entrada seleccionada y cerrar",
+          "k3": "Copiar directamente una de las nueve primeras",
+          "k4": "Fijar o soltar la entrada seleccionada",
+          "k5": "Mantener el panel arriba y abierto",
+          "k6": "Eliminar la entrada seleccionada",
+          "k7": "Borrar todo el historial, tras confirmar",
+          "k8": "Ajustes — abrir al iniciar sesión, y los tres atajos se pueden volver a grabar",
+          "privacy.h3": "Se queda en tu Mac",
+          "privacy.p1": "El historial vive en una carpeta normal de tu biblioteca y no va a ningún otro sitio. Sin cuenta, sin sincronización, sin analítica y sin más conexiones que la comprobación de actualizaciones.",
+          "privacy.p2": "Lo que un gestor de contraseñas marca como oculto o transitorio no se registra nunca, siguiendo la convención de nspasteboard.org: la contraseña que acabas de copiar no acaba en una lista.",
+          "more.label": "También desde la misma barra de menús",
+          "as.name": "AudioSwitch",
+          "as.desc": "Todas las entradas y salidas de audio en un panel, con medidor de micrófono en vivo.",
+          "cd.name": "Candela",
+          "cd.desc": "Los controles de pantalla que macOS esconde — brillo DDC, HiDPI nítido, teclas de brillo.",
+          "footer.made": "Licencia MIT. Hecho por <a href=\"https://github.com/iamzifei\">James</a>.",
+          "footer.docs": "Documentación",
+          "footer.issue": "Informar de un problema",
+          "footer.kofi": "Invítame a un café",
+          "lang.system": "Sistema"
+      }
+  };
+
+  var SIMPLE = ['en', 'ja', 'ko', 'de', 'fr', 'es'];
+  var select = document.getElementById('lang');
+  var english = {};
+  var titleEl = document.querySelector('title');
+  var descEl = document.querySelector('meta[name="description"]');
+
+  english['doc.title'] = titleEl.textContent;
+  english['doc.desc'] = descEl.getAttribute('content');
+  english['html.lang'] = 'en';
+  english['lang.system'] = 'System';
+
+  function each(attr, fn) {
+    Array.prototype.forEach.call(document.querySelectorAll('[' + attr + ']'), function (el) {
+      fn(el, el.getAttribute(attr));
+    });
+  }
+
+  each('data-i18n', function (el, k) { english[k] = el.textContent.trim(); });
+  each('data-i18n-html', function (el, k) { english[k] = el.innerHTML.trim(); });
+  each('data-i18n-alt', function (el, k) { english[k] = el.getAttribute('alt'); });
+  each('data-i18n-aria', function (el, k) { english[k] = el.getAttribute('aria-label'); });
+
+  function resolve(choice) {
+    if (choice !== 'system') return choice;
+    var wanted = navigator.languages || [navigator.language || 'en'];
+    for (var i = 0; i < wanted.length; i++) {
+      var tag = String(wanted[i]).toLowerCase();
+      if (tag.indexOf('zh') === 0) return /hant|tw|hk|mo/.test(tag) ? 'zh-Hant' : 'zh-Hans';
+      for (var j = 0; j < SIMPLE.length; j++) {
+        if (tag.indexOf(SIMPLE[j]) === 0) return SIMPLE[j];
+      }
+    }
+    return 'en';
+  }
+
+  function apply(choice) {
+    var dict = STRINGS[resolve(choice)] || english;
+    var get = function (k) {
+      return Object.prototype.hasOwnProperty.call(dict, k) ? dict[k] : english[k];
+    };
+    each('data-i18n', function (el, k) { el.textContent = get(k); });
+    each('data-i18n-html', function (el, k) { el.innerHTML = get(k); });
+    each('data-i18n-alt', function (el, k) { el.setAttribute('alt', get(k)); });
+    each('data-i18n-aria', function (el, k) { el.setAttribute('aria-label', get(k)); });
+    titleEl.textContent = get('doc.title');
+    descEl.setAttribute('content', get('doc.desc'));
+    document.documentElement.lang = get('html.lang');
+    select.options[0].textContent = get('lang.system');
+  }
+
+  var stored;
+  try { stored = localStorage.getItem('clipstack.lang'); } catch (e) { stored = null; }
+  var forced = (location.search.match(/[?&]lang=([\w-]+)/) || [])[1];
+  var choice = forced || stored || 'system';
+  if (!/^(system|en|zh-Hans|zh-Hant|ja|ko|de|fr|es)$/.test(choice)) choice = 'system';
+  select.value = choice;
+  apply(choice);
+  select.addEventListener('change', function () {
+    apply(select.value);
+    try { localStorage.setItem('clipstack.lang', select.value); } catch (e) {}
+  });
+})();
+
+/* Motion: one staggered arrival per section, and the stack settling behind the
+   panel. Everything is visible without JavaScript. */
+(function () {
+  var items = document.querySelectorAll('.rise, .stage');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!('IntersectionObserver' in window) || reduce) {
+    Array.prototype.forEach.call(items, function (el) { el.classList.add('seen'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('seen');
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  Array.prototype.forEach.call(items, function (el) { io.observe(el); });
+
+  var video = document.querySelector('video');
+  if (video) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { video.play().catch(function () {}); } else { video.pause(); }
+      });
+    }, { threshold: 0.15 }).observe(video);
+  }
+})();
+</script>
+
+</body>
+</html>
