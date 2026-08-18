@@ -32,7 +32,7 @@
 - 全局快捷键 **⇧⌘⌫** 清空所有历史（含置顶，二次确认后不可撤销）
 - 菜单栏下拉：最近 10 条一键复制、设置、暂停监控、清空历史（保留置顶）、清空所有历史（含置顶）
 - 复制回剪贴板时恢复原始 flavor（富文本贴回仍是富文本，图片贴回仍是图片）
-- 多语言：简体中文、繁體中文、English、日本語、한국어、Español、Français（跟随系统语言）
+- 多语言：简体中文、繁體中文、English、日本語、한국어、Español、Français、Deutsch（跟随系统语言）
 - 隐私：遵循 [nspasteboard.org](http://nspasteboard.org) 约定，密码管理器标记的 Concealed/Transient 内容不入库
 - 历史持久化：`~/Library/Application Support/ClipStack/`（history.json + images/*.png），默认上限 300 条（置顶不占淘汰位）
 
