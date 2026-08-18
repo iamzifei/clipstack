@@ -23,6 +23,7 @@
 		<string>ko</string>
 		<string>es</string>
 		<string>fr</string>
+		<string>de</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>ClipStack</string>

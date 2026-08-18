@@ -90,6 +90,17 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
         checkUpdates.target = self
         checkUpdates.isEnabled = updater.canCheckForUpdates
         menu.addItem(checkUpdates)
+
+        // The only place the app asks for anything. It sits next to the update
+        // check rather than in the recent-items list, so it is findable without
+        // ever being in the way of the thing people opened the menu to do.
+        let support = NSMenuItem(
+            title: L("menu_support"),
+            action: #selector(openSupport),
+            keyEquivalent: ""
+        )
+        support.target = self
+        menu.addItem(support)
         menu.addItem(.separator())
 
         let recent = Array(store.orderedItems.prefix(10))
@@ -153,6 +164,10 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
 
     @objc private func openSettings() {
         settings.show()
+    }
+
+    @objc private func openSupport() {
+        NSWorkspace.shared.open(URL(string: "https://ko-fi.com/iamzifei")!)
     }
 
     @objc private func checkForUpdates() {
