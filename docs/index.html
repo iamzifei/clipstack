@@ -121,9 +121,62 @@ section { padding-block: var(--section); }
 .langpick select:hover { color: var(--ink); }
 .langpick option { color: initial; }
 
+
+/* --- Navigation -----------------------------------------------------------
+   Thin, sticky, and built around one rule: whatever the language does to the
+   labels, the download survives. The section links go first on a phone, then
+   the picker narrows, then the wordmark drops to its icon — the action never
+   moves. */
+
+.nav {
+  position: sticky; top: 0; z-index: 30;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .3s ease;
+}
+
+.nav.scrolled { border-bottom-color: var(--rule); }
+
+.nav-inner { display: flex; align-items: center; gap: 1rem; min-height: 52px; padding-block: .5rem; }
+
+.wordmark {
+  display: inline-flex; align-items: center; gap: .55rem;
+  font-weight: 620; font-size: .9375rem; text-decoration: none; letter-spacing: -.01em;
+  flex: 0 1 auto; min-width: 0;
+}
+
+.wordmark img { border-radius: 6px; }
+.wordmark span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.nav-links { margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; gap: .35rem 1.25rem; }
+.nav-secondary { font-size: .875rem; color: var(--ink-soft); text-decoration: none; padding: .5rem 0; }
+.nav-secondary:hover { color: var(--ink); }
+.btn-nav { padding: .45rem 1rem; font-size: .875rem; border-radius: 980px; }
+.nav .langpick { padding: .15rem .3rem .15rem .55rem; }
+.nav .langpick select { font-size: .8125rem; }
+
+:target { scroll-margin-top: 72px; }
+html { scroll-behavior: smooth; }
+
+@media (max-width: 44rem) {
+  .nav-secondary { display: none; }
+  .nav-inner { gap: .5rem; }
+  .nav-links { gap: .4rem; }
+  .nav .langpick { padding: .1rem .2rem .1rem .4rem; gap: .25rem; }
+  .nav .langpick select { max-width: 4.2rem; font-size: .75rem; padding-right: 1rem; }
+  .btn-nav { padding: .45rem .85rem; }
+}
+
+@media (max-width: 23rem) {
+  .wordmark span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+}
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .nav { transition: none; } }
+
 /* --- Hero ---------------------------------------------------------------- */
 
-.hero { padding-block: clamp(2rem, 6vw, 4rem) clamp(3rem, 7vw, 5rem); text-align: center; }
+.hero { padding-block: clamp(1.5rem, 5vw, 3rem) clamp(3rem, 7vw, 5rem); text-align: center; }
 
 .eyebrow {
   display: inline-flex; align-items: center; gap: 0.6rem;
@@ -305,10 +358,19 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
 </style>
 </head>
 
-<body>
+<body id="top">
 
-<div class="wrap langbar">
-  <label class="langpick">
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="#top">
+      <img src="icon-256.png" width="26" height="26" alt="" decoding="async">
+      <span>ClipStack</span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a class="nav-secondary" href="#features" data-i18n="nav.features">Features</a>
+      <a class="nav-secondary" href="#shortcuts" data-i18n="nav.shortcuts">Shortcuts</a>
+      <a class="nav-secondary" href="https://github.com/iamzifei/clipstack" rel="noopener">GitHub</a>
+      <label class="langpick">
     <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true">
       <circle cx="8" cy="8" r="6.4"/><path d="M1.6 8h12.8M8 1.6a11 11 0 0 1 0 12.8 11 11 0 0 1 0-12.8"/>
     </svg>
@@ -324,7 +386,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
       <option value="es">Español</option>
     </select>
   </label>
-</div>
+      <a class="btn btn-nav" href="https://github.com/iamzifei/clipstack/releases/latest" data-i18n="nav.download">Download</a>
+    </nav>
+  </div>
+</header>
 
 <main>
   <header class="hero wrap">
@@ -373,7 +438,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
     </div>
   </header>
 
-  <section class="wrap">
+  <section class="wrap" id="features">
     <div class="section-head rise">
       <h2 data-i18n="s1.h2">A clipboard that keeps up with you.</h2>
       <p data-i18n="s1.p">Copy three things in a row and all three are waiting — not just the last one.</p>
@@ -429,7 +494,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
     </div>
   </section>
 
-  <section class="wrap">
+  <section class="wrap" id="shortcuts">
     <div class="section-head rise">
       <h2 data-i18n="s2.h2">Every key, and where it goes.</h2>
     </div>
@@ -446,7 +511,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
     </ul>
   </section>
 
-  <section class="wrap">
+  <section class="wrap" id="privacy">
     <div class="note-card rise">
       <h3 data-i18n="privacy.h3">It stays on your Mac</h3>
       <p data-i18n="privacy.p1">
@@ -488,6 +553,15 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
 </main>
 
 <script>
+/* The bar takes a hairline once the page has moved, so it reads as attached. */
+(function () {
+  var nav = document.querySelector('.nav');
+  if (!nav) return;
+  var onScroll = function () { nav.classList.toggle('scrolled', window.scrollY > 8); };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
 /* Language: English lives in the markup and is snapshotted at load, so it is
    never duplicated in the dictionary; the others swap in place. */
 (function () {
@@ -496,7 +570,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "html.lang": "zh-Hans",
           "doc.title": "ClipStack —— macOS 菜单栏里的剪贴板历史",
           "doc.desc": "原生 macOS 菜单栏剪贴板管理器。⇧⌘V 呼出你复制过的一切 —— 文本、图片、文件 —— 可搜索、有完整预览，一个回车就复制回去。Apple 芯片原生、零依赖、MIT 开源。",
-          "brand": "ClipStack for macOS",
+          "nav.features": "功能",
+        "nav.shortcuts": "快捷键",
+        "nav.download": "下载",
+        "brand": "ClipStack for macOS",
           "h1": "你复制过的东西，都还在。<span>⇧⌘V</span>",
           "lede": "macOS 只记得你复制的最后一件东西。ClipStack 把其余的都留着 —— 文本、图片、文件 —— 放进一个可搜索的面板，浮在你正在做的事情上面，右侧显示完整内容，一个键就把想要的那条放回剪贴板。",
           "cta.download": "下载 macOS 版",
@@ -546,7 +623,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "html.lang": "zh-Hant",
           "doc.title": "ClipStack —— macOS 選單列裡的剪貼簿歷史",
           "doc.desc": "原生 macOS 選單列剪貼簿管理器。⇧⌘V 叫出你複製過的一切 —— 文字、圖片、檔案 —— 可搜尋、有完整預覽，一個 Return 就複製回去。Apple 晶片原生、零相依、MIT 開源。",
-          "brand": "ClipStack for macOS",
+          "nav.features": "功能",
+        "nav.shortcuts": "快速鍵",
+        "nav.download": "下載",
+        "brand": "ClipStack for macOS",
           "h1": "你複製過的東西，都還在。<span>⇧⌘V</span>",
           "lede": "macOS 只記得你複製的最後一樣東西。ClipStack 把其餘的都留著 —— 文字、圖片、檔案 —— 放進一個可搜尋的面板，浮在你正在做的事情上面，右側顯示完整內容，一個鍵就把想要的那條放回剪貼簿。",
           "cta.download": "下載 macOS 版",
@@ -596,7 +676,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "html.lang": "ja",
           "doc.title": "ClipStack — macOS のメニューバーに置くクリップボード履歴",
           "doc.desc": "ネイティブな macOS メニューバー用クリップボードマネージャ。⇧⌘V でコピーしたものすべて（テキスト・画像・ファイル）を検索でき、全文プレビュー付きで、キー 1 つでクリップボードに戻せます。Apple シリコンネイティブ、依存ゼロ、MIT ライセンス。",
-          "brand": "ClipStack for macOS",
+          "nav.features": "機能",
+        "nav.shortcuts": "ショートカット",
+        "nav.download": "ダウンロード",
+        "brand": "ClipStack for macOS",
           "h1": "コピーしたものは、まだ残っています。<span>⇧⌘V</span>",
           "lede": "macOS が覚えているのは最後にコピーした 1 つだけ。ClipStack は残りを保持します。テキストも画像もファイルも、検索できるパネルに入れて、作業中の画面の上に開き、中身を丸ごと表示し、選んだものをキー 1 つでクリップボードに戻します。",
           "cta.download": "macOS 版をダウンロード",
@@ -646,7 +729,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "html.lang": "ko",
           "doc.title": "ClipStack — macOS 메뉴 막대의 클립보드 기록",
           "doc.desc": "네이티브 macOS 메뉴 막대 클립보드 관리자. ⇧⌘V로 복사한 모든 것(텍스트·이미지·파일)을 검색하고, 전체 미리보기를 보고, 키 하나로 다시 클립보드에 넣습니다. Apple 실리콘 네이티브, 의존성 없음, MIT.",
-          "brand": "ClipStack for macOS",
+          "nav.features": "기능",
+        "nav.shortcuts": "단축키",
+        "nav.download": "다운로드",
+        "brand": "ClipStack for macOS",
           "h1": "복사한 것들은 아직 거기 있습니다. <span>⇧⌘V</span>",
           "lede": "macOS는 마지막으로 복사한 하나만 기억합니다. ClipStack은 나머지를 남겨 둡니다 — 텍스트, 이미지, 파일을 검색 가능한 패널에 담아 지금 하던 작업 위에 띄우고, 내용을 통째로 보여 주고, 원하는 항목을 키 한 번으로 클립보드에 되돌립니다.",
           "cta.download": "macOS용 다운로드",
@@ -696,7 +782,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "html.lang": "de",
           "doc.title": "ClipStack — Zwischenablage-Verlauf in der macOS-Menüleiste",
           "doc.desc": "Ein nativer Zwischenablage-Manager für die macOS-Menüleiste. ⇧⌘V holt alles Kopierte zurück — Text, Bilder und Dateien — durchsuchbar, mit voller Vorschau und einem Tastendruck zurück in die Zwischenablage. Apple Silicon, keine Abhängigkeiten, MIT.",
-          "brand": "ClipStack für macOS",
+          "nav.features": "Funktionen",
+        "nav.shortcuts": "Kurzbefehle",
+        "nav.download": "Laden",
+        "brand": "ClipStack für macOS",
           "h1": "Alles Kopierte ist noch da. <span>⇧⌘V</span>",
           "lede": "macOS merkt sich genau eine kopierte Sache. ClipStack behält den Rest — Text, Bilder und Dateien — in einem durchsuchbaren Panel, das sich über Ihre Arbeit legt, den vollen Inhalt zeigt und das Gewünschte mit einem Tastendruck zurück in die Zwischenablage legt.",
           "cta.download": "Für macOS laden",
@@ -746,7 +835,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "html.lang": "fr",
           "doc.title": "ClipStack — l'historique du presse-papiers dans la barre des menus macOS",
           "doc.desc": "Un gestionnaire de presse-papiers natif pour la barre des menus macOS. ⇧⌘V rappelle tout ce que vous avez copié — texte, images et fichiers — avec recherche, aperçu complet et un raccourci pour le remettre dans le presse-papiers. Apple silicon, sans dépendances, MIT.",
-          "brand": "ClipStack pour macOS",
+          "nav.features": "Fonctions",
+        "nav.shortcuts": "Raccourcis",
+        "nav.download": "Télécharger",
+        "brand": "ClipStack pour macOS",
           "h1": "Tout ce que vous avez copié est toujours là. <span>⇧⌘V</span>",
           "lede": "macOS ne retient qu'une seule chose copiée. ClipStack garde le reste — texte, images et fichiers — dans un panneau consultable qui s'ouvre par-dessus votre travail, affiche le contenu en entier et remet l'élément voulu dans le presse-papiers d'une seule touche.",
           "cta.download": "Télécharger pour macOS",
@@ -796,7 +888,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "html.lang": "es",
           "doc.title": "ClipStack — el historial del portapapeles en la barra de menús de macOS",
           "doc.desc": "Un gestor de portapapeles nativo para la barra de menús de macOS. ⇧⌘V recupera todo lo que has copiado —texto, imágenes y archivos— con búsqueda, vista previa completa y una tecla para devolverlo al portapapeles. Apple silicon, sin dependencias, MIT.",
-          "brand": "ClipStack para macOS",
+          "nav.features": "Funciones",
+        "nav.shortcuts": "Atajos",
+        "nav.download": "Descargar",
+        "brand": "ClipStack para macOS",
           "h1": "Todo lo que copiaste sigue ahí. <span>⇧⌘V</span>",
           "lede": "macOS recuerda exactamente una cosa copiada. ClipStack conserva el resto —texto, imágenes y archivos— en un panel con búsqueda que se abre sobre lo que estés haciendo, muestra el contenido entero y devuelve al portapapeles el que quieras con una sola tecla.",
           "cta.download": "Descargar para macOS",
