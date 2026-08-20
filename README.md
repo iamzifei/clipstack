@@ -102,3 +102,14 @@ DDC 硬件亮度、清晰的 HiDPI 缩放、在每块屏幕上都好使的亮度
 一个面板里列出全部输入/输出设备并一键切换，带音量滑块、实时麦克风电平表、
 麦克风一键停用开关，以及防止会议软件抢占设备的设备锁定。
 同样是原生 Apple Silicon、零第三方依赖。
+
+## Also from the same hand
+
+Four small native Mac apps, each doing one thing. Someone who liked one is
+the likeliest person to want another.
+
+| App | | |
+| --- | --- | --- |
+| **[Candela](https://getcandela.app)** | Every display control macOS hides, in one menu bar panel — real brightness over DDC, HiDPI scaling, and brightness keys that work on every monitor. | [source](https://github.com/iamzifei/Candela) |
+| **[AudioSwitch](https://audioswitch.dev)** | Switch audio input and output from the menu bar, with volume, mute and a live mic level meter. | [source](https://github.com/iamzifei/audioswitch) |
+| **[Inkstone](https://inkslab.app)** | Markdown notes that stay plain files in a folder you choose — wikilinks, a graph, a canvas, on macOS and iOS. | [source](https://github.com/iamzifei/inkstone) |
