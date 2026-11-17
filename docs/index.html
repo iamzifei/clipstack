@@ -433,7 +433,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
         <video src="hero.mp4" poster="hero-poster.jpg" width="1000" height="498"
                autoplay muted loop playsinline preload="metadata"
                data-i18n-aria="video.alt"
-               aria-label="The ClipStack panel: entries tagged by type, a colour with its swatch, the ⌘K transform menu on a JSON entry, three entries marked for a merged copy, and a search narrowing the list."></video>
+               aria-label="The ClipStack panel in dark mode: entries tagged by type, a colour with its swatch, Tab filtering the list to text and then code, the ⌘K transform menu on a JSON entry, three entries marked for a merged copy, and a search narrowing the list."></video>
       </div>
       <p class="caption" data-i18n="caption">Real history, invented on purpose: every entry in this recording is demo data.</p>
     </div>
@@ -461,9 +461,17 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
       <article class="feature rise">
         <div>
           <h3 data-i18n="f5.h3">Know what each entry is at a glance</h3>
-          <p data-i18n="f5.p">Every row carries a tag — URL, EMAIL, CODE, COLOR, IMAGE, FILE — so you can spot the link or the snippet by its shape before reading a word. A copied colour shows its swatch, with HEX, RGB and HSL side by side in the preview.</p>
+          <p data-i18n="f5.p">Every row carries a tag — TEXT, URL, EMAIL, CODE, COLOR, IMAGE, FILE — so you can spot the link or the snippet by its shape before reading a word. A copied colour shows its swatch, with HEX, RGB and HSL side by side in the preview.</p>
         </div>
         <div class="feature-art"><img src="shot-types.webp" width="1100" height="547" loading="lazy" decoding="async" data-i18n-alt="f5.alt" alt="ClipStack with a colour entry selected: a swatch in the list, and HEX, RGB and HSL in the preview"></div>
+      </article>
+
+      <article class="feature rise">
+        <div>
+          <h3 data-i18n="f9.h3">Only the links. Only the code.</h3>
+          <p data-i18n="f9.p">A row of chips under the search field counts each type in your history. Tab steps to the next one and ⇧Tab back, or click a chip; it combines with search, and esc clears it. Handy when the URL you want is buried under forty snippets.</p>
+        </div>
+        <div class="feature-art"><img src="shot-filter.webp" width="1100" height="547" loading="lazy" decoding="async" data-i18n-alt="f9.alt" alt="The ClipStack panel filtered to CODE, showing three code entries and the type chips with their counts"></div>
       </article>
 
       <article class="feature rise">
@@ -540,11 +548,12 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
       <li><span class="keys"><span class="key">⌘</span><span class="key">T</span></span><span class="desc" data-i18n="k5">Keep the panel on top and open</span></li>
       <li><span class="keys"><span class="key">⌘</span><span class="key">⌫</span></span><span class="desc" data-i18n="k6">Delete the selected entry</span></li>
       <li><span class="keys"><span class="key">⇧</span><span class="key">⌘</span><span class="key">⌫</span></span><span class="desc" data-i18n="k7">Clear the whole history, after a confirmation</span></li>
+      <li><span class="keys"><span class="key">⇥</span><span class="key">⇧⇥</span></span><span class="desc" data-i18n="k13">Filter by type — step through All, TEXT, URL, CODE and the rest</span></li>
       <li><span class="keys"><span class="key">⌘</span><span class="key">K</span></span><span class="desc" data-i18n="k9">Transform the selected entry — case, JSON, URL encoding, colour formats, OCR</span></li>
       <li><span class="keys"><span class="key">⌘</span><span class="key">M</span></span><span class="desc" data-i18n="k10">Mark entries (or ⌘-click), then Return copies them merged</span></li>
       <li><span class="keys"><span class="key">⌘</span><span class="key">O</span></span><span class="desc" data-i18n="k11">Open the selected entry as a floating note</span></li>
       <li><span class="keys"><span class="key">⌘</span><span class="key">V</span><span class="key">V</span></span><span class="desc" data-i18n="k12">Optional: hold ⌘ and tap V to step back through history, release to paste</span></li>
-      <li><span class="keys"><span class="key">⌘</span><span class="key">,</span></span><span class="desc" data-i18n="k8">Settings — launch at login, and all three shortcuts are re-recordable</span></li>
+      <li><span class="keys"><span class="key">⌘</span><span class="key">,</span></span><span class="desc" data-i18n="k8">Settings — launch at login, light, dark or system appearance, and all three shortcuts are re-recordable</span></li>
     </ul>
   </section>
 
@@ -623,7 +632,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "cta.source": "在 GitHub 上看源码",
           "fineprint": "macOS 14 或更高 · Apple 芯片 · MIT 许可 · 约 3000 行 Swift，零依赖",
           "caption": "录屏里的每一条历史都是专门构造的演示数据，不是真实剪贴板内容。",
-          "video.alt": "ClipStack 面板演示：按类型打标签的历史、带色块的颜色、在 JSON 记录上打开 ⌘K 转换菜单、标记三条合并复制、搜索收窄列表。",
+          "video.alt": "深色模式下的 ClipStack 面板演示：按类型打标签的历史、带色块的颜色、按 Tab 把列表筛成文本再筛成代码、在 JSON 记录上打开 ⌘K 转换菜单、标记三条合并复制、搜索收窄列表。",
           "s1.h2": "一个跟得上你的剪贴板。",
           "s1.p": "连着复制三段，三段都在等你 —— 不是只剩最后一段。",
           "f1.h3": "用搜索，不用翻",
@@ -646,12 +655,12 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k5": "面板保持置顶且不关闭",
           "k6": "删除选中项",
           "k7": "清空全部历史（有二次确认）",
-          "k8": "设置 —— 开机自启动，三个全局快捷键都可以重新录制",
+          "k8": "设置 —— 开机自启动、浅色／深色／跟随系统，三个全局快捷键都可以重新录制",
           "privacy.h3": "一切都留在你自己的 Mac 上",
           "privacy.p1": "历史存在你资源库里的一个普通文件夹里，不会去任何别的地方。没有账号、没有同步、没有统计，除了检查更新不发任何网络请求。",
           "privacy.p2": "密码管理器标记为「隐藏」或「临时」的内容一律不记录 —— 遵循 nspasteboard.org 的约定，所以你刚复制的密码不会出现在这个列表里。",
           "f5.h3": "一眼看出每条是什么",
-          "f5.p": "每一行都带一个标签 —— URL、EMAIL、CODE、COLOR、IMAGE、FILE —— 不用读内容，按形状就能找到那条链接或那段代码。复制的颜色直接显示色块，预览里 HEX、RGB、HSL 三种写法并排列出。",
+          "f5.p": "每一行都带一个标签 —— TEXT、URL、EMAIL、CODE、COLOR、IMAGE、FILE —— 不用读内容，按形状就能找到那条链接或那段代码。复制的颜色直接显示色块，预览里 HEX、RGB、HSL 三种写法并排列出。",
           "f5.alt": "ClipStack 中选中一条颜色记录：列表里显示色块，右侧预览列出 HEX、RGB、HSL",
           "f6.h3": "贴之前先改好",
           "f6.p": "⌘K 按选中这条的类型弹出菜单：改大小写、去首尾空白、合并成一行、JSON 格式化或压缩、URL 编码或解码。颜色可以在 HEX、RGB、HSL 之间换算，截图可以用本机 OCR 把文字提出来。结果直接复制，并作为新的一条留在历史里。",
@@ -667,6 +676,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k11": "把选中项弹成浮窗便签",
           "k12": "可选：按住 ⌘ 连按 V 往回翻历史，松开即粘贴",
           "privacy.p3": "默认情况下 ClipStack 不需要任何权限。两个可选设置 —— 选中后直接粘贴到原来的 App、按住 ⌘ 连按 V 翻历史 —— 需要 macOS 的辅助功能权限，不打开就不会申请。",
+          "f9.h3": "只看链接，只看代码。",
+          "f9.p": "搜索框下面一排小标签，标着历史里每种类型各有几条。按 Tab 切到下一种、⇧Tab 切回去，也可以直接点；它和搜索叠加生效，esc 清掉。想找的那条链接埋在四十段代码下面时最好用。",
+          "f9.alt": "ClipStack 面板筛选为 CODE，只显示三条代码记录，上方是带数量的类型标签",
+          "k13": "按类型筛选 —— 在全部、TEXT、URL、CODE 等之间切换",
           "more.label": "同一双手做的其他几个",
           "as.name": "AudioSwitch",
           "as.desc": "所有音频输入和输出在同一个面板里，带实时麦克风电平。",
@@ -695,7 +708,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "cta.source": "在 GitHub 上看原始碼",
           "fineprint": "macOS 14 或以上 · Apple 晶片 · MIT 授權 · 約 3000 行 Swift，零相依",
           "caption": "錄影裡的每一條歷史都是特地構造的示範資料，不是真實剪貼簿內容。",
-          "video.alt": "ClipStack 面板示範：依類型加標籤的歷史、帶色塊的顏色、在 JSON 紀錄上開啟 ⌘K 轉換選單、標記三條合併複製、搜尋縮小清單。",
+          "video.alt": "深色模式下的 ClipStack 面板示範：依類型加標籤的歷史、帶色塊的顏色、按 Tab 把清單篩成文字再篩成程式碼、在 JSON 紀錄上開啟 ⌘K 轉換選單、標記三條合併複製、搜尋縮小清單。",
           "s1.h2": "一個跟得上你的剪貼簿。",
           "s1.p": "連著複製三段，三段都在等你 —— 不是只剩最後一段。",
           "f1.h3": "用搜尋，不用翻",
@@ -718,12 +731,12 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k5": "面板保持置頂且不關閉",
           "k6": "刪除選取項",
           "k7": "清空全部歷史（有二次確認）",
-          "k8": "設定 —— 登入時啟動，三個全域快速鍵都可以重新錄製",
+          "k8": "設定 —— 登入時啟動、淺色／深色／跟隨系統，三個全域快速鍵都可以重新錄製",
           "privacy.h3": "一切都留在你自己的 Mac 上",
           "privacy.p1": "歷史存在你資源庫裡的一個普通檔案夾中，不會去任何別的地方。沒有帳號、沒有同步、沒有統計，除了檢查更新不發任何網路請求。",
           "privacy.p2": "密碼管理器標記為「隱藏」或「暫存」的內容一律不記錄 —— 遵循 nspasteboard.org 的約定，所以你剛複製的密碼不會出現在這份清單裡。",
           "f5.h3": "一眼看出每條是什麼",
-          "f5.p": "每一列都帶一個標籤 —— URL、EMAIL、CODE、COLOR、IMAGE、FILE —— 不用讀內容，看形狀就能找到那條連結或那段程式碼。複製的顏色直接顯示色塊，預覽裡 HEX、RGB、HSL 三種寫法並排列出。",
+          "f5.p": "每一列都帶一個標籤 —— TEXT、URL、EMAIL、CODE、COLOR、IMAGE、FILE —— 不用讀內容，看形狀就能找到那條連結或那段程式碼。複製的顏色直接顯示色塊，預覽裡 HEX、RGB、HSL 三種寫法並排列出。",
           "f5.alt": "ClipStack 中選取一條顏色紀錄：清單裡顯示色塊，右側預覽列出 HEX、RGB、HSL",
           "f6.h3": "貼上前先改好",
           "f6.p": "⌘K 依選取項目的類型跳出選單：改大小寫、去除首尾空白、合併成一行、JSON 格式化或壓縮、URL 編碼或解碼。顏色可以在 HEX、RGB、HSL 之間換算，截圖可以用本機 OCR 把文字取出來。結果直接複製，並作為新的一條留在歷史裡。",
@@ -739,6 +752,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k11": "把選取項目開成浮動便條",
           "k12": "選用：按住 ⌘ 連按 V 往回翻歷史，放開即貼上",
           "privacy.p3": "預設情況下 ClipStack 不需要任何權限。兩個選用設定 —— 選取後直接貼到原本的 App、按住 ⌘ 連按 V 翻歷史 —— 需要 macOS 的輔助使用權限，沒打開就不會要求。",
+          "f9.h3": "只看連結，只看程式碼。",
+          "f9.p": "搜尋框下面一排小標籤，標著歷史裡每種類型各有幾條。按 Tab 切到下一種、⇧Tab 切回去，也可以直接點；它和搜尋疊加生效，esc 清掉。想找的那條連結埋在四十段程式碼下面時最好用。",
+          "f9.alt": "ClipStack 面板篩選為 CODE，只顯示三條程式碼紀錄，上方是帶數量的類型標籤",
+          "k13": "依類型篩選 —— 在全部、TEXT、URL、CODE 等之間切換",
           "more.label": "同一雙手做的其他幾個",
           "as.name": "AudioSwitch",
           "as.desc": "所有音訊輸入與輸出都在同一個面板，附即時麥克風電平。",
@@ -767,7 +784,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "cta.source": "GitHub でソースを見る",
           "fineprint": "macOS 14 以降 · Apple シリコン · MIT ライセンス · 約 3000 行の Swift、依存ゼロ",
           "caption": "この録画に映る履歴はすべて、この撮影のために作った架空のデータです。",
-          "video.alt": "ClipStack のパネル操作: 種類ごとにタグの付いた履歴、スウォッチ付きの色、JSON 項目で開いた ⌘K 変換メニュー、まとめてコピーするための 3 件の印付け、検索による絞り込み。",
+          "video.alt": "ダークモードの ClipStack パネル: 種類ごとにタグの付いた履歴、スウォッチ付きの色、Tab でテキスト、次にコードへ絞り込み、JSON 項目で開いた ⌘K 変換メニュー、まとめてコピーするための 3 件の印付け、検索による絞り込み。",
           "s1.h2": "手の速さに追いつくクリップボード。",
           "s1.p": "続けて 3 つコピーすれば、3 つとも残っています。最後の 1 つだけ、ではなく。",
           "f1.h3": "スクロールではなく検索で",
@@ -790,12 +807,12 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k5": "パネルを最前面に固定したままにする",
           "k6": "選択中の項目を削除",
           "k7": "履歴をすべて消去（確認あり）",
-          "k8": "設定 — ログイン時に起動、3 つのショートカットはすべて再登録可能",
+          "k8": "設定 — ログイン時に起動、ライト／ダーク／システムの外観、3 つのショートカットはすべて再登録可能",
           "privacy.h3": "すべてあなたの Mac の中に",
           "privacy.p1": "履歴はライブラリ内の通常のフォルダに保存され、そこから外には出ません。アカウントも同期も解析もなく、更新確認以外の通信は行いません。",
           "privacy.p2": "パスワードマネージャが「秘匿」「一時的」と印を付けた内容は記録しません。nspasteboard.org の慣行に従っているので、いまコピーしたパスワードが一覧に残ることはありません。",
           "f5.h3": "どの項目が何か、ひと目でわかる",
-          "f5.p": "各行に URL・EMAIL・CODE・COLOR・IMAGE・FILE のタグが付くので、中身を読む前に形でリンクやコード片を見つけられます。コピーした色はスウォッチで表示され、プレビューには HEX・RGB・HSL が並びます。",
+          "f5.p": "各行に TEXT・URL・EMAIL・CODE・COLOR・IMAGE・FILE のタグが付くので、中身を読む前に形でリンクやコード片を見つけられます。コピーした色はスウォッチで表示され、プレビューには HEX・RGB・HSL が並びます。",
           "f5.alt": "色の項目を選択した ClipStack: リストにスウォッチ、プレビューに HEX・RGB・HSL",
           "f6.h3": "貼る前に整える",
           "f6.p": "⌘K で選択中の項目に合わせたメニューが開きます。大文字・小文字の変換、前後の空白の除去、行の結合、JSON の整形や圧縮、URL エンコードとデコード。色は HEX・RGB・HSL を相互に変換でき、スクリーンショットからはデバイス上の OCR で文字を取り出せます。結果はコピーされ、新しい項目として履歴に残ります。",
@@ -811,6 +828,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k11": "選択中の項目をフローティングメモとして開く",
           "k12": "オプション: ⌘ を押したまま V を叩いて履歴をさかのぼり、離すとペースト",
           "privacy.p3": "初期状態の ClipStack は権限を一切必要としません。オプションの 2 つの設定 — 元のアプリへそのままペースト、⌘ を押したまま V で履歴を切り替え — は macOS のアクセシビリティを使い、オンにするまで許可を求めることはありません。",
+          "f9.h3": "リンクだけ。コードだけ。",
+          "f9.p": "検索欄の下に、履歴の種類ごとの件数を示すチップが並びます。Tab で次へ、⇧Tab で前へ、クリックでも切り替えられます。検索と組み合わせて使え、esc で解除。欲しい URL が 40 個のコード片に埋もれているときに効きます。",
+          "f9.alt": "CODE で絞り込んだ ClipStack のパネル。3 件のコード項目と件数付きの種類チップ",
+          "k13": "種類で絞り込み — すべて、TEXT、URL、CODE などを順に切り替え",
           "more.label": "同じ作り手の別のアプリ",
           "as.name": "AudioSwitch",
           "as.desc": "すべてのオーディオ入力と出力を 1 つのパネルに。リアルタイムのマイクレベル付き。",
@@ -839,7 +860,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "cta.source": "GitHub에서 소스 보기",
           "fineprint": "macOS 14 이상 · Apple 실리콘 · MIT 라이선스 · 약 3000줄의 Swift, 의존성 없음",
           "caption": "이 녹화에 보이는 기록은 모두 촬영을 위해 만든 가상의 데이터입니다.",
-          "video.alt": "ClipStack 패널 시연: 종류별 태그가 붙은 기록, 견본이 있는 색상, JSON 항목의 ⌘K 변환 메뉴, 합쳐 복사할 세 항목 표시, 검색으로 목록 좁히기.",
+          "video.alt": "다크 모드의 ClipStack 패널 시연: 종류별 태그가 붙은 기록, 견본이 있는 색상, Tab으로 텍스트에 이어 코드로 목록 필터링, JSON 항목의 ⌘K 변환 메뉴, 합쳐 복사할 세 항목 표시, 검색으로 목록 좁히기.",
           "s1.h2": "손 빠르기를 따라오는 클립보드.",
           "s1.p": "연달아 세 개를 복사하면 세 개가 모두 기다리고 있습니다 — 마지막 하나만이 아니라.",
           "f1.h3": "스크롤 대신 검색",
@@ -862,12 +883,12 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k5": "패널을 항상 위에 열어 두기",
           "k6": "선택한 항목 삭제",
           "k7": "기록 전체 삭제 (확인 후)",
-          "k8": "설정 — 로그인 시 실행, 세 단축키 모두 다시 지정 가능",
+          "k8": "설정 — 로그인 시 실행, 라이트·다크·시스템 모양, 세 단축키 모두 다시 지정 가능",
           "privacy.h3": "전부 당신의 Mac 안에",
           "privacy.p1": "기록은 라이브러리 안의 평범한 폴더에 저장되고 그 밖으로 나가지 않습니다. 계정도, 동기화도, 분석도 없고 업데이트 확인 외에는 어떤 통신도 하지 않습니다.",
           "privacy.p2": "비밀번호 관리자가 감춤 또는 임시로 표시한 내용은 기록하지 않습니다. nspasteboard.org 관례를 따르므로 방금 복사한 비밀번호가 목록에 남지 않습니다.",
           "f5.h3": "각 항목이 무엇인지 한눈에",
-          "f5.p": "모든 행에 URL, EMAIL, CODE, COLOR, IMAGE, FILE 태그가 붙어 내용을 읽기 전에 모양만으로 링크나 코드 조각을 찾을 수 있습니다. 복사한 색상은 견본으로 보이고, 미리보기에 HEX, RGB, HSL이 나란히 표시됩니다.",
+          "f5.p": "모든 행에 TEXT, URL, EMAIL, CODE, COLOR, IMAGE, FILE 태그가 붙어 내용을 읽기 전에 모양만으로 링크나 코드 조각을 찾을 수 있습니다. 복사한 색상은 견본으로 보이고, 미리보기에 HEX, RGB, HSL이 나란히 표시됩니다.",
           "f5.alt": "색상 항목을 선택한 ClipStack: 목록에 색 견본, 미리보기에 HEX, RGB, HSL",
           "f6.h3": "붙여넣기 전에 다듬기",
           "f6.p": "⌘K를 누르면 선택한 항목에 맞는 메뉴가 열립니다. 대소문자 변경, 앞뒤 공백 제거, 줄 합치기, JSON 정리 또는 압축, URL 인코딩과 디코딩. 색상은 HEX, RGB, HSL 사이에서 변환되고, 스크린샷은 기기 내 OCR로 텍스트를 뽑아냅니다. 결과는 복사되고 새 항목으로 기록에 남습니다.",
@@ -883,6 +904,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k11": "선택한 항목을 플로팅 메모로 열기",
           "k12": "선택 사항: ⌘를 누른 채 V를 눌러 기록을 거슬러 올라가고, 떼면 붙여넣기",
           "privacy.p3": "기본 상태의 ClipStack은 어떤 권한도 필요하지 않습니다. 선택 설정 두 가지 — 원래 앱에 바로 붙여넣기, ⌘를 누른 채 V로 기록 순환 — 는 macOS 손쉬운 사용 권한을 쓰며, 켜기 전까지는 권한을 요청하지 않습니다.",
+          "f9.h3": "링크만. 코드만.",
+          "f9.p": "검색창 아래 칩 한 줄이 기록 속 종류별 개수를 보여 줍니다. Tab으로 다음, ⇧Tab으로 이전으로 가거나 칩을 클릭하세요. 검색과 함께 적용되고 esc로 해제됩니다. 원하는 URL이 코드 조각 40개 밑에 묻혀 있을 때 유용합니다.",
+          "f9.alt": "CODE로 필터링된 ClipStack 패널. 코드 항목 세 개와 개수가 표시된 종류 칩",
+          "k13": "종류별 필터 — 전체, TEXT, URL, CODE 등을 차례로 전환",
           "more.label": "같은 사람이 만든 다른 앱",
           "as.name": "AudioSwitch",
           "as.desc": "모든 오디오 입력과 출력을 한 패널에, 실시간 마이크 레벨과 함께.",
@@ -911,7 +936,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "cta.source": "Quellcode auf GitHub",
           "fineprint": "macOS 14 oder neuer · Apple Silicon · MIT-Lizenz · rund 3000 Zeilen Swift, keine Abhängigkeiten",
           "caption": "Echter Verlauf, absichtlich erfunden: jeder Eintrag in dieser Aufnahme ist Demomaterial.",
-          "video.alt": "Das ClipStack-Panel: nach Art etikettierte Einträge, eine Farbe mit Farbfeld, das ⌘K-Menü auf einem JSON-Eintrag, drei für eine zusammengeführte Kopie markierte Einträge und eine Suche, die die Liste eingrenzt.",
+          "video.alt": "Das ClipStack-Panel im Dunkelmodus: nach Art etikettierte Einträge, eine Farbe mit Farbfeld, Tab filtert die Liste erst auf Text, dann auf Code, das ⌘K-Menü auf einem JSON-Eintrag, drei für eine zusammengeführte Kopie markierte Einträge und eine Suche, die die Liste eingrenzt.",
           "s1.h2": "Eine Zwischenablage, die mitkommt.",
           "s1.p": "Drei Dinge hintereinander kopiert, und alle drei warten — nicht nur das letzte.",
           "f1.h3": "Suchen statt scrollen",
@@ -934,12 +959,12 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k5": "Panel oben und geöffnet halten",
           "k6": "Ausgewählten Eintrag löschen",
           "k7": "Ganzen Verlauf löschen, nach Rückfrage",
-          "k8": "Einstellungen — Start bei Anmeldung, alle drei Kurzbefehle neu belegbar",
+          "k8": "Einstellungen — Start bei Anmeldung, helles, dunkles oder System-Erscheinungsbild, alle drei Kurzbefehle neu belegbar",
           "privacy.h3": "Es bleibt auf Ihrem Mac",
           "privacy.p1": "Der Verlauf liegt in einem gewöhnlichen Ordner in Ihrer Library und geht nirgendwo sonst hin. Kein Konto, keine Synchronisierung, keine Analytik und kein Netzwerkzugriff außer der Update-Prüfung.",
           "privacy.p2": "Was ein Passwortmanager als verborgen oder flüchtig markiert, wird nie aufgezeichnet — nach der Konvention von nspasteboard.org. Das eben kopierte Passwort landet also nicht in einer Liste.",
           "f5.h3": "Auf einen Blick sehen, was ein Eintrag ist",
-          "f5.p": "Jede Zeile trägt ein Etikett — URL, EMAIL, CODE, COLOR, IMAGE, FILE —, sodass du den Link oder das Snippet an seiner Form erkennst, bevor du ein Wort liest. Eine kopierte Farbe zeigt ihr Farbfeld, die Vorschau HEX, RGB und HSL nebeneinander.",
+          "f5.p": "Jede Zeile trägt ein Etikett — TEXT, URL, EMAIL, CODE, COLOR, IMAGE, FILE —, sodass du den Link oder das Snippet an seiner Form erkennst, bevor du ein Wort liest. Eine kopierte Farbe zeigt ihr Farbfeld, die Vorschau HEX, RGB und HSL nebeneinander.",
           "f5.alt": "ClipStack mit ausgewähltem Farbeintrag: Farbfeld in der Liste, HEX, RGB und HSL in der Vorschau",
           "f6.h3": "Erst zurechtbiegen, dann einfügen",
           "f6.p": "⌘K öffnet ein Menü passend zum ausgewählten Eintrag: Groß- und Kleinschreibung, Leerraum entfernen, Zeilen zusammenführen, JSON formatieren oder verdichten, URL-kodieren oder -dekodieren. Eine Farbe wird zwischen HEX, RGB und HSL umgerechnet, ein Screenshot gibt seinen Text per OCR auf dem Gerät her. Das Ergebnis wird kopiert und als neuer Eintrag behalten.",
@@ -955,6 +980,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k11": "Ausgewählten Eintrag als schwebende Notiz öffnen",
           "k12": "Optional: ⌘ halten und V tippen, um durch den Verlauf zu gehen, loslassen fügt ein",
           "privacy.p3": "Im Auslieferungszustand braucht ClipStack keinerlei Berechtigungen. Zwei optionale Einstellungen — direkt in die vorherige App einfügen und ⌘ halten, V tippen, um den Verlauf durchzugehen — nutzen die macOS-Bedienungshilfen, und erst wenn du eine davon einschaltest, wird danach gefragt.",
+          "f9.h3": "Nur die Links. Nur der Code.",
+          "f9.p": "Eine Reihe Chips unter dem Suchfeld zählt jede Art in deinem Verlauf. Tab springt zur nächsten, ⇧Tab zurück, oder klick einen Chip an; der Filter wirkt zusammen mit der Suche, esc hebt ihn auf. Praktisch, wenn die gesuchte URL unter vierzig Snippets liegt.",
+          "f9.alt": "Das ClipStack-Panel, gefiltert auf CODE, mit drei Code-Einträgen und den Art-Chips samt Anzahl",
+          "k13": "Nach Art filtern — durch Alle, TEXT, URL, CODE und die übrigen schalten",
           "more.label": "Ebenfalls von derselben Hand",
           "as.name": "AudioSwitch",
           "as.desc": "Alle Audioein- und -ausgänge in einem Panel, mit Live-Mikrofonanzeige.",
@@ -983,7 +1012,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "cta.source": "Code source sur GitHub",
           "fineprint": "macOS 14 ou ultérieur · Apple silicon · licence MIT · environ 3000 lignes de Swift, sans dépendances",
           "caption": "Un historique réel, inventé exprès : chaque entrée de cet enregistrement est une donnée de démonstration.",
-          "video.alt": "Le panneau ClipStack : des entrées étiquetées par type, une couleur avec sa pastille, le menu ⌘K sur une entrée JSON, trois entrées marquées pour une copie fusionnée et une recherche qui resserre la liste.",
+          "video.alt": "Le panneau ClipStack en mode sombre : des entrées étiquetées par type, une couleur avec sa pastille, Tab qui filtre la liste sur le texte puis le code, le menu ⌘K sur une entrée JSON, trois entrées marquées pour une copie fusionnée et une recherche qui resserre la liste.",
           "s1.h2": "Un presse-papiers qui vous suit.",
           "s1.p": "Copiez trois choses de suite : les trois vous attendent, pas seulement la dernière.",
           "f1.h3": "Chercher plutôt que faire défiler",
@@ -1006,12 +1035,12 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k5": "Garder le panneau au premier plan et ouvert",
           "k6": "Supprimer l'élément sélectionné",
           "k7": "Effacer tout l'historique, après confirmation",
-          "k8": "Réglages — ouverture à la session, et les trois raccourcis sont réenregistrables",
+          "k8": "Réglages — ouverture à la session, apparence claire, sombre ou système, et les trois raccourcis sont réenregistrables",
           "privacy.h3": "Tout reste sur votre Mac",
           "privacy.p1": "L'historique tient dans un dossier ordinaire de votre bibliothèque et ne va nulle part ailleurs. Pas de compte, pas de synchronisation, pas d'analytique et aucun appel réseau en dehors de la vérification des mises à jour.",
           "privacy.p2": "Ce qu'un gestionnaire de mots de passe marque comme masqué ou transitoire n'est jamais enregistré, suivant la convention nspasteboard.org : le mot de passe que vous venez de copier ne se retrouve pas dans une liste.",
           "f5.h3": "Voir d'un coup d'œil ce qu'est chaque entrée",
-          "f5.p": "Chaque ligne porte une étiquette — URL, EMAIL, CODE, COLOR, IMAGE, FILE — pour repérer le lien ou l'extrait à sa forme avant d'en lire un mot. Une couleur copiée affiche sa pastille, avec HEX, RGB et HSL côte à côte dans l'aperçu.",
+          "f5.p": "Chaque ligne porte une étiquette — TEXT, URL, EMAIL, CODE, COLOR, IMAGE, FILE — pour repérer le lien ou l'extrait à sa forme avant d'en lire un mot. Une couleur copiée affiche sa pastille, avec HEX, RGB et HSL côte à côte dans l'aperçu.",
           "f5.alt": "ClipStack avec une entrée couleur sélectionnée : une pastille dans la liste, et HEX, RGB et HSL dans l'aperçu",
           "f6.h3": "Corriger avant de coller",
           "f6.p": "⌘K ouvre un menu adapté à l'entrée sélectionnée : changer la casse, retirer les espaces, joindre les lignes, formater ou compacter du JSON, encoder ou décoder une URL. Une couleur se convertit entre HEX, RGB et HSL, et une capture d'écran livre son texte grâce à l'OCR sur l'appareil. Le résultat est copié et conservé comme nouvelle entrée.",
@@ -1027,6 +1056,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k11": "Ouvrir l'entrée sélectionnée en note flottante",
           "k12": "En option : maintenir ⌘ et taper V pour remonter l'historique, relâcher pour coller",
           "privacy.p3": "Tel qu'installé, ClipStack ne demande aucune autorisation. Deux réglages optionnels — coller directement dans l'app d'origine, et maintenir ⌘ en tapant V pour parcourir l'historique — utilisent l'accessibilité de macOS, et rien n'est demandé tant que vous n'en activez pas un.",
+          "f9.h3": "Rien que les liens. Rien que le code.",
+          "f9.p": "Une rangée de pastilles sous le champ de recherche compte chaque type de votre historique. Tab passe au suivant, ⇧Tab revient, ou cliquez une pastille ; le filtre se combine à la recherche, et esc l'efface. Pratique quand l'URL voulue est enfouie sous quarante extraits.",
+          "f9.alt": "Le panneau ClipStack filtré sur CODE, avec trois entrées de code et les pastilles de type et leur nombre",
+          "k13": "Filtrer par type — passer de Tout à TEXT, URL, CODE et aux autres",
           "more.label": "De la même main",
           "as.name": "AudioSwitch",
           "as.desc": "Toutes les entrées et sorties audio dans un panneau, avec un indicateur de micro en direct.",
@@ -1055,7 +1088,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "cta.source": "Código en GitHub",
           "fineprint": "macOS 14 o posterior · Apple silicon · licencia MIT · unas 3000 líneas de Swift, sin dependencias",
           "caption": "Historial real, inventado a propósito: cada entrada de esta grabación es material de demostración.",
-          "video.alt": "El panel de ClipStack: entradas etiquetadas por tipo, un color con su muestra, el menú ⌘K sobre una entrada JSON, tres entradas marcadas para una copia combinada y una búsqueda que acota la lista.",
+          "video.alt": "El panel de ClipStack en modo oscuro: entradas etiquetadas por tipo, un color con su muestra, Tab filtrando la lista primero por texto y luego por código, el menú ⌘K sobre una entrada JSON, tres entradas marcadas para una copia combinada y una búsqueda que acota la lista.",
           "s1.h2": "Un portapapeles que te sigue el ritmo.",
           "s1.p": "Copia tres cosas seguidas y las tres te esperan, no solo la última.",
           "f1.h3": "Buscar en vez de desplazarte",
@@ -1078,12 +1111,12 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k5": "Mantener el panel arriba y abierto",
           "k6": "Eliminar la entrada seleccionada",
           "k7": "Borrar todo el historial, tras confirmar",
-          "k8": "Ajustes — abrir al iniciar sesión, y los tres atajos se pueden volver a grabar",
+          "k8": "Ajustes — abrir al iniciar sesión, apariencia clara, oscura o del sistema, y los tres atajos se pueden volver a grabar",
           "privacy.h3": "Se queda en tu Mac",
           "privacy.p1": "El historial vive en una carpeta normal de tu biblioteca y no va a ningún otro sitio. Sin cuenta, sin sincronización, sin analítica y sin más conexiones que la comprobación de actualizaciones.",
           "privacy.p2": "Lo que un gestor de contraseñas marca como oculto o transitorio no se registra nunca, siguiendo la convención de nspasteboard.org: la contraseña que acabas de copiar no acaba en una lista.",
           "f5.h3": "Saber qué es cada entrada de un vistazo",
-          "f5.p": "Cada fila lleva una etiqueta — URL, EMAIL, CODE, COLOR, IMAGE, FILE — para que encuentres el enlace o el fragmento por su forma antes de leer una palabra. Un color copiado muestra su muestra, con HEX, RGB y HSL lado a lado en la vista previa.",
+          "f5.p": "Cada fila lleva una etiqueta — TEXT, URL, EMAIL, CODE, COLOR, IMAGE, FILE — para que encuentres el enlace o el fragmento por su forma antes de leer una palabra. Un color copiado muestra su muestra, con HEX, RGB y HSL lado a lado en la vista previa.",
           "f5.alt": "ClipStack con una entrada de color seleccionada: una muestra en la lista y HEX, RGB y HSL en la vista previa",
           "f6.h3": "Arréglalo antes de pegarlo",
           "f6.p": "⌘K abre un menú pensado para la entrada seleccionada: cambiar mayúsculas, recortar espacios, unir líneas, formatear o compactar JSON, codificar o decodificar URL. Un color se convierte entre HEX, RGB y HSL, y una captura de pantalla entrega su texto mediante OCR en el propio Mac. El resultado se copia y se guarda como una entrada nueva.",
@@ -1099,6 +1132,10 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k11": "Abrir la entrada seleccionada como nota flotante",
           "k12": "Opcional: mantén ⌘ y toca V para retroceder en el historial; al soltar, se pega",
           "privacy.p3": "Tal como viene, ClipStack no necesita ningún permiso. Dos ajustes opcionales — pegar directamente en la app de la que venías, y mantener ⌘ tocando V para recorrer el historial — usan la accesibilidad de macOS, y nada lo pide hasta que activas uno.",
+          "f9.h3": "Solo los enlaces. Solo el código.",
+          "f9.p": "Una fila de etiquetas bajo el campo de búsqueda cuenta cada tipo de tu historial. Tab pasa al siguiente y ⇧Tab vuelve, o haz clic en una; se combina con la búsqueda y esc lo quita. Útil cuando la URL que buscas está enterrada bajo cuarenta fragmentos.",
+          "f9.alt": "El panel de ClipStack filtrado por CODE, con tres entradas de código y las etiquetas de tipo con su número",
+          "k13": "Filtrar por tipo — recorrer Todo, TEXT, URL, CODE y el resto",
           "more.label": "También de la misma mano",
           "as.name": "AudioSwitch",
           "as.desc": "Todas las entradas y salidas de audio en un panel, con medidor de micrófono en vivo.",

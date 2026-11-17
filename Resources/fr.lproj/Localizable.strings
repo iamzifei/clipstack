@@ -80,3 +80,11 @@
 "ax_missing" = "Accès Accessibilité requis";
 "ax_open" = "Ouvrir Réglages Système";
 "paste_help" = "Les deux options sont désactivées par défaut et nécessitent l’accès Accessibilité. Avec le parcours activé : maintenez ⌘ et tapez V pour reculer, ⇧V pour avancer, relâchez ⌘ pour coller ; un ⌘V rapide colle comme d’habitude.";
+
+/* 1.6: appearance + type filter */
+"appearance" = "Apparence";
+"appearance_system" = "Système";
+"appearance_light" = "Clair";
+"appearance_dark" = "Sombre";
+"filter_all" = "Tout";
+"hint_filter" = "Filtrer";

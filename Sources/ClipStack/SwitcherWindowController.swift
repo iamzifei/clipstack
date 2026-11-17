@@ -102,6 +102,7 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
         rememberFrontmostApp()
         model.ringMode = false
         model.query = ""
+        model.typeFilter = nil
         model.marked = []
         model.selectionIndex = 0
         model.refresh()
@@ -169,6 +170,7 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
         removeKeyMonitor()
         model.ringMode = true
         model.query = ""
+        model.typeFilter = nil
         model.marked = []
         model.refresh()
         // The first tap highlights the newest entry (the current clipboard),
@@ -288,7 +290,9 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
         guard let view = panel.contentView else { return }
         // Pop up over the preview pane's top-left corner (list is 320pt wide).
         // NSHostingView is flipped (origin top-left), so measure from the top.
-        let fromTop: CGFloat = 52
+        // 84 = search bar + type-filter chip row, so the menu opens on the
+        // preview header instead of covering the chips.
+        let fromTop: CGFloat = 84
         let point = NSPoint(x: 332, y: view.isFlipped ? fromTop : view.bounds.height - fromTop)
         // Positioning on the first item also pre-selects it, so ⌘K then ↩
         // runs the top transform without an extra ↓.
@@ -343,9 +347,11 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
         }
 
         switch event.keyCode {
-        case 53: // esc: first clears marks, then closes
+        case 53: // esc: first clears marks, then the type filter, then closes
             if !model.marked.isEmpty {
                 model.marked = []
+            } else if model.typeFilter != nil {
+                model.typeFilter = nil
             } else {
                 model.onClose?()
             }
@@ -355,6 +361,11 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
             return true
         case 125: // down
             model.moveSelection(1)
+            return true
+        case 48: // tab / ⇧tab: next / previous type filter (the search field
+                 // is the only focusable control, so Tab has nothing else to do)
+            let back = event.modifierFlags.contains(.shift)
+            model.cycleTypeFilter(back ? -1 : 1)
             return true
         case 126: // up
             model.moveSelection(-1)

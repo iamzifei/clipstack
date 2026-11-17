@@ -80,3 +80,11 @@
 "ax_missing" = "Accessibility access needed";
 "ax_open" = "Open System Settings";
 "paste_help" = "Both options are off by default and need Accessibility access. With the ring on: hold ⌘, tap V to step back through history, ⇧V to go forward, release ⌘ to paste; a quick ⌘V still pastes as usual.";
+
+/* 1.6: appearance + type filter */
+"appearance" = "Appearance";
+"appearance_system" = "System";
+"appearance_light" = "Light";
+"appearance_dark" = "Dark";
+"filter_all" = "All";
+"hint_filter" = "Filter";

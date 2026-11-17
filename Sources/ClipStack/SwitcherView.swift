@@ -13,6 +13,9 @@ struct SwitcherView: View {
     var body: some View {
         VStack(spacing: 0) {
             searchBar
+            if !model.ringMode {
+                filterBar
+            }
             Divider()
             HStack(spacing: 0) {
                 listPane
@@ -55,6 +58,52 @@ struct SwitcherView: View {
         .padding(.vertical, 11)
     }
 
+    /// One chip per type present in the (searched) history, plus All.
+    /// Tab / ⇧Tab steps through them; clicking a chip jumps straight there.
+    private var filterBar: some View {
+        let counts = model.typeCounts
+        var types = TypeFilter.available(Set(counts.keys))
+        // Keep the active chip visible even when the search leaves it with
+        // zero matches, so an empty list explains itself.
+        if let active = model.typeFilter, !types.contains(active) {
+            types = TypeFilter.available(Set(types + [active]))
+        }
+        return HStack(spacing: 6) {
+            filterChip(nil, label: L("filter_all"), count: counts.values.reduce(0, +))
+            ForEach(types, id: \.self) { type in
+                filterChip(type, label: type.tag, count: counts[type] ?? 0)
+            }
+            Spacer()
+            hint("⇥", L("hint_filter"))
+        }
+        .padding(.horizontal, 14)
+        .padding(.bottom, 8)
+    }
+
+    private func filterChip(_ type: ContentType?, label: String, count: Int) -> some View {
+        let active = model.typeFilter == type
+        let tint = type?.tint ?? Color.accentColor
+        return Button {
+            model.typeFilter = type
+        } label: {
+            HStack(spacing: 4) {
+                Text(label)
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .kerning(0.3)
+                Text("\(count)")
+                    .font(.system(size: 10, weight: .medium))
+                    .monospacedDigit()
+                    .opacity(0.75)
+            }
+            .foregroundStyle(active ? Color.white : Color.primary)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 3)
+            .background(active ? tint : Color.primary.opacity(0.07), in: Capsule())
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+    }
+
     private var listPane: some View {
         ScrollViewReader { proxy in
             ScrollView {
@@ -91,7 +140,7 @@ struct SwitcherView: View {
 
     private func row(item: ClipItem, index: Int) -> some View {
         let isSelected = index == model.selectionIndex
-        let type = item.contentType
+        let type = model.type(of: item)
         let markNumber = model.markNumber(of: item.id)
         return HStack(spacing: 8) {
             if let markNumber {
@@ -152,7 +201,7 @@ struct SwitcherView: View {
                 HStack(spacing: 8) {
                     // The tag already names the kind; a separate "Text" label
                     // next to it only repeated it.
-                    TypeTag(type: item.contentType)
+                    TypeTag(type: model.type(of: item))
                     Text(ByteFormat.string(item.byteSize))
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
@@ -355,19 +404,24 @@ struct TypeTag: View {
             .foregroundStyle(.white)
             .padding(.horizontal, 4)
             .padding(.vertical, 1)
-            .background(tint, in: RoundedRectangle(cornerRadius: 3))
+            .background(type.tint, in: RoundedRectangle(cornerRadius: 3))
     }
+}
 
-    /// One hue per type so rows can be scanned by colour alone.
-    private var tint: Color {
-        switch type {
+extension ContentType {
+    /// One hue per type so rows can be scanned by colour alone; shared by
+    /// the row tags and the filter chips.
+    var tint: Color {
+        switch self {
         case .url: return .blue
         case .email: return .teal
         case .color: return .pink
         case .code: return .purple
         case .image: return .orange
         case .file: return .brown
-        case .text: return Color(nsColor: .systemGray)
+        // Fixed mid-grey: systemGray turns light in dark mode and white text
+        // on it became hard to read.
+        case .text: return Color(white: 0.45)
         }
     }
 }

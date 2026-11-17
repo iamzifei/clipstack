@@ -20,6 +20,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
+        // Before any window exists, so nothing flashes in the wrong appearance.
+        Appearance.apply(Appearance.stored)
+
         let supportDir = FileManager.default
             .urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("ClipStack", isDirectory: true)

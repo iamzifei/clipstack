@@ -80,3 +80,11 @@
 "ax_missing" = "손쉬운 사용 권한이 필요합니다";
 "ax_open" = "시스템 설정 열기";
 "paste_help" = "두 옵션은 기본으로 꺼져 있으며, 켜면 손쉬운 사용 권한이 필요합니다. 기록 넘기기를 켜면 ⌘을 누른 채 V로 이전 항목, ⇧V로 다음 항목, ⌘에서 손을 떼면 붙여넣습니다. ⌘V를 짧게 누르면 평소처럼 붙여넣습니다.";
+
+/* 1.6: appearance + type filter */
+"appearance" = "모양";
+"appearance_system" = "시스템";
+"appearance_light" = "라이트";
+"appearance_dark" = "다크";
+"filter_all" = "전체";
+"hint_filter" = "필터";

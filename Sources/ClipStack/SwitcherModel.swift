@@ -7,6 +7,11 @@ final class SwitcherModel: ObservableObject {
         didSet { if query != oldValue { selectionIndex = 0 } }
     }
     @Published var selectionIndex = 0
+    /// Show only one content type (nil = All). Cycled with Tab / ⇧Tab or by
+    /// clicking a chip; reset each time the panel opens, like the query.
+    @Published var typeFilter: ContentType? = nil {
+        didSet { if typeFilter != oldValue { selectionIndex = 0 } }
+    }
     /// Bumped whenever the underlying store mutates, to force a re-render.
     @Published private(set) var revision = 0
     /// When on, the panel stays visible above other apps after it loses focus
@@ -36,15 +41,46 @@ final class SwitcherModel: ObservableObject {
         self.store = store
     }
 
-    var filtered: [ClipItem] {
+    /// Classification runs regexes, and the view asks for every row's type
+    /// on each render; an entry's content never changes, so cache by id.
+    private var typeCache: [UUID: ContentType] = [:]
+
+    func type(of item: ClipItem) -> ContentType {
+        if let cached = typeCache[item.id] { return cached }
+        let type = item.contentType
+        typeCache[item.id] = type
+        return type
+    }
+
+    /// Entries matching the search text, before the type filter.
+    private var queryFiltered: [ClipItem] {
         _ = revision
-        if ringMode { return store.items }
         let all = store.orderedItems
         guard !query.isEmpty else { return all }
         return all.filter {
             $0.searchText.localizedCaseInsensitiveContains(query)
                 || ($0.sourceApp?.localizedCaseInsensitiveContains(query) ?? false)
         }
+    }
+
+    var filtered: [ClipItem] {
+        _ = revision
+        if ringMode { return store.items }
+        let list = queryFiltered
+        guard let typeFilter else { return list }
+        return list.filter { type(of: $0) == typeFilter }
+    }
+
+    /// How many search matches each type has — drives the chips and which
+    /// types Tab cycles through.
+    var typeCounts: [ContentType: Int] {
+        var counts: [ContentType: Int] = [:]
+        for item in queryFiltered { counts[type(of: item), default: 0] += 1 }
+        return counts
+    }
+
+    func cycleTypeFilter(_ step: Int) {
+        typeFilter = TypeFilter.cycle(typeFilter, available: TypeFilter.available(Set(typeCounts.keys)), step: step)
     }
 
     var selected: ClipItem? {

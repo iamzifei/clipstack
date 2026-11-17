@@ -80,3 +80,11 @@
 "ax_missing" = "需要辅助功能权限";
 "ax_open" = "打开系统设置";
 "paste_help" = "两个选项默认关闭，开启后需要辅助功能权限。开启翻历史后：按住 ⌘ 连按 V 往前翻，⇧V 往回翻，松开 ⌘ 粘贴；快速按一下 ⌘V 仍是普通粘贴。";
+
+/* 1.6: appearance + type filter */
+"appearance" = "外观";
+"appearance_system" = "跟随系统";
+"appearance_light" = "浅色";
+"appearance_dark" = "深色";
+"filter_all" = "全部";
+"hint_filter" = "筛选";

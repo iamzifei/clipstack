@@ -3,6 +3,22 @@ import SwiftUI
 import ServiceManagement
 import ClipStackCore
 
+/// Applies the light / dark / system choice to every ClipStack window,
+/// menu and panel at once. `nil` lets AppKit follow the system setting.
+enum Appearance {
+    static func apply(_ mode: AppearanceMode) {
+        switch mode {
+        case .system: NSApp.appearance = nil
+        case .light: NSApp.appearance = NSAppearance(named: .aqua)
+        case .dark: NSApp.appearance = NSAppearance(named: .darkAqua)
+        }
+    }
+
+    static var stored: AppearanceMode {
+        AppearanceMode(stored: UserDefaults.standard.string(forKey: PrefKey.appearance))
+    }
+}
+
 /// Backing model for the settings window: launch-at-login toggle plus a
 /// click-to-record editor for the two global hotkeys.
 final class SettingsModel: ObservableObject {
@@ -22,6 +38,7 @@ final class SettingsModel: ObservableObject {
     @Published var autoPaste = UserDefaults.standard.bool(forKey: PrefKey.autoPaste)
     @Published var cmdVRing = UserDefaults.standard.bool(forKey: PrefKey.cmdVRing)
     @Published var accessibilityGranted = Accessibility.isTrusted()
+    @Published var appearance = Appearance.stored
 
     var onHotKeysChanged: () -> Void = {}
     var onPasteOptionsChanged: () -> Void = {}
@@ -42,6 +59,12 @@ final class SettingsModel: ObservableObject {
     }
 
     var canToggleLogin: Bool { Bundle.main.bundleIdentifier != nil }
+
+    func setAppearance(_ mode: AppearanceMode) {
+        appearance = mode
+        UserDefaults.standard.set(mode.rawValue, forKey: PrefKey.appearance)
+        Appearance.apply(mode)
+    }
 
     func setAutoPaste(_ on: Bool) {
         autoPaste = on
@@ -189,6 +212,15 @@ struct SettingsView: View {
                 if let error = model.loginError {
                     Text(error).font(.caption).foregroundStyle(.red)
                 }
+                Picker(L("appearance"), selection: Binding(
+                    get: { model.appearance },
+                    set: { model.setAppearance($0) }
+                )) {
+                    Text(L("appearance_system")).tag(AppearanceMode.system)
+                    Text(L("appearance_light")).tag(AppearanceMode.light)
+                    Text(L("appearance_dark")).tag(AppearanceMode.dark)
+                }
+                .pickerStyle(.segmented)
             }
             Section(L("hotkeys_section")) {
                 recorderRow(L("hk_switcher"), .switcher)
@@ -243,7 +275,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 440, height: 560)
+        .frame(width: 440, height: 600)
     }
 
     private var appVersion: String {
@@ -275,7 +307,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     func show() {
         if window == nil {
             let w = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 440, height: 560),
+                contentRect: NSRect(x: 0, y: 0, width: 440, height: 600),
                 styleMask: [.titled, .closable],
                 backing: .buffered,
                 defer: false

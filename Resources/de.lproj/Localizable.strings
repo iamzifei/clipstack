@@ -80,3 +80,11 @@
 "ax_missing" = "Bedienungshilfen-Zugriff nötig";
 "ax_open" = "Systemeinstellungen öffnen";
 "paste_help" = "Beide Optionen sind standardmäßig aus und brauchen Bedienungshilfen-Zugriff. Mit Blättern: ⌘ halten und V tippen geht zurück, ⇧V vor, ⌘ loslassen setzt ein; ein kurzes ⌘V setzt wie gewohnt ein.";
+
+/* 1.6: appearance + type filter */
+"appearance" = "Erscheinungsbild";
+"appearance_system" = "System";
+"appearance_light" = "Hell";
+"appearance_dark" = "Dunkel";
+"filter_all" = "Alle";
+"hint_filter" = "Filtern";

@@ -80,3 +80,11 @@
 "ax_missing" = "Se necesita acceso de accesibilidad";
 "ax_open" = "Abrir Ajustes del Sistema";
 "paste_help" = "Ambas opciones vienen desactivadas y requieren acceso de accesibilidad. Con el recorrido activado: mantén ⌘ y pulsa V para retroceder, ⇧V para avanzar y suelta ⌘ para pegar; un ⌘V rápido sigue pegando como siempre.";
+
+/* 1.6: appearance + type filter */
+"appearance" = "Apariencia";
+"appearance_system" = "Sistema";
+"appearance_light" = "Claro";
+"appearance_dark" = "Oscuro";
+"filter_all" = "Todo";
+"hint_filter" = "Filtrar";

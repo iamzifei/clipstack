@@ -80,3 +80,11 @@
 "ax_missing" = "需要輔助使用權限";
 "ax_open" = "打開系統設定";
 "paste_help" = "兩個選項預設關閉，開啟後需要輔助使用權限。開啟翻閱歷史後：按住 ⌘ 連按 V 往前翻，⇧V 往回翻，放開 ⌘ 貼上；快速按一下 ⌘V 仍是一般貼上。";
+
+/* 1.6: appearance + type filter */
+"appearance" = "外觀";
+"appearance_system" = "跟隨系統";
+"appearance_light" = "淺色";
+"appearance_dark" = "深色";
+"filter_all" = "全部";
+"hint_filter" = "篩選";

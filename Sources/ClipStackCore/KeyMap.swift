@@ -12,6 +12,7 @@ public enum PrefKey {
     public static let keepOnTop = "KeepPanelOnTop"                  // switcher stays above other apps
     public static let autoPaste = "AutoPasteAfterSelect"            // opt-in: ⌘V into the previous app
     public static let cmdVRing = "HoldCommandTapVRing"              // opt-in: hold ⌘, tap V to cycle
+    public static let appearance = "Appearance"                     // system / light / dark
 }
 
 /// Localized string lookup against the app bundle. Falls back to the key

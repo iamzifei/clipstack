@@ -80,3 +80,11 @@
 "ax_missing" = "アクセシビリティ権限が必要です";
 "ax_open" = "システム設定を開く";
 "paste_help" = "どちらも初期状態はオフで、オンにするとアクセシビリティ権限が必要です。履歴切り替えをオンにすると、⌘ を押したまま V で前へ、⇧V で戻り、⌘ を離すとペーストします。⌘V を素早く押すだけなら通常のペーストです。";
+
+/* 1.6: appearance + type filter */
+"appearance" = "外観";
+"appearance_system" = "システム";
+"appearance_light" = "ライト";
+"appearance_dark" = "ダーク";
+"filter_all" = "すべて";
+"hint_filter" = "絞り込み";
