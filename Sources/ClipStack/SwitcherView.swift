@@ -4,6 +4,9 @@ import ClipStackCore
 /// The floating switcher: search bar on top, history list on the left,
 /// full-fidelity preview on the right.
 struct SwitcherView: View {
+    /// Shared with the window controller so the panel frame matches.
+    static let panelSize = CGSize(width: 980, height: 480)
+
     @ObservedObject var model: SwitcherModel
     @FocusState private var searchFocused: Bool
 
@@ -21,7 +24,7 @@ struct SwitcherView: View {
             Divider()
             footer
         }
-        .frame(width: 780, height: 460)
+        .frame(width: SwitcherView.panelSize.width, height: SwitcherView.panelSize.height)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 14, style: .continuous)
@@ -61,11 +64,23 @@ struct SwitcherView: View {
                             .id(pair.element.id)
                             .contentShape(Rectangle())
                             .onTapGesture(count: 2) { model.commit(atVisibleIndex: pair.offset) }
-                            .onTapGesture { model.selectionIndex = pair.offset }
+                            .onTapGesture {
+                                // ⌘-click marks for merge (like Finder's
+                                // multi-select); a plain click just selects.
+                                if NSEvent.modifierFlags.contains(.command) {
+                                    model.toggleMark(id: pair.element.id)
+                                }
+                                model.selectionIndex = pair.offset
+                            }
                     }
                 }
                 .padding(6)
             }
+            // With "Show scroll bars: Always" (any mouse attached) the legacy
+            // scroller draws an opaque white track between the list and the
+            // preview. The list is keyboard-driven and shows its item count,
+            // so the bar adds nothing; wheel/trackpad scrolling still works.
+            .scrollIndicators(.never)
             .onChange(of: model.selectionIndex) { _ in
                 if let id = model.selected?.id {
                     proxy.scrollTo(id, anchor: .center)
@@ -76,15 +91,30 @@ struct SwitcherView: View {
 
     private func row(item: ClipItem, index: Int) -> some View {
         let isSelected = index == model.selectionIndex
+        let type = item.contentType
+        let markNumber = model.markNumber(of: item.id)
         return HStack(spacing: 8) {
-            Image(systemName: icon(for: item.kind))
-                .frame(width: 16)
-                .foregroundStyle(isSelected ? .primary : .secondary)
+            if let markNumber {
+                // Marked for merge: the badge shows the paste order.
+                Text("\(markNumber)")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(width: 16, height: 16)
+                    .background(Color.accentColor, in: Circle())
+            } else if let color = item.colorValue {
+                ColorSwatch(color: color, size: 14)
+                    .frame(width: 16)
+            } else {
+                Image(systemName: icon(for: type))
+                    .frame(width: 16)
+                    .foregroundStyle(isSelected ? .primary : .secondary)
+            }
             VStack(alignment: .leading, spacing: 2) {
                 Text(item.previewLine)
                     .font(.system(size: 12.5))
                     .lineLimit(1)
                 HStack(spacing: 6) {
+                    TypeTag(type: type)
                     if item.pinned {
                         Image(systemName: "pin.fill").font(.system(size: 8))
                     }
@@ -109,7 +139,8 @@ struct SwitcherView: View {
         .padding(.vertical, 5)
         .padding(.horizontal, 8)
         .background(
-            isSelected ? Color.accentColor.opacity(0.22) : Color.clear,
+            isSelected ? Color.accentColor.opacity(0.22)
+                : (markNumber != nil ? Color.accentColor.opacity(0.08) : Color.clear),
             in: RoundedRectangle(cornerRadius: 6)
         )
     }
@@ -119,8 +150,9 @@ struct SwitcherView: View {
         if let item = model.selected {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 8) {
-                    Text(kindLabel(item.kind))
-                        .font(.system(size: 11, weight: .semibold))
+                    // The tag already names the kind; a separate "Text" label
+                    // next to it only repeated it.
+                    TypeTag(type: item.contentType)
                     Text(ByteFormat.string(item.byteSize))
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
@@ -159,6 +191,20 @@ struct SwitcherView: View {
         switch item.kind {
         case .text:
             ScrollView {
+                if let color = item.colorValue {
+                    // Colour entries: a big swatch plus every notation, so
+                    // the value can be checked at a glance before pasting.
+                    HStack(alignment: .top, spacing: 12) {
+                        ColorSwatch(color: color, size: 72)
+                        VStack(alignment: .leading, spacing: 4) {
+                            ForEach([color.hexString, color.rgbString, color.hslString], id: \.self) {
+                                Text($0).font(.system(size: 12, design: .monospaced)).textSelection(.enabled)
+                            }
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(.bottom, 8)
+                }
                 Text(String((item.plainText ?? "").prefix(20_000)))
                     .font(.system(size: 12, design: .monospaced))
                     .textSelection(.enabled)
@@ -188,9 +234,37 @@ struct SwitcherView: View {
     }
 
     private var footer: some View {
-        HStack(spacing: 14) {
-            hint("↩", L("hint_copy"))
+        HStack(spacing: 12) {
+            if model.ringMode {
+                // Hold-⌘ ring: only these keys mean anything right now.
+                hint("V", L("hint_ring_next"))
+                hint("⇧V", L("hint_ring_prev"))
+                hint("⌫", L("hint_delete"))
+                hint("esc", L("hint_close"))
+                Text(L("hint_ring_release"))
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(Color.accentColor)
+            } else {
+                standardHints
+            }
+            Spacer()
+            Text("ClipStack \(appVersion)")
+                .font(.system(size: 10))
+                .foregroundStyle(.tertiary)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+    }
+
+    @ViewBuilder
+    private var standardHints: some View {
+            hint("↩", model.marked.isEmpty ? L("hint_copy")
+                 : String(format: L("hint_copy_marked"), model.marked.count),
+                 active: !model.marked.isEmpty)
             hint("⌘1–9", L("hint_quick"))
+            hint("⌘K", L("hint_transform"))
+            hint("⌘M", L("hint_mark"))
+            hint("⌘O", L("hint_note"))
             hint("⌘P", L("hint_pin"))
             // Highlighted while on, so the current mode is readable at a glance
             // even when the panel sits unfocused over another app.
@@ -200,13 +274,6 @@ struct SwitcherView: View {
             // user's current binding so a rebind stays in sync.
             hint(clearAllKey, L("hint_clear_all"))
             hint("esc", L("hint_close"))
-            Spacer()
-            Text("ClipStack \(appVersion)")
-                .font(.system(size: 10))
-                .foregroundStyle(.tertiary)
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
     }
 
     private var clearAllKey: String {
@@ -233,23 +300,22 @@ struct SwitcherView: View {
                 .font(.system(size: 10))
                 .foregroundStyle(active ? Color.accentColor : Color.secondary)
         }
+        // Never wrap a hint onto two lines; the footer is one tight row.
+        .lineLimit(1)
+        .fixedSize()
     }
 
     // MARK: helpers
 
-    private func icon(for kind: ClipKind) -> String {
-        switch kind {
+    private func icon(for type: ContentType) -> String {
+        switch type {
         case .text: return "doc.text"
+        case .url: return "link"
+        case .email: return "envelope"
+        case .color: return "paintpalette"
+        case .code: return "chevron.left.forwardslash.chevron.right"
         case .image: return "photo"
         case .file: return "folder"
-        }
-    }
-
-    private func kindLabel(_ kind: ClipKind) -> String {
-        switch kind {
-        case .text: return L("kind_text")
-        case .image: return L("kind_image")
-        case .file: return L("kind_file")
         }
     }
 
@@ -272,5 +338,80 @@ struct SwitcherView: View {
 
     static func full(_ date: Date) -> String {
         fullFormatter.string(from: date)
+    }
+}
+
+/// Small uppercase pill naming the entry's content type (URL / CODE / …).
+struct TypeTag: View {
+    let type: ContentType
+
+    var body: some View {
+        Text(type.tag)
+            .font(.system(size: 8.5, weight: .bold, design: .rounded))
+            .kerning(0.4)
+            // Solid pill + white text: a tinted-text-on-faint-tint tag
+            // washed out to unreadable when the translucent panel sat over
+            // a dark window in light mode.
+            .foregroundStyle(.white)
+            .padding(.horizontal, 4)
+            .padding(.vertical, 1)
+            .background(tint, in: RoundedRectangle(cornerRadius: 3))
+    }
+
+    /// One hue per type so rows can be scanned by colour alone.
+    private var tint: Color {
+        switch type {
+        case .url: return .blue
+        case .email: return .teal
+        case .color: return .pink
+        case .code: return .purple
+        case .image: return .orange
+        case .file: return .brown
+        case .text: return Color(nsColor: .systemGray)
+        }
+    }
+}
+
+/// Rounded square filled with a parsed clipboard colour. A checkerboard sits
+/// underneath so translucent colours read as translucent.
+struct ColorSwatch: View {
+    let color: ColorValue
+    let size: CGFloat
+
+    var body: some View {
+        ZStack {
+            Checkerboard().fill(Color.gray.opacity(0.35))
+            Rectangle().fill(Color(
+                .sRGB,
+                red: Double(color.red) / 255,
+                green: Double(color.green) / 255,
+                blue: Double(color.blue) / 255,
+                opacity: color.alpha
+            ))
+        }
+        .frame(width: size, height: size)
+        .clipShape(RoundedRectangle(cornerRadius: size * 0.22, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: size * 0.22, style: .continuous)
+                .strokeBorder(Color.primary.opacity(0.15), lineWidth: 0.5)
+        )
+    }
+}
+
+private struct Checkerboard: Shape {
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+        let cell = max(3, rect.width / 6)
+        var y: CGFloat = 0, row = 0
+        while y < rect.height {
+            var x: CGFloat = row.isMultiple(of: 2) ? 0 : cell
+            while x < rect.width {
+                p.addRect(CGRect(x: x, y: y, width: cell, height: cell))
+                x += cell * 2
+            }
+            y += cell
+            row += 1
+        }
+        return p
     }
 }

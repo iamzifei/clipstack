@@ -10,6 +10,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var toast: ToastController!
     private var hotKeys: HotKeys!
     private var updater: Updater!
+    private let ring = CmdVRing()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Single-instance guard: a second launch just quits itself.
@@ -37,6 +38,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         switcher.onCopied = { [weak self] item in
             self?.toast.showCopied(detail: String(item.previewLine.prefix(48)))
         }
+        switcher.onNotice = { [weak self] message in
+            self?.toast.show(title: message, detail: nil)
+        }
         settings = SettingsWindowController()
         // Sparkle auto-updater: starts background checks against the appcast
         // feed configured in Info.plist. No-op when running unbundled.
@@ -61,6 +65,38 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         settings.model.onHotKeysChanged = { [weak self] in self?.hotKeys.reload() }
         settings.model.suspendHotKeys = { [weak self] in self?.hotKeys.suspend() }
         hotKeys.reload()
+
+        // Opt-in hold-⌘-tap-V ring. Dormant (no event tap, no permission
+        // request) unless the user enabled it in Settings.
+        ring.canBegin = { [weak self] in
+            guard let self else { return false }
+            // Never hijack ⌘V inside ClipStack's own windows (settings,
+            // the panel's search field): there it must paste normally.
+            let front = NSWorkspace.shared.frontmostApplication?.processIdentifier
+            return !self.store.items.isEmpty
+                && !self.switcher.hasKeyFocus
+                && front != ProcessInfo.processInfo.processIdentifier
+        }
+        ring.handler = { [weak self] event, immediate in
+            guard let switcher = self?.switcher else { return }
+            switch event {
+            case .begin: switcher.ringBegin()
+            case .step(let delta): switcher.ringStep(delta)
+            case .delete: switcher.ringDelete()
+            case .cancel: switcher.ringCancel()
+            case .commit: switcher.ringCommit(immediate: immediate)
+            }
+        }
+        settings.model.onPasteOptionsChanged = { [weak self] in self?.applyRingSetting() }
+        applyRingSetting()
+    }
+
+    private func applyRingSetting() {
+        if UserDefaults.standard.bool(forKey: PrefKey.cmdVRing) {
+            ring.enable()
+        } else {
+            ring.disable()
+        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {

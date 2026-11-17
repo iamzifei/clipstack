@@ -19,8 +19,17 @@ final class SwitcherModel: ObservableObject {
         }
     }
 
+    /// Entries marked with ⌘M / ⌘-click, in the order they were marked.
+    /// While non-empty, Return copies all of them merged into one text.
+    @Published var marked: [UUID] = []
+    /// ⌘V-ring mode (hold ⌘, tap V): the panel lists pure recency order so
+    /// the first entry is always the current clipboard, and ignores search.
+    @Published var ringMode = false
+
     let store: HistoryStore
     var onCommit: ((ClipItem) -> Void)?
+    /// Called with the merged text of all marked entries.
+    var onCommitMerged: ((String) -> Void)?
     var onClose: (() -> Void)?
 
     init(store: HistoryStore) {
@@ -29,6 +38,7 @@ final class SwitcherModel: ObservableObject {
 
     var filtered: [ClipItem] {
         _ = revision
+        if ringMode { return store.items }
         let all = store.orderedItems
         guard !query.isEmpty else { return all }
         return all.filter {
@@ -50,7 +60,38 @@ final class SwitcherModel: ObservableObject {
     }
 
     func commitSelection() {
-        if let item = selected { onCommit?(item) }
+        if !marked.isEmpty {
+            commitMarked()
+        } else if let item = selected {
+            onCommit?(item)
+        }
+    }
+
+    /// 1-based position of `id` in the mark order, for the row badge.
+    func markNumber(of id: UUID) -> Int? {
+        marked.firstIndex(of: id).map { $0 + 1 }
+    }
+
+    func toggleMark(id: UUID) {
+        if let i = marked.firstIndex(of: id) {
+            marked.remove(at: i)
+        } else {
+            marked.append(id)
+        }
+    }
+
+    func toggleMarkSelection() {
+        guard let item = selected else { return }
+        toggleMark(id: item.id)
+    }
+
+    private func commitMarked() {
+        // Resolve ids against the store (not `filtered`) so marks survive a
+        // search that hides some of them.
+        let byId = Dictionary(store.items.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
+        let items = marked.compactMap { byId[$0] }
+        marked = []
+        if let text = ClipMerge.text(for: items) { onCommitMerged?(text) }
     }
 
     func commit(atVisibleIndex index: Int) {
@@ -79,6 +120,11 @@ final class SwitcherModel: ObservableObject {
 
     func refresh() {
         revision += 1
+        // Drop marks whose entries were deleted meanwhile.
+        let alive = Set(store.items.map(\.id))
+        if marked.contains(where: { !alive.contains($0) }) {
+            marked.removeAll { !alive.contains($0) }
+        }
         let count = filtered.count
         if selectionIndex >= count { selectionIndex = max(0, count - 1) }
     }

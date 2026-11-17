@@ -18,8 +18,13 @@ final class SettingsModel: ObservableObject {
     @Published var loginError: String?
     @Published var recordingTarget: Target?
     @Published var recordHint: String?
+    /// Opt-in paste automation (both need the Accessibility permission).
+    @Published var autoPaste = UserDefaults.standard.bool(forKey: PrefKey.autoPaste)
+    @Published var cmdVRing = UserDefaults.standard.bool(forKey: PrefKey.cmdVRing)
+    @Published var accessibilityGranted = Accessibility.isTrusted()
 
     var onHotKeysChanged: () -> Void = {}
+    var onPasteOptionsChanged: () -> Void = {}
     var suspendHotKeys: () -> Void = {}
     private var monitor: Any?
 
@@ -37,6 +42,30 @@ final class SettingsModel: ObservableObject {
     }
 
     var canToggleLogin: Bool { Bundle.main.bundleIdentifier != nil }
+
+    func setAutoPaste(_ on: Bool) {
+        autoPaste = on
+        UserDefaults.standard.set(on, forKey: PrefKey.autoPaste)
+        if on { requestAccessibility() }
+        onPasteOptionsChanged()
+    }
+
+    func setCmdVRing(_ on: Bool) {
+        cmdVRing = on
+        UserDefaults.standard.set(on, forKey: PrefKey.cmdVRing)
+        if on { requestAccessibility() }
+        onPasteOptionsChanged()
+    }
+
+    /// Shows macOS's own "allow Accessibility" prompt the first time; the
+    /// state line in the window re-checks whenever the window is shown.
+    private func requestAccessibility() {
+        accessibilityGranted = Accessibility.isTrusted(prompt: true)
+    }
+
+    func refreshAccessibility() {
+        accessibilityGranted = Accessibility.isTrusted()
+    }
 
     func refreshLoginState() {
         launchAtLogin = canToggleLogin && SMAppService.mainApp.status == .enabled
@@ -172,6 +201,32 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+            Section(L("paste_section")) {
+                Toggle(L("paste_auto"), isOn: Binding(
+                    get: { model.autoPaste },
+                    set: { model.setAutoPaste($0) }
+                ))
+                Toggle(L("paste_ring"), isOn: Binding(
+                    get: { model.cmdVRing },
+                    set: { model.setCmdVRing($0) }
+                ))
+                if model.autoPaste || model.cmdVRing {
+                    HStack {
+                        Image(systemName: model.accessibilityGranted ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                            .foregroundStyle(model.accessibilityGranted ? .green : .orange)
+                        Text(L(model.accessibilityGranted ? "ax_granted" : "ax_missing"))
+                            .font(.caption)
+                        Spacer()
+                        if !model.accessibilityGranted {
+                            Button(L("ax_open")) { Accessibility.openSystemSettings() }
+                                .controlSize(.small)
+                        }
+                    }
+                }
+                Text(L("paste_help"))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
             Section {
                 HStack {
                     Text(L("version"))
@@ -188,7 +243,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 420, height: 374)
+        .frame(width: 440, height: 560)
     }
 
     private var appVersion: String {
@@ -220,7 +275,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     func show() {
         if window == nil {
             let w = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 420, height: 374),
+                contentRect: NSRect(x: 0, y: 0, width: 440, height: 560),
                 styleMask: [.titled, .closable],
                 backing: .buffered,
                 defer: false
@@ -233,8 +288,14 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
             window = w
         }
         model.refreshLoginState()
+        model.refreshAccessibility()
         NSApp.activate(ignoringOtherApps: true)
         window?.makeKeyAndOrderFront(nil)
+    }
+
+    /// Coming back from System Settings after granting Accessibility.
+    func windowDidBecomeKey(_ notification: Notification) {
+        model.refreshAccessibility()
     }
 
     func windowWillClose(_ notification: Notification) {
