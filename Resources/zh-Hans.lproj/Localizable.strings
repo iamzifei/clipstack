@@ -88,3 +88,36 @@
 "appearance_dark" = "深色";
 "filter_all" = "全部";
 "hint_filter" = "筛选";
+
+/* 1.7: welcome guide */
+"ob_window_title" = "欢迎使用 ClipStack";
+"ob_title_1" = "你复制过的东西，都还在";
+"ob_body_1" = "ClipStack 会保存你复制过的文本、图片和文件，只存在这台 Mac 上。在任何 App 里按 %@ 就能把它们找回来。下面用一分钟介绍几个快捷键。";
+"ob_title_2" = "搜索，然后复制";
+"ob_body_2" = "面板一打开，搜索框就已经就绪，直接打字即可。右侧预览显示整条内容。";
+"ob_title_3" = "类型标签和筛选";
+"ob_body_3" = "每一条都有类型标签 —— TEXT、URL、CODE、EMAIL、COLOR、IMAGE、FILE。搜索框下面那排标签可以只显示一种类型，按 esc 清除筛选。";
+"ob_title_4" = "贴之前先改好";
+"ob_body_4" = "改大小写、整理或压缩 JSON、URL 编码、换算颜色写法，或者把截图里的文字提取出来。结果会直接复制，并作为新的一条存进历史。";
+"ob_title_5" = "置顶、合并、浮窗";
+"ob_body_5" = "常用的钉在最上面，几段内容合成一次粘贴，或者把某一条浮在你正在填的表单旁边。";
+"ob_title_6" = "按你的习惯设置";
+"ob_body_6" = "在设置里可以改这些快捷键、选择浅色／深色／跟随系统、开机自启动，还能打开两个需要辅助功能权限的可选粘贴功能。这份指导随时可以从菜单栏菜单重新打开。";
+"ob_row_open" = "在任何 App 里呼出历史面板";
+"ob_row_move" = "移动选择";
+"ob_row_copy" = "复制选中项并关闭";
+"ob_row_quick" = "直接复制前九条中的一条";
+"ob_row_close" = "关闭面板";
+"ob_row_next_type" = "切到下一种类型";
+"ob_row_prev_type" = "切到上一种类型";
+"ob_row_transform" = "打开选中项的转换菜单";
+"ob_row_pin" = "置顶到列表最前";
+"ob_row_merge" = "标记多条，回车合并复制";
+"ob_row_note" = "把这一条弹成浮窗便签";
+"ob_row_ontop" = "工作时让面板保持在最上层";
+"ob_row_settings" = "打开设置";
+"ob_skip" = "跳过";
+"ob_back" = "上一步";
+"ob_next" = "下一步";
+"ob_try" = "现在试试";
+"menu_guide" = "新手指导…";

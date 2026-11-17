@@ -88,3 +88,36 @@
 "appearance_dark" = "Dunkel";
 "filter_all" = "Alle";
 "hint_filter" = "Filtern";
+
+/* 1.7: welcome guide */
+"ob_window_title" = "Willkommen bei ClipStack";
+"ob_title_1" = "Alles Kopierte ist noch da";
+"ob_body_1" = "ClipStack bewahrt kopierten Text, Bilder und Dateien auf — nur auf diesem Mac. Drück %@ in jeder App, um sie zurückzuholen. Diese einminütige Tour zeigt die Tasten.";
+"ob_title_2" = "Finden und kopieren";
+"ob_body_2" = "Das Panel öffnet sich mit bereitem Suchfeld: einfach lostippen. Die Vorschau rechts zeigt den ganzen Eintrag.";
+"ob_title_3" = "Etiketten und Filter";
+"ob_body_3" = "Jeder Eintrag trägt ein Etikett — TEXT, URL, CODE, EMAIL, COLOR, IMAGE, FILE. Die Chips unter dem Suchfeld zeigen jeweils nur eine Art; esc hebt den Filter auf.";
+"ob_title_4" = "Erst anpassen, dann einfügen";
+"ob_body_4" = "Schreibweise ändern, JSON formatieren oder verdichten, eine URL kodieren, eine Farbe umrechnen oder den Text aus einem Screenshot holen. Das Ergebnis wird kopiert und als neuer Eintrag gespeichert.";
+"ob_title_5" = "Anheften, zusammenführen, schweben lassen";
+"ob_body_5" = "Heft an, was du oft brauchst, füge mehrere Teile in einem Rutsch ein oder lass einen Eintrag neben dem Formular schweben, das du gerade ausfüllst.";
+"ob_title_6" = "Nach deinem Geschmack";
+"ob_body_6" = "In den Einstellungen kannst du diese Kurzbefehle ändern, helles, dunkles oder System-Erscheinungsbild wählen, beim Anmelden starten und zwei optionale Einfügehilfen einschalten, die die Bedienungshilfen-Berechtigung brauchen. Diese Einführung findest du jederzeit im Menüleisten-Menü.";
+"ob_row_open" = "Verlaufs-Panel aus jeder App öffnen";
+"ob_row_move" = "Auswahl bewegen";
+"ob_row_copy" = "Ausgewählten Eintrag kopieren und schließen";
+"ob_row_quick" = "Einen der ersten neun direkt kopieren";
+"ob_row_close" = "Panel schließen";
+"ob_row_next_type" = "Nächste Art zeigen";
+"ob_row_prev_type" = "Vorherige Art zeigen";
+"ob_row_transform" = "Umwandlungsmenü für den Eintrag öffnen";
+"ob_row_pin" = "Oben in der Liste anheften";
+"ob_row_merge" = "Einträge markieren, dann kopiert ↩ sie zusammengeführt";
+"ob_row_note" = "Eintrag als schwebende Notiz öffnen";
+"ob_row_ontop" = "Panel beim Arbeiten im Vordergrund halten";
+"ob_row_settings" = "Einstellungen öffnen";
+"ob_skip" = "Überspringen";
+"ob_back" = "Zurück";
+"ob_next" = "Weiter";
+"ob_try" = "Jetzt ausprobieren";
+"menu_guide" = "Einführung…";

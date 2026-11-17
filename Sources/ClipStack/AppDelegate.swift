@@ -11,6 +11,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var hotKeys: HotKeys!
     private var updater: Updater!
     private let ring = CmdVRing()
+    private let onboarding = OnboardingWindowController()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Single-instance guard: a second launch just quits itself.
@@ -92,6 +93,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         settings.model.onPasteOptionsChanged = { [weak self] in self?.applyRingSetting() }
         applyRingSetting()
+
+        // First-run welcome guide (also shown once to people upgrading from
+        // a version without it). Reopenable from the menu-bar menu.
+        onboarding.onOpenPanel = { [weak self] in self?.switcher.show() }
+        statusMenu.onShowGuide = { [weak self] in self?.onboarding.show() }
+        onboarding.showIfNeeded()
     }
 
     private func applyRingSetting() {

@@ -88,3 +88,36 @@
 "appearance_dark" = "Dark";
 "filter_all" = "All";
 "hint_filter" = "Filter";
+
+/* 1.7: welcome guide */
+"ob_window_title" = "Welcome to ClipStack";
+"ob_title_1" = "Everything you copy is still here";
+"ob_body_1" = "ClipStack keeps the text, images and files you copy — on this Mac only. Press %@ in any app to bring them back. This one-minute tour shows the keys.";
+"ob_title_2" = "Find it, copy it";
+"ob_body_2" = "The panel opens with the search field ready: just start typing. The preview on the right shows the whole entry.";
+"ob_title_3" = "Tags and filters";
+"ob_body_3" = "Every entry is tagged — TEXT, URL, CODE, EMAIL, COLOR, IMAGE, FILE. The chips under the search field show one type at a time; esc clears the filter.";
+"ob_title_4" = "Change it before you paste";
+"ob_body_4" = "Change case, tidy or minify JSON, encode a URL, convert a colour, or pull the text out of a screenshot. The result is copied and saved as a new entry.";
+"ob_title_5" = "Keep, combine, float";
+"ob_body_5" = "Pin what you reuse, merge several pieces into one paste, or float an entry next to the form you are filling in.";
+"ob_title_6" = "Make it yours";
+"ob_body_6" = "In Settings you can change these shortcuts, pick light, dark or system appearance, launch at login, and turn on two optional paste helpers that need Accessibility permission. This guide is always in the menu-bar menu.";
+"ob_row_open" = "Open the history panel from any app";
+"ob_row_move" = "Move the selection";
+"ob_row_copy" = "Copy the selected entry and close";
+"ob_row_quick" = "Copy one of the first nine directly";
+"ob_row_close" = "Close the panel";
+"ob_row_next_type" = "Show the next type";
+"ob_row_prev_type" = "Show the previous type";
+"ob_row_transform" = "Open the transform menu for the selected entry";
+"ob_row_pin" = "Pin to the top of the list";
+"ob_row_merge" = "Mark entries, then ↩ copies them merged";
+"ob_row_note" = "Open the entry as a floating note";
+"ob_row_ontop" = "Keep the panel on top while you work";
+"ob_row_settings" = "Open Settings";
+"ob_skip" = "Skip";
+"ob_back" = "Back";
+"ob_next" = "Next";
+"ob_try" = "Try it now";
+"menu_guide" = "Welcome Guide…";

@@ -88,3 +88,36 @@
 "appearance_dark" = "Oscuro";
 "filter_all" = "Todo";
 "hint_filter" = "Filtrar";
+
+/* 1.7: welcome guide */
+"ob_window_title" = "Te damos la bienvenida a ClipStack";
+"ob_title_1" = "Todo lo que copiaste sigue aquí";
+"ob_body_1" = "ClipStack guarda el texto, las imágenes y los archivos que copias, solo en este Mac. Pulsa %@ en cualquier app para recuperarlos. Este recorrido de un minuto muestra las teclas.";
+"ob_title_2" = "Buscar y copiar";
+"ob_body_2" = "El panel se abre con el campo de búsqueda listo: empieza a escribir. La vista previa de la derecha muestra la entrada completa.";
+"ob_title_3" = "Etiquetas y filtros";
+"ob_body_3" = "Cada entrada lleva una etiqueta — TEXT, URL, CODE, EMAIL, COLOR, IMAGE, FILE. Las etiquetas bajo el campo de búsqueda muestran un solo tipo a la vez; esc quita el filtro.";
+"ob_title_4" = "Arréglalo antes de pegarlo";
+"ob_body_4" = "Cambia mayúsculas, formatea o compacta JSON, codifica una URL, convierte un color o saca el texto de una captura de pantalla. El resultado se copia y se guarda como entrada nueva.";
+"ob_title_5" = "Fijar, combinar, flotar";
+"ob_body_5" = "Fija lo que reutilizas, pega varios trozos de una vez o deja una entrada flotando junto al formulario que estás rellenando.";
+"ob_title_6" = "A tu manera";
+"ob_body_6" = "En Ajustes puedes cambiar estos atajos, elegir apariencia clara, oscura o del sistema, abrir al iniciar sesión y activar dos ayudas opcionales para pegar que necesitan el permiso de accesibilidad. Esta guía está siempre en el menú de la barra de menús.";
+"ob_row_open" = "Abrir el panel de historial desde cualquier app";
+"ob_row_move" = "Mover la selección";
+"ob_row_copy" = "Copiar la entrada seleccionada y cerrar";
+"ob_row_quick" = "Copiar directamente una de las nueve primeras";
+"ob_row_close" = "Cerrar el panel";
+"ob_row_next_type" = "Mostrar el tipo siguiente";
+"ob_row_prev_type" = "Mostrar el tipo anterior";
+"ob_row_transform" = "Abrir el menú de transformación de la entrada";
+"ob_row_pin" = "Fijar al principio de la lista";
+"ob_row_merge" = "Marcar entradas y Retorno las copia combinadas";
+"ob_row_note" = "Abrir la entrada como nota flotante";
+"ob_row_ontop" = "Mantener el panel delante mientras trabajas";
+"ob_row_settings" = "Abrir Ajustes";
+"ob_skip" = "Omitir";
+"ob_back" = "Atrás";
+"ob_next" = "Siguiente";
+"ob_try" = "Probar ahora";
+"menu_guide" = "Guía de bienvenida…";

@@ -13,6 +13,8 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
     private let toast: ToastController
     private let updater: Updater
     private let menu = NSMenu()
+    /// Reopens the first-run welcome guide.
+    var onShowGuide: (() -> Void)?
 
     init(
         store: HistoryStore,
@@ -81,6 +83,10 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
         )
         prefs.target = self
         menu.addItem(prefs)
+
+        let guide = NSMenuItem(title: L("menu_guide"), action: #selector(showGuide), keyEquivalent: "")
+        guide.target = self
+        menu.addItem(guide)
 
         let checkUpdates = NSMenuItem(
             title: L("menu_check_updates"),
@@ -164,6 +170,10 @@ final class StatusMenuController: NSObject, NSMenuDelegate {
 
     @objc private func openSettings() {
         settings.show()
+    }
+
+    @objc private func showGuide() {
+        onShowGuide?()
     }
 
     @objc private func openSupport() {

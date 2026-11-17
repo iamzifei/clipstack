@@ -88,3 +88,36 @@
 "appearance_dark" = "深色";
 "filter_all" = "全部";
 "hint_filter" = "篩選";
+
+/* 1.7: welcome guide */
+"ob_window_title" = "歡迎使用 ClipStack";
+"ob_title_1" = "你複製過的東西，都還在";
+"ob_body_1" = "ClipStack 會保存你複製過的文字、圖片和檔案，只存在這台 Mac 上。在任何 App 裡按 %@ 就能把它們找回來。以下用一分鐘介紹幾個快速鍵。";
+"ob_title_2" = "搜尋，然後複製";
+"ob_body_2" = "面板一打開，搜尋框就已就緒，直接打字即可。右側預覽顯示整條內容。";
+"ob_title_3" = "類型標籤和篩選";
+"ob_body_3" = "每一條都有類型標籤 —— TEXT、URL、CODE、EMAIL、COLOR、IMAGE、FILE。搜尋框下面那排標籤可以只顯示一種類型，按 esc 清除篩選。";
+"ob_title_4" = "貼上前先改好";
+"ob_body_4" = "改大小寫、整理或壓縮 JSON、URL 編碼、換算顏色寫法，或把截圖裡的文字取出來。結果會直接複製，並作為新的一條存進歷史。";
+"ob_title_5" = "釘選、合併、浮動視窗";
+"ob_body_5" = "常用的釘在最上面，幾段內容合成一次貼上，或把某一條浮在你正在填的表單旁邊。";
+"ob_title_6" = "依你的習慣設定";
+"ob_body_6" = "在設定裡可以改這些快速鍵、選擇淺色／深色／跟隨系統、登入時啟動，還能開啟兩個需要輔助使用權限的選用貼上功能。這份導覽隨時可以從選單列選單重新打開。";
+"ob_row_open" = "在任何 App 裡叫出歷史面板";
+"ob_row_move" = "移動選取";
+"ob_row_copy" = "複製選取項目並關閉";
+"ob_row_quick" = "直接複製前九條中的一條";
+"ob_row_close" = "關閉面板";
+"ob_row_next_type" = "切到下一種類型";
+"ob_row_prev_type" = "切到上一種類型";
+"ob_row_transform" = "開啟選取項目的轉換選單";
+"ob_row_pin" = "釘選到清單最前";
+"ob_row_merge" = "標記多條，按 Return 合併複製";
+"ob_row_note" = "把這一條開成浮動便條";
+"ob_row_ontop" = "工作時讓面板保持在最上層";
+"ob_row_settings" = "打開設定";
+"ob_skip" = "略過";
+"ob_back" = "上一步";
+"ob_next" = "下一步";
+"ob_try" = "現在試試";
+"menu_guide" = "新手導覽…";

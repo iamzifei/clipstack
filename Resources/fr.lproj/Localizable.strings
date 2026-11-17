@@ -88,3 +88,36 @@
 "appearance_dark" = "Sombre";
 "filter_all" = "Tout";
 "hint_filter" = "Filtrer";
+
+/* 1.7: welcome guide */
+"ob_window_title" = "Bienvenue dans ClipStack";
+"ob_title_1" = "Tout ce que vous avez copié est encore là";
+"ob_body_1" = "ClipStack garde le texte, les images et les fichiers que vous copiez — sur ce Mac uniquement. Appuyez sur %@ dans n'importe quelle app pour les retrouver. Cette visite d'une minute présente les touches.";
+"ob_title_2" = "Trouver, puis copier";
+"ob_body_2" = "Le panneau s'ouvre avec le champ de recherche prêt : tapez directement. L'aperçu à droite montre l'entrée en entier.";
+"ob_title_3" = "Étiquettes et filtres";
+"ob_body_3" = "Chaque entrée porte une étiquette — TEXT, URL, CODE, EMAIL, COLOR, IMAGE, FILE. Les pastilles sous le champ de recherche n'affichent qu'un type à la fois ; esc efface le filtre.";
+"ob_title_4" = "Corriger avant de coller";
+"ob_body_4" = "Changer la casse, formater ou compacter du JSON, encoder une URL, convertir une couleur ou extraire le texte d'une capture d'écran. Le résultat est copié et enregistré comme nouvelle entrée.";
+"ob_title_5" = "Épingler, fusionner, faire flotter";
+"ob_body_5" = "Épinglez ce que vous réutilisez, collez plusieurs morceaux d'un coup ou faites flotter une entrée à côté du formulaire que vous remplissez.";
+"ob_title_6" = "À votre façon";
+"ob_body_6" = "Dans les Réglages, vous pouvez changer ces raccourcis, choisir une apparence claire, sombre ou système, ouvrir l'app à la session et activer deux aides au collage optionnelles qui demandent l'autorisation d'accessibilité. Ce guide reste accessible depuis le menu de la barre des menus.";
+"ob_row_open" = "Ouvrir le panneau d'historique depuis n'importe quelle app";
+"ob_row_move" = "Déplacer la sélection";
+"ob_row_copy" = "Copier l'entrée sélectionnée et fermer";
+"ob_row_quick" = "Copier directement l'une des neuf premières";
+"ob_row_close" = "Fermer le panneau";
+"ob_row_next_type" = "Afficher le type suivant";
+"ob_row_prev_type" = "Afficher le type précédent";
+"ob_row_transform" = "Ouvrir le menu de transformation de l'entrée";
+"ob_row_pin" = "Épingler en haut de la liste";
+"ob_row_merge" = "Marquer des entrées, puis ↩ les copie fusionnées";
+"ob_row_note" = "Ouvrir l'entrée en note flottante";
+"ob_row_ontop" = "Garder le panneau au premier plan pendant le travail";
+"ob_row_settings" = "Ouvrir les Réglages";
+"ob_skip" = "Passer";
+"ob_back" = "Retour";
+"ob_next" = "Suivant";
+"ob_try" = "Essayer maintenant";
+"menu_guide" = "Guide de bienvenue…";

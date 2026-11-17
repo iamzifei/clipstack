@@ -13,6 +13,7 @@ public enum PrefKey {
     public static let autoPaste = "AutoPasteAfterSelect"            // opt-in: ⌘V into the previous app
     public static let cmdVRing = "HoldCommandTapVRing"              // opt-in: hold ⌘, tap V to cycle
     public static let appearance = "Appearance"                     // system / light / dark
+    public static let onboardingSeen = "OnboardingVersionSeen"      // last welcome-guide version shown
 }
 
 /// Localized string lookup against the app bundle. Falls back to the key
