@@ -6,6 +6,14 @@
     <description>Most recent ClipStack updates.</description>
     <language>en</language>
     <item>
+      <title>1.7.1</title>
+      <pubDate>Tue, 17 Nov 2026 23:40:09 -0000</pubDate>
+      <sparkle:version>12</sparkle:version>
+      <sparkle:shortVersionString>1.7.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+      <enclosure url="https://github.com/iamzifei/clipstack/releases/download/v1.7.1/ClipStack-1.7.1.dmg" sparkle:edSignature="zH27coH5DyqoEK0nEToqQMkG2j0DuMkb3BoeYmhfhgAp7dyUqyMU094sF8Pa8Gz2oVvZVM//1Ga3I7bfAxfBBg==" length="2243585" type="application/octet-stream"/>
+    </item>
+    <item>
       <title>1.7.0</title>
       <pubDate>Tue, 17 Nov 2026 23:29:38 -0000</pubDate>
       <sparkle:version>11</sparkle:version>
