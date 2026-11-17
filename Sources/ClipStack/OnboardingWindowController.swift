@@ -121,8 +121,20 @@ final class OnboardingWindowController: NSObject, NSWindowDelegate {
 
     /// Bundled screenshot for page `n` (1-based). The panel shots are taken
     /// with demo data in dark mode, the same ones the website uses.
+    /// zh-Hans / zh-Hant ship their own shots in their .lproj; everyone
+    /// else gets the English ones at the top level. The .lproj path is built
+    /// by hand: Bundle's lookup returns the top-level file even when asked
+    /// for a specific localization (verified on macOS 27).
     private static func screenshot(_ n: Int) -> NSImage? {
-        Bundle.main.url(forResource: "guide-\(n)", withExtension: "jpg").flatMap(NSImage.init(contentsOf:))
+        let file = "guide-\(n).jpg"
+        guard let resources = Bundle.main.resourceURL else { return nil }
+        var candidates: [URL] = []
+        if let lang = Bundle.main.preferredLocalizations.first {
+            candidates.append(resources.appendingPathComponent("\(lang).lproj/\(file)"))
+        }
+        candidates.append(resources.appendingPathComponent(file))
+        let url = candidates.first { FileManager.default.fileExists(atPath: $0.path) }
+        return url.flatMap(NSImage.init(contentsOf:))
     }
 
     static func pages() -> [GuidePage] {
