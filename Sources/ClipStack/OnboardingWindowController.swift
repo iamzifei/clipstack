@@ -15,6 +15,9 @@ struct GuidePage {
     let title: String
     let body: String
     let rows: [GuideRow]
+    /// Screenshot of the feature (Resources/Guide/guide-N.jpg), nil when
+    /// running unbundled.
+    var image: NSImage? = nil
 }
 
 final class OnboardingModel: ObservableObject {
@@ -53,13 +56,16 @@ final class OnboardingWindowController: NSObject, NSWindowDelegate {
 
         if window == nil {
             let w = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 560, height: 440),
+                contentRect: NSRect(origin: .zero, size: OnboardingView.size),
                 styleMask: [.titled, .closable],
                 backing: .buffered,
                 defer: false
             )
             w.title = L("ob_window_title")
             w.isReleasedWhenClosed = false
+            // Open on whatever Space the user is on (e.g. a full-screen app),
+            // not on the desktop Space the app happened to launch into.
+            w.collectionBehavior.insert(.moveToActiveSpace)
             w.delegate = self
             window = w
         }
@@ -113,10 +119,16 @@ final class OnboardingWindowController: NSObject, NSWindowDelegate {
         KeyMap.displayString(keyCode: combo.code, carbonModifiers: UInt32(combo.mods))
     }
 
+    /// Bundled screenshot for page `n` (1-based). The panel shots are taken
+    /// with demo data in dark mode, the same ones the website uses.
+    private static func screenshot(_ n: Int) -> NSImage? {
+        Bundle.main.url(forResource: "guide-\(n)", withExtension: "jpg").flatMap(NSImage.init(contentsOf:))
+    }
+
     static func pages() -> [GuidePage] {
         let open = display(HotKeys.switcherCombo)
         let settings = display(HotKeys.settingsCombo)
-        return [
+        let pages: [GuidePage] = [
             GuidePage(icon: "doc.on.clipboard", title: L("ob_title_1"),
                       body: String(format: L("ob_body_1"), open),
                       rows: [GuideRow(keys: [open], text: L("ob_row_open"))]),
@@ -138,6 +150,11 @@ final class OnboardingWindowController: NSObject, NSWindowDelegate {
             GuidePage(icon: "gearshape", title: L("ob_title_6"), body: L("ob_body_6"),
                       rows: [GuideRow(keys: [settings], text: L("ob_row_settings"))]),
         ]
+        return pages.enumerated().map { i, page in
+            var page = page
+            page.image = screenshot(i + 1)
+            return page
+        }
     }
 }
 
@@ -153,13 +170,26 @@ struct OnboardingView: View {
         let page = pages[min(model.page, pages.count - 1)]
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 14) {
-                Image(systemName: page.icon)
-                    .font(.system(size: 30, weight: .medium))
-                    .foregroundStyle(Color.accentColor)
-                    .frame(width: 56, height: 56)
-                    .background(Color.accentColor.opacity(0.12), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                Text(page.title)
-                    .font(.system(size: 22, weight: .bold))
+                if let image = page.image {
+                    // Fixed-height frame so the text below doesn't jump
+                    // between pages; shorter shots sit centred in it.
+                    Image(nsImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: Self.imageHeight)
+                        .background(Color.primary.opacity(0.05))
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .strokeBorder(Color.primary.opacity(0.12), lineWidth: 1))
+                }
+                HStack(spacing: 10) {
+                    Image(systemName: page.icon)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(Color.accentColor)
+                    Text(page.title)
+                        .font(.system(size: 22, weight: .bold))
+                }
                 Text(page.body)
                     .font(.system(size: 13))
                     .foregroundStyle(.secondary)
@@ -181,7 +211,7 @@ struct OnboardingView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .padding(.horizontal, 32)
-            .padding(.top, 28)
+            .padding(.top, 24)
 
             Divider()
             HStack {
@@ -215,8 +245,12 @@ struct OnboardingView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 14)
         }
-        .frame(width: 560, height: 440)
+        .frame(width: Self.size.width, height: Self.size.height)
     }
+
+    /// 576 pt of content width (640 − 2×32) at the panel shots' 2:1 ratio.
+    static let imageHeight: CGFloat = 287
+    static let size = CGSize(width: 640, height: 600)
 }
 
 /// A keyboard key drawn as a small rounded cap.
