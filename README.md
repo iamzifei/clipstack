@@ -115,7 +115,7 @@ DDC 硬件亮度、清晰的 HiDPI 缩放、在每块屏幕上都好使的亮度
 
 ## Also from the same hand
 
-Four small native Mac apps, each doing one thing. Someone who liked one is
+Six small native Mac apps, each doing one thing. Someone who liked one is
 the likeliest person to want another.
 
 | App | | |
@@ -123,3 +123,5 @@ the likeliest person to want another.
 | **[Candela](https://getcandela.app)** | Every display control macOS hides, in one menu bar panel — real brightness over DDC, HiDPI scaling, and brightness keys that work on every monitor. | [source](https://github.com/iamzifei/Candela) |
 | **[AudioSwitch](https://audioswitch.dev)** | Switch audio input and output from the menu bar, with volume, mute and a live mic level meter. | [source](https://github.com/iamzifei/audioswitch) |
 | **[Inkstone](https://inkslab.app)** | Markdown notes that stay plain files in a folder you choose — wikilinks, a graph, a canvas, on macOS and iOS. | [source](https://github.com/iamzifei/inkstone) |
+| **[Veil](https://jamesai.dev/veil/)** | Keeps the window you're working in sharp and softly blurs everything behind it. Free, MIT. | [source](https://github.com/iamzifei/veil) |
+| **[Tapper](https://jamesai.dev/tapper/)** | Turns your pointer into a cartoon glove on a long stick, for demos and screen recordings. Free, MIT. | [source](https://github.com/iamzifei/tapper) |
