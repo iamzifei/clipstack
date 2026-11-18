@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ClipStack landing — web</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#141414}a:hover{color:#55534d}
+.mk{background:linear-gradient(transparent 12%,#ffe45c 12%,#ffe45c 88%,transparent 88%);padding:0 .08em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.key{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 10px;box-sizing:border-box;border-radius:8px;background:#fff;border:1px solid #d9d6cc;border-bottom-width:3px;font:700 14px/1 'JetBrains Mono',monospace;color:#141414}
+.lab{display:inline-flex;align-items:center;gap:10px;font:700 13px/1 'JetBrains Mono',monospace;letter-spacing:.02em;color:#141414}
+.tag{font:700 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;color:#fff;padding:4px 7px;border-radius:5px}
+.card{background:#fff;border:1px solid #e4e2da;border-radius:16px}
+.muted{color:#55534d}
+</style>
+</helmet>
+<div style="background:#f6f5f1;color:#141414;font-family:Inter,system-ui,sans-serif;font-size:17px;line-height:1.6;min-height:100%">
+
+<header style="max-width:1240px;margin:0 auto;padding:22px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+<a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;font:800 20px 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em"><img src="/_blob/39be138c05033c1d39772588a3e15cde" alt="" style="width:30px;height:30px;border-radius:7px">ClipStack</a>
+<nav style="display:flex;align-items:center;gap:28px;font-size:15px;font-weight:500">
+<a href="#what" style="text-decoration:none">What it is</a>
+<a href="#how" style="text-decoration:none">How to use</a>
+<a href="#features" style="text-decoration:none">Features</a>
+<a href="#faq" style="text-decoration:none">FAQ</a>
+<span class="muted" style="font-size:14px">English ▾</span>
+<a href="#dl" style="text-decoration:none;background:#141414;color:#fff;padding:10px 16px;border-radius:10px;font-weight:600">Download</a>
+</nav>
+</header>
+
+<section id="top" style="max-width:1240px;margin:0 auto;padding:70px 40px 110px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:64px;align-items:center">
+<div>
+<p style="margin:0 0 22px" class="lab"><span class="key" style="min-width:auto;height:28px;font-size:12px">⇧⌘V</span>Free clipboard history for Mac</p>
+<h1 style="margin:0;font:800 88px/.98 'Bricolage Grotesque',sans-serif;letter-spacing:-.045em">Everything you copy, <span class="mk">kept.</span></h1>
+<p class="muted" style="margin:28px 0 0;font-size:20px;max-width:30em">Your Mac's clipboard only remembers the last thing you copied. ClipStack remembers the rest — text, links, images and files. Press <span class="key" style="height:26px;min-width:auto;font-size:12px">⇧⌘V</span> in any app, pick one, press <span class="key" style="height:26px;min-width:26px;font-size:12px">↩</span>, paste.</p>
+<div style="display:flex;gap:14px;align-items:center;margin-top:36px">
+<a href="#dl" style="display:inline-flex;align-items:center;gap:10px;background:#141414;color:#fff;text-decoration:none;padding:16px 22px;border-radius:12px;font-weight:600;font-size:16px">Download for Mac</a>
+<a href="#how" style="font-weight:600;font-size:16px;text-decoration:none;border-bottom:2px solid #ffe45c;padding-bottom:2px">See how it works →</a>
+</div>
+<p class="muted" style="margin:22px 0 0;font-size:14px">Free · Open source (MIT) · macOS 13+ · Apple silicon</p>
+</div>
+<div style="position:relative;padding:34px 0 0 34px">
+<div class="card" style="position:absolute;top:0;left:68px;right:-34px;height:120px;padding:16px 20px;transform:rotate(2deg);display:flex;gap:10px;align-items:flex-start"><span class="tag" style="background:#2f9e74">EMAIL</span><span style="font:500 14px 'JetBrains Mono',monospace">support@example.com</span></div>
+<div class="card" style="position:absolute;top:16px;left:50px;right:-16px;height:120px;padding:16px 20px;transform:rotate(-1deg);display:flex;gap:10px;align-items:flex-start"><span class="tag" style="background:#3a7bd5">URL</span><span style="font:500 14px 'JetBrains Mono',monospace">https://staging.example.com/v1.9</span></div>
+<div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid #d9d6cc;box-shadow:0 30px 60px -28px rgba(20,20,20,.45);background:#000"><img src="/_blob/c334e05a531307d5d01dd0db59133f10" alt="ClipStack panel open over TextEdit with three fresh copies at the top" style="display:block;width:100%"></div>
+<div style="position:absolute;left:58px;bottom:-22px;display:flex;align-items:center;gap:8px;background:#141414;color:#fff;padding:9px 13px;border-radius:12px;font-size:13px"><span class="key" style="height:24px;min-width:24px;font-size:11px">⇧</span><span class="key" style="height:24px;min-width:24px;font-size:11px">⌘</span><span class="key" style="height:24px;min-width:24px;font-size:11px">V</span><span style="margin-left:4px">Open ClipStack</span></div>
+</div>
+</section>
+
+<section id="what" style="border-top:1px solid #e4e2da">
+<div style="max-width:1240px;margin:0 auto;padding:110px 40px">
+<p class="lab" style="margin:0"><span class="key">⌘1</span>What it is</p>
+<div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:64px;margin-top:28px;align-items:end">
+<h2 style="margin:0;font:800 64px/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em">One clipboard slot is <span class="mk">not enough.</span></h2>
+<p class="muted" style="margin:0;font-size:19px">Copy a link, then an email address, and the link is gone. ClipStack is a small menu-bar app that saves every copy as it happens — so nothing you copied is lost, and any of it is one shortcut away.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:56px">
+<div class="card" style="padding:32px">
+<p class="lab muted" style="margin:0;color:#6e6b63">Your Mac, today</p>
+<div style="margin-top:26px;display:grid;gap:10px">
+<div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:12px;border:2px solid #141414;font:500 14px 'JetBrains Mono',monospace"><span class="tag" style="background:#2f9e74">EMAIL</span>support@example.com</div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:12px;border:1px dashed #cfccc2;font:500 14px 'JetBrains Mono',monospace;color:#a29f96;text-decoration:line-through"><span class="tag" style="background:#c9c6bd">URL</span>https://staging.example.com/v1.9</div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:12px;border:1px dashed #cfccc2;font:500 14px 'JetBrains Mono',monospace;color:#a29f96;text-decoration:line-through"><span class="tag" style="background:#c9c6bd">TEXT</span>Build: 1.9.0 (15)</div>
+</div>
+<p class="muted" style="margin:22px 0 0;font-size:15px">Each copy overwrites the last. To get the link back, you go and find it again.</p>
+</div>
+<div class="card" style="padding:32px;background:#141414;border-color:#141414;color:#f2f0ea">
+<p class="lab" style="margin:0;color:#ffe45c">With ClipStack</p>
+<div style="margin-top:26px;display:grid;gap:10px">
+<div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:12px;background:#26251f;font:500 14px 'JetBrains Mono',monospace"><span class="tag" style="background:#2f9e74">EMAIL</span>support@example.com<span style="margin-left:auto;color:#a8a59c">⌘1</span></div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:12px;background:#26251f;font:500 14px 'JetBrains Mono',monospace"><span class="tag" style="background:#3a7bd5">URL</span>https://staging.example.com/v1.9<span style="margin-left:auto;color:#a8a59c">⌘2</span></div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:12px;background:#26251f;font:500 14px 'JetBrains Mono',monospace"><span class="tag" style="background:#6b6b75">TEXT</span>Build: 1.9.0 (15)<span style="margin-left:auto;color:#a8a59c">⌘3</span></div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:12px;background:#26251f;font:500 14px 'JetBrains Mono',monospace"><span class="tag" style="background:#d9822b">COLOR</span>#5B8DEF<span style="margin-left:auto;color:#a8a59c">⌘4</span></div>
+</div>
+<p style="margin:22px 0 0;font-size:15px;color:#a8a59c">Every copy is kept, newest first, tagged by type. Pick one and it's back on the clipboard.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="why" style="border-top:1px solid #e4e2da;background:#fff">
+<div style="max-width:1240px;margin:0 auto;padding:110px 40px">
+<p class="lab" style="margin:0"><span class="key">⌘2</span>Why it helps</p>
+<p style="margin:30px 0 0;font:700 52px/1.18 'Bricolage Grotesque',sans-serif;letter-spacing:-.03em;max-width:22ch">Keeps your last <span class="mk">300</span> copies, brings any back with <span class="mk">1</span> shortcut, uploads <span class="mk">0</span> bytes.</p>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;margin-top:64px;border-top:1px solid #e4e2da;padding-top:34px">
+<div><h3 style="margin:0;font:700 22px 'Bricolage Grotesque',sans-serif">Nothing gets lost</h3><p class="muted" style="margin:10px 0 0;font-size:16px">Text with its formatting, images, files from Finder. Pinned entries never age out.</p></div>
+<div><h3 style="margin:0;font:700 22px 'Bricolage Grotesque',sans-serif">Found in seconds</h3><p class="muted" style="margin:10px 0 0;font-size:16px">⇧⌘V opens over whatever you're doing. Type to search, or Tab to show just links, code or images.</p></div>
+<div><h3 style="margin:0;font:700 22px 'Bricolage Grotesque',sans-serif">Stays on your Mac</h3><p class="muted" style="margin:10px 0 0;font-size:16px">No account, no sync, no analytics. Passwords your password manager marks private are never saved.</p></div>
+</div>
+</div>
+</section>
+
+<section id="how" style="border-top:1px solid #e4e2da">
+<div style="max-width:1240px;margin:0 auto;padding:110px 40px">
+<p class="lab" style="margin:0"><span class="key">⌘3</span>How to use it</p>
+<div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:64px;margin-top:28px;align-items:end">
+<h2 style="margin:0;font:800 64px/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em">Three keys. <span class="mk">That's it.</span></h2>
+<p class="muted" style="margin:0;font-size:19px">Download, drag ClipStack to Applications, open it. It lives in the menu bar — no Dock icon, no window to manage.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:56px">
+<div class="card" style="overflow:hidden"><img src="/_blob/361f1b5670eeb8182359feda410a39c4" alt="Copying a line in TextEdit" style="display:block;width:100%;border-bottom:1px solid #e4e2da"><div style="padding:24px"><div style="display:flex;gap:6px"><span class="key">⌘</span><span class="key">C</span></div><h3 style="margin:18px 0 0;font:700 24px 'Bricolage Grotesque',sans-serif">1 · Copy, as always</h3><p class="muted" style="margin:8px 0 0;font-size:15.5px">Nothing to learn. Every copy is saved quietly in the background.</p></div></div>
+<div class="card" style="overflow:hidden"><img src="/_blob/664b5088a1682337408a8cf360e1afb5" alt="The ClipStack panel open with recent copies" style="display:block;width:100%;border-bottom:1px solid #e4e2da"><div style="padding:24px"><div style="display:flex;gap:6px"><span class="key">⇧</span><span class="key">⌘</span><span class="key">V</span></div><h3 style="margin:18px 0 0;font:700 24px 'Bricolage Grotesque',sans-serif">2 · See everything</h3><p class="muted" style="margin:8px 0 0;font-size:15.5px">The panel opens over your app. ↑ ↓ or type to search; the right side previews it all.</p></div></div>
+<div class="card" style="overflow:hidden"><img src="/_blob/fdbd44c14a538f75e3d6b078558c9ed9" alt="The chosen line pasted into TextEdit" style="display:block;width:100%;border-bottom:1px solid #e4e2da"><div style="padding:24px"><div style="display:flex;gap:6px"><span class="key">↩</span><span class="key">⌘</span><span class="key">V</span></div><h3 style="margin:18px 0 0;font:700 24px 'Bricolage Grotesque',sans-serif">3 · Pick and paste</h3><p class="muted" style="margin:8px 0 0;font-size:15.5px">↩ puts it back on the clipboard, formatting intact. Or let ↩ paste for you (Settings).</p></div></div>
+</div>
+</div>
+</section>
+
+<section id="ring" style="border-top:1px solid #e4e2da;background:#141414;color:#f2f0ea">
+<div style="max-width:1240px;margin:0 auto;padding:110px 40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center">
+<div>
+<p class="lab" style="margin:0;color:#f2f0ea"><span class="key">⌘4</span>Keyboard only</p>
+<h2 style="margin:28px 0 0;font:800 60px/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em">Hold ⇧⌘. Tap V. <span class="mk" style="color:#141414">Let go.</span></h2>
+<p style="margin:24px 0 0;font-size:18px;color:#a8a59c">Like ⌘Tab, for your clipboard: keep ⇧⌘ held and tap V to step back through history, release to paste. A single press still just opens the panel.</p>
+<p style="margin:22px 0 0;font:500 13px 'JetBrains Mono',monospace;color:#8c897f">Optional · off by default · needs Accessibility · any combo you like</p>
+</div>
+<div style="background:#1f1e1a;border:1px solid #33322c;border-radius:20px;padding:40px;display:grid;gap:26px">
+<div style="display:flex;gap:14px;align-items:flex-end;justify-content:center">
+<div style="display:grid;gap:8px;justify-items:center"><span class="key" style="min-width:76px;height:64px;font-size:24px;background:#ffe45c;border-color:#c9b03a">⇧</span><span style="font:700 11px 'JetBrains Mono',monospace;color:#ffe45c">HOLD</span></div>
+<div style="display:grid;gap:8px;justify-items:center"><span class="key" style="min-width:76px;height:64px;font-size:24px;background:#ffe45c;border-color:#c9b03a">⌘</span><span style="font:700 11px 'JetBrains Mono',monospace;color:#ffe45c">HOLD</span></div>
+<div style="display:grid;gap:8px;justify-items:center;margin-left:18px"><span class="key" style="min-width:64px;height:64px;font-size:24px">V</span><span style="font:700 11px 'JetBrains Mono',monospace;color:#a8a59c">TAP ×3</span></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:14px">
+<div style="background:#26251f;border-radius:12px;padding:14px"><b style="display:block;color:#f2f0ea">1 · Hold, tap V</b><span style="color:#a8a59c">Opens on the newest entry; your app keeps focus.</span></div>
+<div style="background:#26251f;border-radius:12px;padding:14px"><b style="display:block;color:#f2f0ea">2 · Tap again</b><span style="color:#a8a59c">One step back each time. ← → ⌫ esc work too.</span></div>
+<div style="background:#26251f;border-radius:12px;padding:14px"><b style="display:block;color:#f2f0ea">3 · Let go</b><span style="color:#a8a59c">Pasted straight into your app.</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="features" style="border-top:1px solid #e4e2da">
+<div style="max-width:1240px;margin:0 auto;padding:110px 40px">
+<p class="lab" style="margin:0"><span class="key">⌘5</span>Beyond the basics</p>
+<h2 style="margin:28px 0 0;font:800 64px/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em">Small moves that <span class="mk">add up.</span></h2>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:56px">
+<div class="card" style="padding:28px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font:700 26px 'Bricolage Grotesque',sans-serif">Change it before you paste</h3><span class="key">⌘K</span></div><p class="muted" style="margin:10px 0 20px;font-size:15.5px">Case, trim, join lines, JSON, URL-encode, colour formats, text from a screenshot (on-device OCR).</p><img src="/_blob/85e757d2b52fc35c45a7b0fb8cccdf9d" alt="The ⌘K transform menu over a JSON entry" style="display:block;width:100%;border-radius:10px;border:1px solid #e4e2da"></div>
+<div class="card" style="padding:28px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font:700 26px 'Bricolage Grotesque',sans-serif">Every entry is tagged</h3><span class="key">⇥</span></div><p class="muted" style="margin:10px 0 20px;font-size:15.5px">URL, EMAIL, CODE, COLOR, TEXT, IMAGE, FILE. Tab shows one type at a time.</p><img src="/_blob/ebe78088abbb573bbdbe76eeceef8517" alt="The panel filtered to one type" style="display:block;width:100%;border-radius:10px;border:1px solid #e4e2da"></div>
+<div class="card" style="padding:28px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font:700 26px 'Bricolage Grotesque',sans-serif">Merge several into one</h3><span class="key">⌘M</span></div><p class="muted" style="margin:10px 0 20px;font-size:15.5px">Mark entries, press ↩ — copied as one, in the order you marked them.</p><img src="/_blob/aa548e4ae81fc78016f579993be4dabc" alt="Three entries marked for a merged copy" style="display:block;width:100%;border-radius:10px;border:1px solid #e4e2da"></div>
+<div class="card" style="padding:28px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font:700 26px 'Bricolage Grotesque',sans-serif">Float it next to your work</h3><span class="key">⌘O</span></div><p class="muted" style="margin:10px 0 20px;font-size:15.5px">Any entry becomes a small always-on-top note. ⌘T keeps the whole panel on top.</p><img src="/_blob/c690db1652537287211e1cbdb91bb623" alt="Two floating ClipStack notes" style="display:block;width:100%;border-radius:10px;border:1px solid #e4e2da"></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;font-size:15px">
+<span class="card" style="padding:10px 14px;display:inline-flex;gap:8px;align-items:center"><span class="key" style="height:26px;font-size:12px">⌘P</span>Pin what you reuse</span>
+<span class="card" style="padding:10px 14px;display:inline-flex;gap:8px;align-items:center"><span class="key" style="height:26px;font-size:12px">⌘1–9</span>Quick copy</span>
+<span class="card" style="padding:10px 14px;display:inline-flex;gap:8px;align-items:center"><span class="key" style="height:26px;font-size:12px">IMG</span>Images &amp; files keep their type</span>
+<span class="card" style="padding:10px 14px;display:inline-flex;gap:8px;align-items:center"><span class="key" style="height:26px;font-size:12px">⌘⌫</span>Delete an entry</span>
+</div>
+</div>
+</section>
+
+<section id="keys" style="border-top:1px solid #e4e2da;background:#fff">
+<div style="max-width:1240px;margin:0 auto;padding:110px 40px;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:64px">
+<div><p class="lab" style="margin:0"><span class="key">⌘6</span>Cheat sheet</p><h2 style="margin:28px 0 0;font:800 56px/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em">Every key, on <span class="mk">one card.</span></h2><p class="muted" style="margin:20px 0 0;font-size:17px">Every global shortcut can be re-recorded in Settings.</p></div>
+<div style="display:grid;gap:0;font-size:16px">
+<div style="display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px dotted #cfccc2"><span>Open the history</span><span style="flex:1"></span><span class="key">⇧⌘V</span></div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px dotted #cfccc2"><span>Move · copy &amp; close</span><span style="flex:1"></span><span class="key">↑</span><span class="key">↓</span><span class="key">↩</span></div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px dotted #cfccc2"><span>Next / previous type</span><span style="flex:1"></span><span class="key">⇥</span><span class="key">⇧⇥</span></div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px dotted #cfccc2"><span>Transform · pin · mark · note</span><span style="flex:1"></span><span class="key">⌘K</span><span class="key">⌘P</span><span class="key">⌘M</span><span class="key">⌘O</span></div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px dotted #cfccc2"><span>Keep on top · delete · close</span><span style="flex:1"></span><span class="key">⌘T</span><span class="key">⌘⌫</span><span class="key">esc</span></div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px dotted #cfccc2"><span>Settings</span><span style="flex:1"></span><span class="key">⌘,</span></div>
+</div>
+</div>
+</section>
+
+<section id="faq" style="border-top:1px solid #e4e2da">
+<div style="max-width:1240px;margin:0 auto;padding:110px 40px;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:64px">
+<div><p class="lab" style="margin:0"><span class="key">⌘7</span>Questions</p><h2 style="margin:28px 0 0;font:800 56px/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em">Asked <span class="mk">and answered.</span></h2>
+<div class="card" style="margin-top:34px;padding:24px"><p style="margin:0;font:700 18px 'Bricolage Grotesque',sans-serif">Private by design</p><p class="muted" style="margin:8px 0 0;font-size:15px">On-device only. Concealed passwords are skipped. No permissions needed out of the box.</p></div></div>
+<div style="font-size:17px">
+<div style="padding:20px 0;border-bottom:1px solid #e4e2da"><div style="display:flex;justify-content:space-between;font-weight:600;font-size:19px"><span>What exactly is ClipStack?</span><span>–</span></div><p class="muted" style="margin:10px 0 0;font-size:16px">A clipboard manager for macOS. It saves everything you copy so you can bring any of it back with ⇧⌘V.</p></div>
+<div style="padding:20px 0;border-bottom:1px solid #e4e2da;display:flex;justify-content:space-between;font-weight:600;font-size:19px"><span>Is it really free?</span><span>+</span></div>
+<div style="padding:20px 0;border-bottom:1px solid #e4e2da;display:flex;justify-content:space-between;font-weight:600;font-size:19px"><span>How do I install it?</span><span>+</span></div>
+<div style="padding:20px 0;border-bottom:1px solid #e4e2da;display:flex;justify-content:space-between;font-weight:600;font-size:19px"><span>Which Macs does it run on?</span><span>+</span></div>
+<div style="padding:20px 0;border-bottom:1px solid #e4e2da;display:flex;justify-content:space-between;font-weight:600;font-size:19px"><span>Does it need any permissions?</span><span>+</span></div>
+<div style="padding:20px 0;border-bottom:1px solid #e4e2da;display:flex;justify-content:space-between;font-weight:600;font-size:19px"><span>Can I change the shortcuts?</span><span>+</span></div>
+</div>
+</div>
+</section>
+
+<section id="dl" style="background:#141414;color:#f2f0ea">
+<div style="max-width:1240px;margin:0 auto;padding:120px 40px 50px">
+<h2 style="margin:0;font:800 96px/.98 'Bricolage Grotesque',sans-serif;letter-spacing:-.045em;max-width:12ch">Copy once. <span class="mk" style="color:#141414">Paste whenever.</span></h2>
+<div style="display:flex;gap:14px;align-items:center;margin-top:40px">
+<a href="#dl" style="background:#ffe45c;color:#141414;text-decoration:none;padding:16px 22px;border-radius:12px;font-weight:700">Download for Mac</a>
+<a href="#dl" style="color:#f2f0ea;font-weight:600;text-decoration:none;border-bottom:2px solid #55534d">Source on GitHub</a>
+</div>
+<p style="margin:20px 0 0;color:#a8a59c;font-size:14px">Free · No subscription · No account</p>
+<div style="margin-top:100px;padding-top:24px;border-top:1px solid #33322c;display:flex;justify-content:space-between;font-size:14px;color:#a8a59c"><span>GitHub · Releases · Report an issue · Buy me a coffee · X @JamesAI</span><span>MIT · Made by James</span></div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":6400}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>ClipStack landing — mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#141414}a:hover{color:#55534d}
+.mk{background:linear-gradient(transparent 12%,#ffe45c 12%,#ffe45c 88%,transparent 88%);padding:0 .08em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.key{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 8px;box-sizing:border-box;border-radius:7px;background:#fff;border:1px solid #d9d6cc;border-bottom-width:3px;font:700 13px/1 'JetBrains Mono',monospace;color:#141414}
+.lab{display:inline-flex;align-items:center;gap:10px;font:700 12px/1 'JetBrains Mono',monospace;color:#141414}
+.tag{font:700 9px/1 'JetBrains Mono',monospace;letter-spacing:.06em;color:#fff;padding:4px 6px;border-radius:4px}
+.card{background:#fff;border:1px solid #e4e2da;border-radius:14px}
+.muted{color:#55534d}
+</style>
+</helmet>
+<div style="width:390px;background:#f6f5f1;color:#141414;font-family:Inter,'PingFang SC',system-ui,sans-serif;font-size:16px;line-height:1.65">
+<header style="padding:16px 18px;display:flex;align-items:center;justify-content:space-between">
+<span style="display:flex;align-items:center;gap:8px;font:800 18px 'Bricolage Grotesque',sans-serif"><img src="/_blob/39be138c05033c1d39772588a3e15cde" alt="" style="width:26px;height:26px;border-radius:6px">ClipStack</span>
+<span style="display:flex;gap:12px;align-items:center"><span class="muted" style="font-size:13px">简体中文 ▾</span><a href="#dl" style="background:#141414;color:#fff;text-decoration:none;padding:9px 13px;border-radius:9px;font-weight:600;font-size:14px">下载</a></span>
+</header>
+
+<section style="padding:36px 18px 60px">
+<p class="lab" style="margin:0"><span class="key" style="height:24px;font-size:11px">⇧⌘V</span>免费的 Mac 剪贴板历史工具</p>
+<h1 style="margin:20px 0 0;font:800 50px/1.08 'Bricolage Grotesque','PingFang SC',sans-serif;letter-spacing:-.03em">复制过的东西，<span class="mk">都还在。</span></h1>
+<p class="muted" style="margin:20px 0 0;font-size:17px">Mac 的剪贴板只记得最后复制的那一样。ClipStack 把其余的都留着：文字、链接、图片、文件。按 ⇧⌘V，选一条，回车，粘贴。</p>
+<a href="#dl" style="display:flex;justify-content:center;margin-top:26px;background:#141414;color:#fff;text-decoration:none;padding:16px;border-radius:12px;font-weight:600">下载 Mac 版</a>
+<a href="#how" style="display:flex;justify-content:center;margin-top:10px;padding:14px;border-radius:12px;font-weight:600;text-decoration:none;border:1px solid #d9d6cc">看看怎么用</a>
+<p class="muted" style="margin:14px 0 0;font-size:13px;text-align:center">免费 · 开源（MIT）· macOS 13+ · Apple 芯片</p>
+<div style="position:relative;margin-top:36px;padding-top:22px">
+<div class="card" style="position:absolute;top:0;left:22px;right:-6px;height:80px;padding:12px 14px;transform:rotate(2deg);display:flex;gap:8px;font:500 12px 'JetBrains Mono',monospace"><span class="tag" style="background:#2f9e74">EMAIL</span>support@example.com</div>
+<div class="card" style="position:absolute;top:10px;left:12px;right:4px;height:80px;padding:12px 14px;transform:rotate(-1deg);display:flex;gap:8px;font:500 12px 'JetBrains Mono',monospace"><span class="tag" style="background:#3a7bd5">URL</span>staging.example.com</div>
+<div style="position:relative;border-radius:14px;overflow:hidden;border:1px solid #d9d6cc;background:#000;box-shadow:0 20px 40px -22px rgba(20,20,20,.5)"><img src="/_blob/c334e05a531307d5d01dd0db59133f10" alt="ClipStack 面板浮在文本编辑上" style="display:block;width:100%"></div>
+<div style="position:absolute;left:12px;bottom:-16px;display:flex;gap:6px;align-items:center;background:#141414;color:#fff;padding:7px 10px;border-radius:10px;font-size:12px"><span class="key" style="height:22px;min-width:22px;font-size:10px">⇧</span><span class="key" style="height:22px;min-width:22px;font-size:10px">⌘</span><span class="key" style="height:22px;min-width:22px;font-size:10px">V</span>打开 ClipStack</div>
+</div>
+</section>
+
+<section style="padding:60px 18px;border-top:1px solid #e4e2da">
+<p class="lab" style="margin:0"><span class="key">⌘1</span>这是什么</p>
+<h2 style="margin:18px 0 0;font:800 36px/1.12 'Bricolage Grotesque','PingFang SC',sans-serif">剪贴板只有一格，<span class="mk">不够用。</span></h2>
+<p class="muted" style="margin:14px 0 0">先复制链接、再复制邮箱，链接就没了。ClipStack 每次复制都替你存一份。</p>
+<div class="card" style="margin-top:24px;padding:20px;background:#141414;border-color:#141414;color:#f2f0ea">
+<p class="lab" style="margin:0;color:#ffe45c">有了 ClipStack</p>
+<div style="margin-top:16px;display:grid;gap:8px;font:500 12.5px 'JetBrains Mono',monospace">
+<div style="display:flex;gap:8px;align-items:center;padding:11px 12px;border-radius:10px;background:#26251f"><span class="tag" style="background:#2f9e74">EMAIL</span>support@example.com</div>
+<div style="display:flex;gap:8px;align-items:center;padding:11px 12px;border-radius:10px;background:#26251f"><span class="tag" style="background:#3a7bd5">URL</span>staging.example.com/v1.9</div>
+<div style="display:flex;gap:8px;align-items:center;padding:11px 12px;border-radius:10px;background:#26251f"><span class="tag" style="background:#6b6b75">TEXT</span>Build: 1.9.0 (15)</div>
+</div>
+</div>
+</section>
+
+<section style="padding:60px 18px;border-top:1px solid #e4e2da;background:#fff">
+<p class="lab" style="margin:0"><span class="key">⌘2</span>有什么用</p>
+<p style="margin:18px 0 0;font:700 30px/1.3 'Bricolage Grotesque','PingFang SC',sans-serif">保留最近 <span class="mk">300</span> 条，<span class="mk">1</span> 个快捷键找回，<span class="mk">0</span> 上传。</p>
+<div style="margin-top:28px;display:grid;gap:20px">
+<div><h3 style="margin:0;font:700 19px 'Bricolage Grotesque','PingFang SC',sans-serif">复制过的都不会丢</h3><p class="muted" style="margin:6px 0 0;font-size:15px">带格式的文字、图片、访达里的文件。置顶的永不过期。</p></div>
+<div><h3 style="margin:0;font:700 19px 'Bricolage Grotesque','PingFang SC',sans-serif">几秒就找到</h3><p class="muted" style="margin:6px 0 0;font-size:15px">打字搜索，或按 Tab 只看链接、代码、图片。</p></div>
+<div><h3 style="margin:0;font:700 19px 'Bricolage Grotesque','PingFang SC',sans-serif">只存在你的 Mac 上</h3><p class="muted" style="margin:6px 0 0;font-size:15px">不注册、不同步、不统计。</p></div>
+</div>
+</section>
+
+<section id="how" style="padding:60px 18px;border-top:1px solid #e4e2da">
+<p class="lab" style="margin:0"><span class="key">⌘3</span>怎么用</p>
+<h2 style="margin:18px 0 0;font:800 36px/1.12 'Bricolage Grotesque','PingFang SC',sans-serif">三个键，<span class="mk">就够了。</span></h2>
+<div style="margin-top:24px;display:grid;gap:18px">
+<div class="card" style="overflow:hidden"><img src="/_blob/361f1b5670eeb8182359feda410a39c4" alt="在文本编辑里复制一行" style="display:block;width:100%"><div style="padding:18px"><div style="display:flex;gap:6px"><span class="key">⌘</span><span class="key">C</span></div><h3 style="margin:12px 0 0;font:700 20px 'Bricolage Grotesque','PingFang SC',sans-serif">1 · 照常复制</h3></div></div>
+<div class="card" style="overflow:hidden"><img src="/_blob/664b5088a1682337408a8cf360e1afb5" alt="ClipStack 面板打开" style="display:block;width:100%"><div style="padding:18px"><div style="display:flex;gap:6px"><span class="key">⇧</span><span class="key">⌘</span><span class="key">V</span></div><h3 style="margin:12px 0 0;font:700 20px 'Bricolage Grotesque','PingFang SC',sans-serif">2 · 全部都在</h3></div></div>
+<div class="card" style="overflow:hidden"><img src="/_blob/fdbd44c14a538f75e3d6b078558c9ed9" alt="选中的那条粘贴进去" style="display:block;width:100%"><div style="padding:18px"><div style="display:flex;gap:6px"><span class="key">↩</span><span class="key">⌘</span><span class="key">V</span></div><h3 style="margin:12px 0 0;font:700 20px 'Bricolage Grotesque','PingFang SC',sans-serif">3 · 选中，粘贴</h3></div></div>
+</div>
+</section>
+
+<section style="padding:60px 18px;background:#141414;color:#f2f0ea">
+<p class="lab" style="margin:0;color:#f2f0ea"><span class="key">⌘4</span>纯键盘</p>
+<h2 style="margin:18px 0 0;font:800 36px/1.12 'Bricolage Grotesque','PingFang SC',sans-serif">按住 ⇧⌘，连按 V，<span class="mk" style="color:#141414">松手。</span></h2>
+<div style="display:flex;gap:10px;justify-content:center;margin-top:28px"><span class="key" style="min-width:60px;height:54px;font-size:20px;background:#ffe45c;border-color:#c9b03a">⇧</span><span class="key" style="min-width:60px;height:54px;font-size:20px;background:#ffe45c;border-color:#c9b03a">⌘</span><span class="key" style="min-width:54px;height:54px;font-size:20px;margin-left:12px">V</span></div>
+<p style="margin:22px 0 0;color:#a8a59c;font-size:15px">像 ⌘Tab 一样翻剪贴板。只按一下仍是打开面板。可选，需要辅助功能权限。</p>
+</section>
+
+<section style="padding:60px 18px;border-top:1px solid #e4e2da">
+<p class="lab" style="margin:0"><span class="key">⌘5</span>更多功能</p>
+<div class="card" style="margin-top:20px;padding:18px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font:700 20px 'Bricolage Grotesque','PingFang SC',sans-serif">粘贴前先改一改</h3><span class="key">⌘K</span></div><img src="/_blob/85e757d2b52fc35c45a7b0fb8cccdf9d" alt="⌘K 转换菜单" style="display:block;width:100%;margin-top:14px;border-radius:9px"></div>
+<div class="card" style="margin-top:14px;padding:18px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font:700 20px 'Bricolage Grotesque','PingFang SC',sans-serif">多条合并粘贴</h3><span class="key">⌘M</span></div><img src="/_blob/aa548e4ae81fc78016f579993be4dabc" alt="标记三条合并复制" style="display:block;width:100%;margin-top:14px;border-radius:9px"></div>
+</section>
+
+<section id="dl" style="padding:70px 18px 30px;background:#141414;color:#f2f0ea">
+<h2 style="margin:0;font:800 48px/1.06 'Bricolage Grotesque','PingFang SC',sans-serif">复制一次，<span class="mk" style="color:#141414">随时再用。</span></h2>
+<a href="#dl" style="display:flex;justify-content:center;margin-top:28px;background:#ffe45c;color:#141414;text-decoration:none;padding:16px;border-radius:12px;font-weight:700">下载 Mac 版</a>
+<p style="margin:14px 0 0;color:#a8a59c;font-size:13px;text-align:center">永久免费 · 没有订阅 · 不用注册</p>
+<p style="margin:50px 0 0;padding-top:18px;border-top:1px solid #33322c;color:#a8a59c;font-size:13px">GitHub · 版本发布 · 反馈问题 · MIT · 作者 James</p>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":7400}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

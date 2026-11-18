@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ClipStack design system</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0}
+.mk{background:linear-gradient(transparent 12%,#ffe45c 12%,#ffe45c 88%,transparent 88%);padding:0 .08em}
+.key{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 10px;box-sizing:border-box;border-radius:8px;background:#fff;border:1px solid #d9d6cc;border-bottom-width:3px;font:700 14px/1 'JetBrains Mono',monospace;color:#141414}
+.h{margin:0 0 16px;font:700 12px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#6e6b63}
+.sw{display:grid;gap:6px;font:500 12px 'JetBrains Mono',monospace}
+.sw div:first-child{height:64px;border-radius:12px;border:1px solid #e4e2da}
+.tag{font:700 10px/1 'JetBrains Mono',monospace;letter-spacing:.06em;color:#fff;padding:5px 8px;border-radius:5px}
+</style>
+</helmet>
+<div style="width:1440px;height:1180px;box-sizing:border-box;padding:56px 64px;background:#f6f5f1;color:#141414;font-family:Inter,sans-serif;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 64px;align-content:start">
+<div style="grid-column:1 / -1;display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid #e4e2da;padding-bottom:24px">
+<h1 style="margin:0;font:800 48px 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em">Paper &amp; <span class="mk">Highlighter</span></h1>
+<p style="margin:0;color:#55534d;max-width:40em;font-size:15px">Light paper ground, ink type, one highlighter accent used the way a text selection looks. Product type tags keep the app's own colours. Dark mode swaps paper and ink.</p>
+</div>
+
+<div>
+<p class="h">COLOUR · LIGHT</p>
+<div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px">
+<div class="sw"><div style="background:#f6f5f1"></div>paper<br>#F6F5F1</div>
+<div class="sw"><div style="background:#ffffff"></div>surface<br>#FFFFFF</div>
+<div class="sw"><div style="background:#e4e2da"></div>line<br>#E4E2DA</div>
+<div class="sw"><div style="background:#141414"></div>ink<br>#141414</div>
+<div class="sw"><div style="background:#55534d"></div>muted<br>#55534D</div>
+<div class="sw"><div style="background:#ffe45c"></div>mark<br>#FFE45C</div>
+</div>
+<p class="h" style="margin-top:28px">COLOUR · DARK</p>
+<div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px">
+<div class="sw"><div style="background:#121211"></div>paper<br>#121211</div>
+<div class="sw"><div style="background:#1b1b19"></div>surface<br>#1B1B19</div>
+<div class="sw"><div style="background:#2c2b27"></div>line<br>#2C2B27</div>
+<div class="sw"><div style="background:#f2f0ea"></div>ink<br>#F2F0EA</div>
+<div class="sw"><div style="background:#a8a59c"></div>muted<br>#A8A59C</div>
+<div class="sw"><div style="background:#f5d547"></div>mark<br>#F5D547</div>
+</div>
+<p class="h" style="margin-top:28px">TYPE TAGS (FROM THE APP)</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><span class="tag" style="background:#3a7bd5">URL</span><span class="tag" style="background:#2f9e74">EMAIL</span><span class="tag" style="background:#9b59d0">CODE</span><span class="tag" style="background:#d9822b">COLOR</span><span class="tag" style="background:#6b6b75">TEXT</span><span class="tag" style="background:#c94f7c">IMAGE</span><span class="tag" style="background:#8a7a3d">FILE</span></div>
+</div>
+
+<div>
+<p class="h">TYPE</p>
+<div style="display:grid;gap:14px">
+<div style="display:flex;align-items:baseline;gap:20px"><span style="font:800 72px/1 'Bricolage Grotesque',sans-serif;letter-spacing:-.045em">Display</span><span style="font:500 12px 'JetBrains Mono',monospace;color:#6e6b63">Bricolage Grotesque 800 · clamp(46px, 7.4vw, 92px) · −0.045em</span></div>
+<div style="display:flex;align-items:baseline;gap:20px"><span style="font:800 44px/1 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em">Heading</span><span style="font:500 12px 'JetBrains Mono',monospace;color:#6e6b63">800 · clamp(34px, 5vw, 64px)</span></div>
+<div style="display:flex;align-items:baseline;gap:20px"><span style="font:700 24px/1 'Bricolage Grotesque',sans-serif">Card title</span><span style="font:500 12px 'JetBrains Mono',monospace;color:#6e6b63">700 · 22–26px</span></div>
+<div style="display:flex;align-items:baseline;gap:20px"><span style="font:400 17px/1.6 Inter,sans-serif">Body text in Inter, 16–19px, line height 1.6.</span><span style="font:500 12px 'JetBrains Mono',monospace;color:#6e6b63">Inter 400</span></div>
+<div style="display:flex;align-items:baseline;gap:20px"><span style="font:700 13px 'JetBrains Mono',monospace">⌘3 How to use it</span><span style="font:500 12px 'JetBrains Mono',monospace;color:#6e6b63">JetBrains Mono 700 · labels &amp; keys</span></div>
+<div style="font:500 12px 'JetBrains Mono',monospace;color:#6e6b63">CJK falls back to PingFang SC / Hiragino Sans / Apple SD Gothic Neo; highlighted phrase never splits.</div>
+</div>
+</div>
+
+<div>
+<p class="h">COMPONENTS</p>
+<div style="display:grid;gap:18px">
+<div style="display:flex;gap:10px;align-items:center"><span class="key">⇧</span><span class="key">⌘</span><span class="key">V</span><span class="key">⌘K</span><span class="key">esc</span><span style="font-size:13px;color:#55534d;margin-left:8px">Keycap · white, 3px bottom edge</span></div>
+<div style="display:flex;gap:12px;align-items:center"><a href="#" style="background:#141414;color:#fff;text-decoration:none;padding:15px 20px;border-radius:12px;font-weight:600">Download for Mac</a><a href="#" style="font-weight:600;color:#141414;text-decoration:none;border-bottom:2px solid #ffe45c">See how it works →</a><a href="#" style="background:#ffe45c;color:#141414;text-decoration:none;padding:15px 20px;border-radius:12px;font-weight:700">On ink blocks</a></div>
+<div style="display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:12px;background:#fff;border:1px solid #e4e2da;font:500 14px 'JetBrains Mono',monospace;width:380px;box-sizing:border-box"><span class="tag" style="background:#3a7bd5">URL</span>https://staging.example.com<span style="margin-left:auto;color:#6e6b63">⌘2</span></div>
+<div style="display:inline-flex;align-items:center;gap:10px;font:700 13px 'JetBrains Mono',monospace"><span class="key">⌘1</span>Section label — numbered like quick-copy</div>
+</div>
+</div>
+
+<div>
+<p class="h">SPACE · RADIUS · MOTION</p>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;font-size:14px;color:#55534d">
+<div><b style="color:#141414">Spacing</b><br>4 · 8 · 12 · 16 · 24 · 40 · 64 · 110 (section)<br>Container 1240px, gutter clamp(18px, 4vw, 40px)</div>
+<div><b style="color:#141414">Radius</b><br>keys 8 · cards 16 · buttons 12 · tags 5</div>
+<div><b style="color:#141414">Motion</b><br>Reveal: 600ms cubic-bezier(.2,.7,.2,1), 20px rise<br>Stack: cards fan apart 6° on hover / scroll<br>Highlighter: mark sweeps in left→right 500ms</div>
+<div><b style="color:#141414">Reduced motion</b><br>Fade only; videos stay on their poster frame.</div>
+<div><b style="color:#141414">Phone first</b><br>Single column under 760px · full-width buttons · tap targets ≥ 44px · no horizontal scroll at 390px</div>
+<div><b style="color:#141414">Never</b><br>Marquee bands · giant outline words · gradient glows · emoji icons</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
