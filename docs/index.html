@@ -159,8 +159,8 @@ em.accent { font-style: normal; }
 @media (max-width: 440px) { .langpick svg { display: none; } .langpick select { max-width: 74px; } .brand { font-size: 18px; gap: 8px; } .brand img { width: 26px; height: 26px; } }
 
 /* Hero --------------------------------------------------------------------- */
-.hero { display: grid; gap: 56px; padding: 44px 0 90px; }
-@media (min-width: 1000px) { .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; gap: 64px; padding: 70px 0 120px; } }
+.hero { display: grid; gap: 56px; padding-top: 44px; padding-bottom: 90px; } /* side padding comes from .wrap */
+@media (min-width: 1000px) { .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; gap: 64px; padding-top: 70px; padding-bottom: 120px; } }
 .hero .label { margin-bottom: 22px; }
 .hero .lead { margin-top: 26px; }
 .hero .lead .key { font-size: .68em; }
