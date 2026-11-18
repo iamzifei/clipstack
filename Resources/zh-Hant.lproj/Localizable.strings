@@ -121,3 +121,8 @@
 "ob_next" = "下一步";
 "ob_try" = "現在試試";
 "menu_guide" = "新手導覽…";
+
+/* 1.8: language picker + accessibility hint */
+"language" = "語言";
+"language_system" = "跟隨系統（%@）";
+"ax_stale_help" = "系統設定裡已經打開了還顯示未授權？在那裡選取 ClipStack，按 − 移除，再把這裡的開關關掉重新打開——macOS 會把權限綁定在最初授權的那個 ClipStack 副本上。";

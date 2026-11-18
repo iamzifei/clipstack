@@ -121,3 +121,8 @@
 "ob_next" = "次へ";
 "ob_try" = "試してみる";
 "menu_guide" = "ようこそガイド…";
+
+/* 1.8: language picker + accessibility hint */
+"language" = "言語";
+"language_system" = "システム（%@）";
+"ax_stale_help" = "システム設定でオンにしたのに許可されていない表示のままですか？そこで ClipStack を選んで − で削除し、このオプションをオフにしてからもう一度オンにしてください。macOS は最初に許可した ClipStack のコピーに権限を結び付けています。";

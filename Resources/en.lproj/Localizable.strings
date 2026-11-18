@@ -121,3 +121,8 @@
 "ob_next" = "Next";
 "ob_try" = "Try it now";
 "menu_guide" = "Welcome Guide…";
+
+/* 1.8: language picker + accessibility hint */
+"language" = "Language";
+"language_system" = "System (%@)";
+"ax_stale_help" = "Already switched on in System Settings? Select ClipStack there, remove it with −, then turn this option off and on again — macOS keeps the permission tied to the copy of ClipStack it was first given to.";

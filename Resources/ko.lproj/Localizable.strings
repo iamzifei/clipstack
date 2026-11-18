@@ -121,3 +121,8 @@
 "ob_next" = "다음";
 "ob_try" = "지금 해 보기";
 "menu_guide" = "시작 안내…";
+
+/* 1.8: language picker + accessibility hint */
+"language" = "언어";
+"language_system" = "시스템(%@)";
+"ax_stale_help" = "시스템 설정에서 이미 켰는데도 권한이 없다고 나오나요? 그곳에서 ClipStack을 선택해 −로 제거한 뒤, 이 옵션을 껐다가 다시 켜세요. macOS는 처음 권한을 준 ClipStack 사본에 권한을 묶어 둡니다.";

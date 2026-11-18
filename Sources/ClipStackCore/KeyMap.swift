@@ -14,12 +14,14 @@ public enum PrefKey {
     public static let cmdVRing = "HoldCommandTapVRing"              // opt-in: hold ⌘, tap V to cycle
     public static let appearance = "Appearance"                     // system / light / dark
     public static let onboardingSeen = "OnboardingVersionSeen"      // last welcome-guide version shown
+    public static let appLanguage = "AppLanguage"                   // UI language code; absent = system
 }
 
 /// Localized string lookup against the app bundle. Falls back to the key
 /// itself when running unbundled (swift run / tests).
 public func L(_ key: String) -> String {
-    NSLocalizedString(key, comment: "")
+    // The chosen in-app language (AppLanguage), not just the system one.
+    NSLocalizedString(key, bundle: AppLanguage.bundle, comment: "")
 }
 
 /// Pure keyboard math shared by the hotkey manager, the settings recorder

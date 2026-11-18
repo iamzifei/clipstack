@@ -39,6 +39,8 @@ final class SettingsModel: ObservableObject {
     @Published var cmdVRing = UserDefaults.standard.bool(forKey: PrefKey.cmdVRing)
     @Published var accessibilityGranted = Accessibility.isTrusted()
     @Published var appearance = Appearance.stored
+    /// "system" or an AppLanguage code (same setting as the guide's picker).
+    @Published var language = AppLanguage.storedChoice ?? "system"
 
     var onHotKeysChanged: () -> Void = {}
     var onPasteOptionsChanged: () -> Void = {}
@@ -59,6 +61,11 @@ final class SettingsModel: ObservableObject {
     }
 
     var canToggleLogin: Bool { Bundle.main.bundleIdentifier != nil }
+
+    func setLanguage(_ choice: String) {
+        language = choice
+        AppLanguage.storedChoice = choice == "system" ? nil : choice
+    }
 
     func setAppearance(_ mode: AppearanceMode) {
         appearance = mode
@@ -87,7 +94,10 @@ final class SettingsModel: ObservableObject {
     }
 
     func refreshAccessibility() {
-        accessibilityGranted = Accessibility.isTrusted()
+        // Polled every second while Settings is open: only publish changes,
+        // so the form doesn't re-render needlessly.
+        let trusted = Accessibility.isTrusted()
+        if trusted != accessibilityGranted { accessibilityGranted = trusted }
     }
 
     func refreshLoginState() {
@@ -221,6 +231,17 @@ struct SettingsView: View {
                     Text(L("appearance_dark")).tag(AppearanceMode.dark)
                 }
                 .pickerStyle(.segmented)
+                Picker(L("language"), selection: Binding(
+                    get: { model.language },
+                    set: { model.setLanguage($0) }
+                )) {
+                    Text(String(format: L("language_system"), AppLanguage.nativeName(
+                        AppLanguage.resolve(override: nil, preferred: Locale.preferredLanguages)))).tag("system")
+                    Divider()
+                    ForEach(AppLanguage.supported, id: \.self) { code in
+                        Text(AppLanguage.nativeName(code)).tag(code)
+                    }
+                }
             }
             Section(L("hotkeys_section")) {
                 recorderRow(L("hk_switcher"), .switcher)
@@ -254,6 +275,15 @@ struct SettingsView: View {
                                 .controlSize(.small)
                         }
                     }
+                    if !model.accessibilityGranted {
+                        // macOS ties the grant to the exact build it was given
+                        // to; after reinstalling a differently signed copy the
+                        // switch in System Settings stays on but no longer applies.
+                        Text(L("ax_stale_help"))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
                 Text(L("paste_help"))
                     .font(.caption)
@@ -275,7 +305,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 440, height: 600)
+        .frame(width: 440, height: 640)
     }
 
     private var appVersion: String {
@@ -303,11 +333,26 @@ struct SettingsView: View {
 final class SettingsWindowController: NSObject, NSWindowDelegate {
     let model = SettingsModel()
     private var window: NSWindow?
+    /// Polls the Accessibility state while the window is open, so granting
+    /// it in System Settings shows up here without clicking back first.
+    private var axTimer: Timer?
+
+    override init() {
+        super.init()
+        // A language switch (here or in the welcome guide) rebuilds the
+        // window so every label and the title follow at once.
+        NotificationCenter.default.addObserver(forName: AppLanguage.didChange, object: nil, queue: .main) { [weak self] _ in
+            guard let self, let window = self.window else { return }
+            self.model.language = AppLanguage.storedChoice ?? "system"
+            window.title = L("settings_title")
+            window.contentView = NSHostingView(rootView: SettingsView(model: self.model))
+        }
+    }
 
     func show() {
         if window == nil {
             let w = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 440, height: 600),
+                contentRect: NSRect(x: 0, y: 0, width: 440, height: 640),
                 styleMask: [.titled, .closable],
                 backing: .buffered,
                 defer: false
@@ -321,6 +366,13 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
         }
         model.refreshLoginState()
         model.refreshAccessibility()
+        // The language may have been changed in the welcome guide while
+        // this window was closed (the observer only updates an open window).
+        model.language = AppLanguage.storedChoice ?? "system"
+        axTimer?.invalidate()
+        axTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            self?.model.refreshAccessibility()
+        }
         NSApp.activate(ignoringOtherApps: true)
         window?.makeKeyAndOrderFront(nil)
     }
@@ -331,6 +383,8 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     }
 
     func windowWillClose(_ notification: Notification) {
+        axTimer?.invalidate()
+        axTimer = nil
         if model.recordingTarget != nil {
             model.endRecording()
         }

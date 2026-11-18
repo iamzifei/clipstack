@@ -368,11 +368,20 @@ struct SwitcherView: View {
         }
     }
 
-    private static let relativeFormatter: RelativeDateTimeFormatter = {
-        let f = RelativeDateTimeFormatter()
-        f.unitsStyle = .abbreviated
-        return f
-    }()
+    /// Rebuilt when the in-app language changes, so "5 min ago" follows it.
+    private static var relativeFormatterLanguage = ""
+    private static var cachedRelativeFormatter = RelativeDateTimeFormatter()
+    private static var relativeFormatter: RelativeDateTimeFormatter {
+        let lang = AppLanguage.current
+        if lang != relativeFormatterLanguage {
+            let f = RelativeDateTimeFormatter()
+            f.unitsStyle = .abbreviated
+            f.locale = Locale(identifier: lang)
+            cachedRelativeFormatter = f
+            relativeFormatterLanguage = lang
+        }
+        return cachedRelativeFormatter
+    }
 
     private static let fullFormatter: DateFormatter = {
         let f = DateFormatter()

@@ -22,6 +22,9 @@ struct GuidePage {
 
 final class OnboardingModel: ObservableObject {
     @Published var page = 0
+    /// "system" or an AppLanguage code; drives the picker and re-renders
+    /// every string on the page when it changes.
+    @Published var language = AppLanguage.storedChoice ?? "system"
 }
 
 /// First-run welcome guide: six short pages, each naming the keys for one
@@ -53,6 +56,7 @@ final class OnboardingWindowController: NSObject, NSWindowDelegate {
         // "not now", and it stays one click away in the menu.
         UserDefaults.standard.set(Onboarding.currentVersion, forKey: PrefKey.onboardingSeen)
         model.page = 0
+        model.language = AppLanguage.storedChoice ?? "system"
 
         if window == nil {
             let w = NSWindow(
@@ -66,20 +70,34 @@ final class OnboardingWindowController: NSObject, NSWindowDelegate {
             // Open on whatever Space the user is on (e.g. a full-screen app),
             // not on the desktop Space the app happened to launch into.
             w.collectionBehavior.insert(.moveToActiveSpace)
+            // Above other apps' windows: on first run (or after an update
+            // relaunch) ClipStack is not the active app, and a normal-level
+            // window would open hidden behind whatever the user is doing.
+            w.level = .floating
             w.delegate = self
             window = w
         }
         // Rebuilt every time so the pages show the user's current hotkeys.
         window?.contentView = NSHostingView(rootView: OnboardingView(
             model: model,
-            pages: Self.pages(),
+            makePages: { Self.pages() },
+            onLanguage: { [weak self] choice in self?.setLanguage(choice) },
             onFinish: { [weak self] in self?.finish() },
             onClose: { [weak self] in self?.window?.close() }
         ))
+        window?.title = L("ob_window_title")
         window?.center()
         NSApp.activate(ignoringOtherApps: true)
+        window?.orderFrontRegardless()
         window?.makeKeyAndOrderFront(nil)
         installKeyMonitor()
+    }
+
+    /// Applies the picker choice app-wide (it is the same setting as in
+    /// Settings) and retitles the window; the page re-renders by itself.
+    private func setLanguage(_ choice: String) {
+        AppLanguage.storedChoice = choice == "system" ? nil : choice
+        window?.title = L("ob_window_title")
     }
 
     private func finish() {
@@ -125,16 +143,20 @@ final class OnboardingWindowController: NSObject, NSWindowDelegate {
     /// else gets the English ones at the top level. The .lproj path is built
     /// by hand: Bundle's lookup returns the top-level file even when asked
     /// for a specific localization (verified on macOS 27).
+    private static var imageCache: [String: NSImage] = [:]
+
     private static func screenshot(_ n: Int) -> NSImage? {
+        let lang = AppLanguage.current
+        let key = "\(lang)/\(n)"
+        if let cached = imageCache[key] { return cached }
         let file = "guide-\(n).jpg"
         guard let resources = Bundle.main.resourceURL else { return nil }
-        var candidates: [URL] = []
-        if let lang = Bundle.main.preferredLocalizations.first {
-            candidates.append(resources.appendingPathComponent("\(lang).lproj/\(file)"))
-        }
-        candidates.append(resources.appendingPathComponent(file))
+        let candidates = [resources.appendingPathComponent("\(lang).lproj/\(file)"),
+                          resources.appendingPathComponent(file)]
         let url = candidates.first { FileManager.default.fileExists(atPath: $0.path) }
-        return url.flatMap(NSImage.init(contentsOf:))
+        let image = url.flatMap(NSImage.init(contentsOf:))
+        imageCache[key] = image
+        return image
     }
 
     static func pages() -> [GuidePage] {
@@ -172,13 +194,44 @@ final class OnboardingWindowController: NSObject, NSWindowDelegate {
 
 struct OnboardingView: View {
     @ObservedObject var model: OnboardingModel
-    let pages: [GuidePage]
+    /// Called on every render so a language switch rebuilds all text and
+    /// screenshots in place.
+    let makePages: () -> [GuidePage]
+    let onLanguage: (String) -> Void
     let onFinish: () -> Void
     let onClose: () -> Void
 
-    private var isLast: Bool { model.page == pages.count - 1 }
+    private var isLast: Bool { model.page == Onboarding.pageCount - 1 }
+
+    /// "System (简体中文)" — names what "follow the system" resolves to.
+    private var systemLabel: String {
+        let system = AppLanguage.resolve(override: nil, preferred: Locale.preferredLanguages)
+        return String(format: L("language_system"), AppLanguage.nativeName(system))
+    }
+
+    private var languagePicker: some View {
+        Picker(selection: Binding(
+            get: { model.language },
+            set: { model.language = $0; onLanguage($0) }
+        )) {
+            Text(systemLabel).tag("system")
+            Divider()
+            ForEach(AppLanguage.supported, id: \.self) { code in
+                Text(AppLanguage.nativeName(code)).tag(code)
+            }
+        } label: {
+            Image(systemName: "globe")
+        }
+        .pickerStyle(.menu)
+        .fixedSize()
+        .help(L("language"))
+    }
 
     var body: some View {
+        // Reading model.language (via makePages → L) re-renders and
+        // re-localizes the page whenever the picker changes.
+        let _ = model.language
+        let pages = makePages()
         let page = pages[min(model.page, pages.count - 1)]
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 14) {
@@ -226,7 +279,8 @@ struct OnboardingView: View {
             .padding(.top, 24)
 
             Divider()
-            HStack {
+            HStack(spacing: 12) {
+                languagePicker
                 if !isLast {
                     Button(L("ob_skip"), action: onClose)
                         .buttonStyle(.plain)
