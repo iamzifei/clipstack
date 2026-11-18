@@ -312,6 +312,64 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
 .foot a { text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
 .foot a:hover { color: var(--deck-ink); }
 
+
+/* ⌘0 Try it: an in-page model of the panel -------------------------------- */
+.try { display: grid; gap: 20px; margin-top: 44px; align-items: start; }
+.try > * { min-width: 0; }
+@media (min-width: 1000px) { .try { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, .75fr); gap: 24px; } }
+.try .card { padding: 20px; }
+.tlab { font: 700 11.5px/1.3 var(--mono); letter-spacing: .03em; color: var(--dim); text-transform: uppercase; }
+.tnotes ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.tnotes li { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 6px 0 12px; border: 1px solid var(--line); border-radius: 10px; font: 500 13px/1.3 var(--mono); }
+.tnotes li .val { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; user-select: text; }
+.tbtn { appearance: none; border: 0; background: transparent; color: var(--ink); font: 600 13.5px var(--body); min-height: 44px; min-width: 64px; flex: none; white-space: nowrap; padding: 0 10px; border-radius: 8px; cursor: pointer; }
+.tbtn:hover { background: var(--paper); }
+.tbtn.done { color: var(--dim); }
+.tnotes .hint { margin-top: 12px; font-size: 13px; color: var(--dim); }
+.tmid { position: relative; }
+.treply textarea { display: block; width: 100%; margin-top: 14px; min-height: 150px; resize: vertical; border: 1px solid var(--line-2); border-radius: 10px; padding: 12px 14px; font: 400 16px/1.6 var(--body); color: var(--ink); background: var(--paper); }
+.treply textarea:focus { outline: 2px solid var(--mark); outline-offset: 1px; }
+.trow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 12px; }
+.trow .btn { min-height: 46px; font-size: 15px; }
+.trow .btn .k { opacity: .65; font: 600 13px var(--mono); }
+.tonclip { font-size: 13.5px; color: var(--muted); }
+.tonclip b { background: var(--mark); color: #141414; padding: 0 4px; border-radius: 3px; font-weight: 600; }
+/* The panel model: dark like the real one. */
+.tpanel { position: absolute; z-index: 5; left: 24px; right: -24px; top: 56px; background: #1e1e22; color: #f2f0ea; border: 1px solid #3a3934; border-radius: 14px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.55); overflow: hidden; }
+.tpanel[hidden] { display: none; }
+.tpanel input { display: block; width: 100%; border: 0; border-bottom: 1px solid #33322c; background: transparent; color: #f2f0ea; font: 400 16px var(--body); padding: 13px 14px; }
+.tpanel input:focus { outline: none; }
+.tchips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 12px; }
+.tchips button { appearance: none; border: 0; cursor: pointer; font: 700 10.5px var(--mono); letter-spacing: .04em; color: #f2f0ea; background: #2a2925; padding: 0 9px; min-height: 30px; border-radius: 7px; }
+.tchips button.on { background: #4f8ef7; color: #fff; }
+.tlist { list-style: none; margin: 0; padding: 0 8px 8px; display: grid; gap: 2px; max-height: 260px; overflow: auto; }
+.tlist button { appearance: none; border: 0; width: 100%; display: flex; gap: 10px; align-items: center; min-height: 44px; padding: 0 10px; border-radius: 8px; background: transparent; color: #f2f0ea; font: 500 13px var(--mono); text-align: left; cursor: pointer; }
+.tlist button .val { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tlist button .q { color: #8c897f; flex: none; }
+.tlist button.sel { background: #2c4a7a; }
+.tlist .none { padding: 14px 10px; color: #a8a59c; font-size: 14px; }
+.tfoot { padding: 9px 14px; border-top: 1px solid #33322c; font: 500 11.5px var(--mono); color: #a8a59c; }
+.tprog ol { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 11px; font-size: 15px; }
+.tprog li { display: flex; gap: 10px; align-items: center; color: var(--muted); }
+.tprog li::before { content: ""; flex: none; width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--line-2); box-sizing: border-box; }
+.tprog li.ok { color: var(--ink); }
+.tprog li.ok::before { content: "✓"; border: 0; background: var(--mark); color: #141414; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+.tbar { display: flex; gap: 5px; margin-top: 12px; }
+.tbar span { flex: 1; height: 6px; border-radius: 3px; background: var(--line); transition: background .3s; }
+.tbar span.ok { background: var(--mark); }
+.tnext { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+.tnext b { color: var(--ink); }
+.tdone .btn { margin-top: 12px; width: 100%; }
+.treset { margin-top: 8px; }
+.tfoot .tap { display: none; } .coarse .tfoot .tap { display: inline; } .coarse .kb { display: none; }
+.tcap { margin-top: 18px; font: 500 12px/1.6 var(--mono); color: var(--dim); }
+@media (max-width: 999px) {
+  /* Phones and tablets: the panel becomes a bottom sheet over the page. */
+  .tpanel { position: fixed; left: 0; right: 0; top: auto; bottom: 0; border-radius: 18px 18px 0 0; max-height: 72vh; display: flex; flex-direction: column; padding-bottom: env(safe-area-inset-bottom); }
+  .tpanel[hidden] { display: none; }
+  .tlist { max-height: none; flex: 1; }
+}
+
 /* Motion ------------------------------------------------------------------- */
 .js .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
 .js .reveal.in { opacity: 1; transform: none; }
@@ -330,6 +388,7 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
   <div class="wrap nav-inner">
     <a class="brand" href="#top"><img src="icon-256.png" width="30" height="30" alt=""><span>ClipStack</span></a>
     <nav class="nav-links" aria-label="Sections">
+      <a class="sec" href="#try" data-i18n="nav.try">Try it</a>
       <a class="sec" href="#what" data-i18n="nav.what">What it is</a>
       <a class="sec" href="#how" data-i18n="nav.how">How to use</a>
       <a class="sec" href="#features" data-i18n="nav.features">Features</a>
@@ -366,7 +425,7 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a.75.75 0 0 1 .75.75v7.19l2.22-2.22a.75.75 0 1 1 1.06 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0l-3.5-3.5a.75.75 0 0 1 1.06-1.06l2.22 2.22V1.75A.75.75 0 0 1 8 1Z"/><path d="M2.75 10.5a.75.75 0 0 1 .75.75v1.25c0 .14.11.25.25.25h8.5a.25.25 0 0 0 .25-.25V11.25a.75.75 0 0 1 1.5 0v1.25c0 .97-.78 1.75-1.75 1.75h-8.5A1.75 1.75 0 0 1 2 12.5v-1.25a.75.75 0 0 1 .75-.75Z"/></svg>
           <span data-i18n="cta.download">Download for Mac</span>
         </a>
-        <a class="link" href="#how"><span data-i18n="cta.how">See how it works</span>&nbsp;→</a>
+        <a class="link" href="#try"><span data-i18n="cta.try">Try it right here</span>&nbsp;→</a>
       </div>
       <p class="fine reveal" data-i18n="hero.fine">Free · Open source (MIT) · macOS 13+ · Apple silicon</p>
     </div>
@@ -384,6 +443,64 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
       <p class="caption" data-i18n="hero.caption">A real screen recording at normal speed. The history is demo data.</p>
     </div>
   </div>
+
+
+  <!-- ⌘0 TRY IT: a working model of the panel, to learn by doing ----------- -->
+  <section id="try" class="alt">
+    <div class="wrap">
+      <p class="label reveal"><span class="key">⌘0</span><span data-i18n="try.label">Try it here</span></p>
+      <div class="head split">
+        <h2 class="reveal" data-i18n-html="try.h2">Learn it in <em class="accent">thirty seconds.</em></h2>
+        <p class="lead reveal" data-i18n="try.lead">A working model of ClipStack, right in this page. Copy a few lines, then bring one back. It never touches your real clipboard.</p>
+      </div>
+      <div class="try reveal" id="tryapp">
+        <div class="card tnotes" id="tnotes">
+          <p class="tlab" data-i18n="try.notes">1 · Notes — copy some lines</p>
+          <ul>
+            <li><span class="tag t-url">URL</span><span class="val">https://staging.example.com/v1.9</span><button class="tbtn" type="button" data-copy="0" data-i18n="try.copy">Copy</button></li>
+            <li><span class="tag t-email">EMAIL</span><span class="val">support@example.com</span><button class="tbtn" type="button" data-copy="1" data-i18n="try.copy">Copy</button></li>
+            <li><span class="tag t-color">COLOR</span><span class="val">#5B8DEF</span><button class="tbtn" type="button" data-copy="2" data-i18n="try.copy">Copy</button></li>
+            <li><span class="tag t-code">CODE</span><span class="val">npm run build --watch</span><button class="tbtn" type="button" data-copy="3" data-i18n="try.copy">Copy</button></li>
+          </ul>
+          <p class="hint" data-i18n="try.hint">Or select any text here and press ⌘C.</p>
+        </div>
+        <div class="tmid">
+          <div class="card treply">
+            <label class="tlab" for="treply" data-i18n="try.reply">2 · Reply — paste here</label>
+            <textarea id="treply" spellcheck="false">Hi Sam,
+</textarea>
+            <div class="trow">
+              <button class="btn" type="button" id="topen"><span data-i18n="try.open">Open ClipStack</span> <span class="k kb">⇧⌘V</span></button>
+              <span class="tonclip" id="tonclip" hidden></span>
+            </div>
+          </div>
+          <div class="tpanel" id="tpanel" role="dialog" aria-modal="false" aria-label="ClipStack" hidden>
+            <input id="tq" type="search" autocomplete="off" data-i18n-ph="try.search" placeholder="Search clipboard history…">
+            <div class="tchips" id="tchips"></div>
+            <ul class="tlist" id="tlist"></ul>
+            <p class="tfoot"><span class="kb" data-i18n="try.foot">↑↓ move · ↩ copy · ⇥ filter · esc close</span><span class="tap" data-i18n="try.footm">Tap an entry to paste it</span></p>
+          </div>
+        </div>
+        <div class="card tprog" aria-live="polite">
+          <p class="tlab"><span data-i18n="try.prog">Your progress</span> · <span id="tcount">0</span> / 5</p>
+          <div class="tbar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          <ol id="tsteps">
+            <li data-i18n="try.s1">Copy two things</li>
+            <li data-i18n="try.s2">Open ClipStack</li>
+            <li data-i18n="try.s3">Paste an older one</li>
+            <li data-i18n="try.s4">Find one by typing</li>
+            <li data-i18n="try.s5">Filter by type</li>
+          </ol>
+          <p class="tnext" id="tnext"></p>
+          <div class="tdone" id="tdone" hidden>
+            <a class="btn" href="https://github.com/iamzifei/clipstack/releases/latest" data-i18n="try.dl">Get the real thing</a>
+            <button class="tbtn treset" type="button" id="treset" data-i18n="try.reset">Start over</button>
+          </div>
+        </div>
+      </div>
+      <p class="tcap reveal" data-i18n="try.caption">In-browser model of the real panel · demo clipboard only · on phones, tap instead of pressing keys</p>
+    </div>
+  </section>
 
   <!-- ⌘1 WHAT IT IS ---------------------------------------------------------- -->
   <section id="what">
@@ -677,16 +794,151 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
     }, { threshold: 0.5 }).observe(chord);
   }
 
+
+  // ⌘0 Try it — a model of the panel. Everything stays in this page: copies
+  // go into `hist`, ↩ puts an entry on the demo clipboard, ⌘V in the reply
+  // pastes it. The real clipboard is never written.
+  // Defined here, started after the language is applied (it reads strings).
+  var initTry = function () {
+    var app = document.getElementById('tryapp'); if (!app) return;
+    var coarse = window.matchMedia('(pointer: coarse)').matches;
+    app.classList.toggle('coarse', coarse);
+    var notes = document.getElementById('tnotes'), reply = document.getElementById('treply');
+    var panel = document.getElementById('tpanel'), q = document.getElementById('tq');
+    var chips = document.getElementById('tchips'), list = document.getElementById('tlist');
+    var onclip = document.getElementById('tonclip');
+    var stepsEl = document.querySelectorAll('#tsteps li'), bars = document.querySelectorAll('.tbar span');
+    var TYPES = ['url', 'email', 'code', 'color', 'text'];
+    var hist, clip, sel, filter, done, copies, inView = false;
+    function kind(s) {
+      if (/^https?:\/\/\S+$/i.test(s)) return 'url';
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) return 'email';
+      if (/^#[0-9a-f]{3,8}$/i.test(s) || /^rgba?\(/i.test(s)) return 'color';
+      if (/[{};=]|^(npm|git|brew|cd|ls|func|const|let)\b/.test(s)) return 'code';
+      return 'text';
+    }
+    function reset() {
+      hist = [{ text: t('try.seed') || 'Thanks for the report!', type: 'text' }];
+      clip = null; sel = 0; filter = null; done = [false, false, false, false, false]; copies = 0;
+      reply.value = 'Hi Sam,\n'; onclip.hidden = true;
+      app.querySelectorAll('[data-copy]').forEach(function (b) { b.classList.remove('done'); b.textContent = t('try.copy'); });
+      close(); paintSteps();
+    }
+    function add(text) {
+      text = (text || '').trim(); if (!text) return;
+      hist = hist.filter(function (h) { return h.text !== text; });
+      hist.unshift({ text: text, type: kind(text) });
+      if (++copies >= 2) tick(0);
+    }
+    function tick(i) { if (!done[i]) { done[i] = true; paintSteps(); } }
+    function paintSteps() {
+      var n = 0;
+      done.forEach(function (d, i) { stepsEl[i].classList.toggle('ok', d); bars[i].classList.toggle('ok', d); if (d) n++; });
+      document.getElementById('tcount').textContent = n;
+      var next = done.indexOf(false);
+      document.getElementById('tnext').innerHTML = next < 0 ? t('try.done') : t('try.n' + (next + 1) + (coarse ? 'm' : ''));
+      document.getElementById('tdone').hidden = next >= 0;
+    }
+    function visible() {
+      var term = q.value.trim().toLowerCase();
+      return hist.map(function (h, i) { return { h: h, i: i }; }).filter(function (x) {
+        return (!filter || x.h.type === filter) && (!term || x.h.text.toLowerCase().indexOf(term) >= 0);
+      });
+    }
+    function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function paint() {
+      var present = TYPES.filter(function (k) { return hist.some(function (h) { return h.type === k; }); });
+      chips.innerHTML = '<button type="button" data-f="" class="' + (filter ? '' : 'on') + '">' + esc(t('try.all') || 'All') + ' ' + hist.length + '</button>' +
+        present.map(function (k) {
+          var c = hist.filter(function (h) { return h.type === k; }).length;
+          return '<button type="button" data-f="' + k + '" class="' + (filter === k ? 'on' : '') + '">' + k.toUpperCase() + ' ' + c + '</button>';
+        }).join('');
+      var v = visible();
+      if (sel >= v.length) sel = Math.max(0, v.length - 1);
+      list.innerHTML = v.length ? v.map(function (x, j) {
+        return '<li><button type="button" data-j="' + j + '" class="' + (j === sel ? 'sel' : '') + '"><span class="tag t-' + x.h.type + '">' + x.h.type.toUpperCase() + '</span><span class="val">' + esc(x.h.text) + '</span>' + (j < 9 && !coarse ? '<span class="q">⌘' + (j + 1) + '</span>' : '') + '</button></li>';
+      }).join('') : '<li class="none">' + esc(t('try.empty') || 'No match') + '</li>';
+    }
+    function open() {
+      q.value = ''; filter = null; sel = 0; panel.hidden = false; paint(); tick(1);
+      if (!coarse) q.focus();
+    }
+    function close() { panel.hidden = true; }
+    function choose(j) {
+      var v = visible(), x = v[j]; if (!x) return;
+      var older = x.i > 0, typed = q.value.trim().length > 0;
+      close();
+      clip = { text: x.h.text, older: older, typed: typed };
+      if (coarse) { paste(); return; }
+      onclip.innerHTML = t('try.onclip'); onclip.hidden = false;
+      reply.focus(); reply.setSelectionRange(reply.value.length, reply.value.length);
+    }
+    function paste() {
+      if (!clip) return false;
+      var a = reply.selectionStart, b = reply.selectionEnd, v = reply.value;
+      if (coarse || document.activeElement !== reply) { a = b = v.length; }
+      // Each demo paste starts on its own line so the reply stays readable.
+      var ins = (a > 0 && v.charAt(a - 1) !== '\n' ? '\n' : '') + clip.text;
+      reply.value = v.slice(0, a) + ins + v.slice(b);
+      reply.setSelectionRange(a + ins.length, a + ins.length);
+      if (clip.older) tick(2);
+      if (clip.typed) tick(3);
+      onclip.hidden = true;
+      return true;
+    }
+    function cycle(step) {
+      var present = [null].concat(TYPES.filter(function (k) { return hist.some(function (h) { return h.type === k; }); }));
+      var i = present.indexOf(filter); filter = present[(i + step + present.length) % present.length];
+      sel = 0; paint(); tick(4);
+    }
+
+    app.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-copy]');
+      if (b) { add(b.parentNode.querySelector('.val').textContent); b.classList.add('done'); b.textContent = t('try.copied'); return; }
+      var c = e.target.closest('[data-f]');
+      if (c) { filter = c.dataset.f || null; sel = 0; paint(); tick(4); if (!coarse) q.focus(); return; }
+      var r = e.target.closest('[data-j]');
+      if (r) { choose(+r.dataset.j); return; }
+    });
+    document.getElementById('topen').addEventListener('click', function () { panel.hidden ? open() : close(); });
+    document.getElementById('treset').addEventListener('click', reset);
+    // A real ⌘C on the notes card is recorded too (the browser still copies it).
+    document.addEventListener('copy', function () {
+      var s = window.getSelection(); if (!s || !s.rangeCount) return;
+      if (notes.contains(s.anchorNode)) add(String(s));
+    });
+    reply.addEventListener('paste', function (e) { if (clip && paste()) e.preventDefault(); });
+    q.addEventListener('input', function () { sel = 0; paint(); });
+    // ⇧⌘V (⇧Ctrl V elsewhere) opens the model while the section is on screen.
+    new IntersectionObserver(function (es) { inView = es[0].isIntersecting; }, { threshold: 0.25 }).observe(app);
+    document.addEventListener('keydown', function (e) {
+      var mod = e.metaKey || e.ctrlKey;
+      if (mod && e.shiftKey && (e.key === 'v' || e.key === 'V') && inView) { e.preventDefault(); panel.hidden ? open() : close(); return; }
+      if (panel.hidden) return;
+      var v = visible();
+      if (e.key === 'ArrowDown') { e.preventDefault(); sel = Math.min(sel + 1, v.length - 1); paint(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); sel = Math.max(sel - 1, 0); paint(); }
+      else if (e.key === 'Enter') { e.preventDefault(); choose(sel); }
+      else if (e.key === 'Tab') { e.preventDefault(); cycle(e.shiftKey ? -1 : 1); }
+      else if (e.key === 'Escape') { e.preventDefault(); if (filter || q.value) { filter = null; q.value = ''; sel = 0; paint(); } else close(); }
+      else if (mod && /^[1-9]$/.test(e.key)) { e.preventDefault(); choose(+e.key - 1); }
+    });
+    document.addEventListener('click', function (e) { if (!panel.hidden && !panel.contains(e.target) && !e.target.closest('#topen')) close(); });
+    window.csTryRefresh = function () { paintSteps(); if (!panel.hidden) paint(); };
+    reset();
+  };
+
   // Language: English is in the markup (snapshotted at load); other languages
   // come from i18n.js. ?lang= and the picker win over the browser language.
   // Highlighted phrases (<em>) and inline keys (.kbd) are dressed on render.
   var STR = window.CS_I18N || {}, EN = {};
-  var nodes = document.querySelectorAll('[data-i18n],[data-i18n-html],[data-i18n-alt],[data-i18n-aria]');
+  var nodes = document.querySelectorAll('[data-i18n],[data-i18n-html],[data-i18n-alt],[data-i18n-aria],[data-i18n-ph]');
   nodes.forEach(function (el) {
     if (el.dataset.i18n) EN[el.dataset.i18n] = el.textContent;
     if (el.dataset.i18nHtml) EN[el.dataset.i18nHtml] = el.innerHTML;
     if (el.dataset.i18nAlt) EN[el.dataset.i18nAlt] = el.getAttribute('alt');
     if (el.dataset.i18nAria) EN[el.dataset.i18nAria] = el.getAttribute('aria-label');
+    if (el.dataset.i18nPh) EN[el.dataset.i18nPh] = el.getAttribute('placeholder');
   });
   EN['doc.title'] = document.title;
   EN['doc.desc'] = document.querySelector('meta[name=description]').content;
@@ -703,7 +955,9 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
       if (el.dataset.i18nHtml) el.innerHTML = dress(t(el.dataset.i18nHtml));
       if (el.dataset.i18nAlt) el.setAttribute('alt', t(el.dataset.i18nAlt));
       if (el.dataset.i18nAria) el.setAttribute('aria-label', t(el.dataset.i18nAria));
+      if (el.dataset.i18nPh) el.setAttribute('placeholder', t(el.dataset.i18nPh));
     });
+    if (window.csTryRefresh) window.csTryRefresh();
     document.title = t('doc.title');
     document.querySelector('meta[name=description]').content = t('doc.desc');
     current = -2;
@@ -724,6 +978,7 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
   var choice = q || saved || 'system';
   pick.value = (choice === 'system' || choice === 'en' || STR[choice]) ? choice : 'system';
   apply(pick.value === 'system' ? detect() : pick.value);
+  initTry();
   pick.addEventListener('change', function () {
     try { localStorage.setItem('cs-lang', pick.value); } catch (e) {}
     apply(pick.value === 'system' ? detect() : pick.value);

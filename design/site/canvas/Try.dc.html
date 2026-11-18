@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Try it — interactive section</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap">
+<style>
+body{margin:0}
+.mk{background:linear-gradient(transparent 12%,#ffe45c 12%,#ffe45c 88%,transparent 88%);padding:0 .08em}
+.key{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 8px;box-sizing:border-box;border-radius:7px;background:#fff;border:1px solid #d9d6cc;border-bottom-width:3px;font:700 12px/1 'JetBrains Mono',monospace;color:#141414}
+.tag{font:700 9px/1 'JetBrains Mono',monospace;letter-spacing:.06em;color:#fff;padding:4px 6px;border-radius:4px}
+.card{background:#fff;border:1px solid #e4e2da;border-radius:16px}
+</style>
+</helmet>
+<div style="width:1440px;height:980px;box-sizing:border-box;padding:70px 100px;background:#f6f5f1;color:#141414;font-family:Inter,sans-serif">
+<div style="display:flex;justify-content:space-between;align-items:end;gap:60px">
+<div>
+<p style="margin:0;display:inline-flex;gap:12px;align-items:center;font:700 13px 'JetBrains Mono',monospace"><span class="key">⌘0</span>Try it here</p>
+<h2 style="margin:22px 0 0;font:800 60px/1.02 'Bricolage Grotesque',sans-serif;letter-spacing:-.04em">Learn it in <span class="mk">thirty seconds.</span></h2>
+</div>
+<p style="margin:0;color:#55534d;font-size:18px;max-width:30em">A working model of ClipStack, right in this page. Copy a few lines, then bring one back. It never touches your real clipboard.</p>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) 300px;gap:24px;margin-top:44px;align-items:start">
+<div class="card" style="padding:22px">
+<p style="margin:0;font:700 12px 'JetBrains Mono',monospace;color:#6e6b63">1 · NOTES — COPY SOME LINES</p>
+<div style="display:grid;gap:8px;margin-top:16px;font:500 13px 'JetBrains Mono',monospace">
+<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #e4e2da;border-radius:10px"><span class="tag" style="background:#3a7bd5">URL</span><span style="flex:1">staging.example.com/v1.9</span><a href="#" style="font:600 12px Inter;color:#141414">Copied ✓</a></div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #e4e2da;border-radius:10px"><span class="tag" style="background:#2f9e74">EMAIL</span><span style="flex:1">support@example.com</span><a href="#" style="font:600 12px Inter;color:#141414">Copied ✓</a></div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #e4e2da;border-radius:10px"><span class="tag" style="background:#d9822b">COLOR</span><span style="flex:1">#5B8DEF</span><a href="#" style="font:600 12px Inter;color:#141414">Copy</a></div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #e4e2da;border-radius:10px"><span class="tag" style="background:#9b59d0">CODE</span><span style="flex:1">npm run build</span><a href="#" style="font:600 12px Inter;color:#141414">Copy</a></div>
+</div>
+<p style="margin:14px 0 0;font-size:13px;color:#6e6b63">Or select any text here and press ⌘C.</p>
+</div>
+
+<div style="position:relative">
+<div class="card" style="padding:22px;min-height:300px">
+<p style="margin:0;font:700 12px 'JetBrains Mono',monospace;color:#6e6b63">2 · REPLY — PASTE HERE</p>
+<div style="margin-top:16px;border:1px solid #e4e2da;border-radius:10px;padding:14px;height:200px;font-size:15px;line-height:1.6">Hi Sam,<br>the staging build is live at staging.example.com/v1.9<span style="display:inline-block;width:2px;height:18px;background:#141414;vertical-align:middle"></span></div>
+<div style="display:flex;gap:10px;margin-top:14px"><a href="#" style="background:#141414;color:#fff;text-decoration:none;padding:12px 16px;border-radius:10px;font-weight:600;font-size:14px">Open ClipStack <span style="opacity:.7">⇧⌘V</span></a></div>
+</div>
+<div style="position:absolute;left:40px;right:-40px;top:70px;background:#1e1e22;border:1px solid #3a3934;border-radius:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.55);color:#f2f0ea;overflow:hidden">
+<div style="padding:12px 14px;border-bottom:1px solid #33322c;font-size:14px;color:#a8a59c">⌕ Search clipboard history…</div>
+<div style="display:flex;gap:6px;padding:10px 14px;font:700 10px 'JetBrains Mono',monospace"><span style="background:#4f8ef7;color:#fff;padding:4px 8px;border-radius:6px">ALL 3</span><span style="background:#2a2925;padding:4px 8px;border-radius:6px">URL 1</span><span style="background:#2a2925;padding:4px 8px;border-radius:6px">EMAIL 1</span><span style="background:#2a2925;padding:4px 8px;border-radius:6px">TEXT 1</span></div>
+<div style="display:grid;gap:2px;padding:0 8px 8px;font:500 13px 'JetBrains Mono',monospace">
+<div style="display:flex;gap:10px;align-items:center;padding:9px 8px;border-radius:8px"><span class="tag" style="background:#2f9e74">EMAIL</span><span style="flex:1">support@example.com</span><span style="color:#8c897f">⌘1</span></div>
+<div style="display:flex;gap:10px;align-items:center;padding:9px 8px;border-radius:8px;background:#2c4a7a"><span class="tag" style="background:#3a7bd5">URL</span><span style="flex:1">staging.example.com/v1.9</span><span style="color:#cfd8ea">⌘2</span></div>
+<div style="display:flex;gap:10px;align-items:center;padding:9px 8px;border-radius:8px"><span class="tag" style="background:#6b6b75">TEXT</span><span style="flex:1">Thanks for the report!</span><span style="color:#8c897f">⌘3</span></div>
+</div>
+<div style="display:flex;gap:14px;padding:9px 14px;border-top:1px solid #33322c;font:500 11px 'JetBrains Mono',monospace;color:#a8a59c"><span>↑↓ move</span><span>↩ copy</span><span>⇥ filter</span><span>esc close</span></div>
+</div>
+</div>
+
+<div class="card" style="padding:22px">
+<p style="margin:0;font:700 12px 'JetBrains Mono',monospace;color:#6e6b63">YOUR PROGRESS · 3 / 5</p>
+<div style="display:grid;gap:12px;margin-top:16px;font-size:14.5px">
+<div style="display:flex;gap:10px;align-items:center"><span style="width:22px;height:22px;border-radius:6px;background:#ffe45c;display:inline-flex;align-items:center;justify-content:center;font-size:12px">✓</span>Copy two things</div>
+<div style="display:flex;gap:10px;align-items:center"><span style="width:22px;height:22px;border-radius:6px;background:#ffe45c;display:inline-flex;align-items:center;justify-content:center;font-size:12px">✓</span>Open it with ⇧⌘V</div>
+<div style="display:flex;gap:10px;align-items:center"><span style="width:22px;height:22px;border-radius:6px;background:#ffe45c;display:inline-flex;align-items:center;justify-content:center;font-size:12px">✓</span>Paste an older one</div>
+<div style="display:flex;gap:10px;align-items:center;color:#55534d"><span style="width:22px;height:22px;border-radius:6px;border:1.5px solid #cfccc2;box-sizing:border-box"></span>Find one by typing</div>
+<div style="display:flex;gap:10px;align-items:center;color:#55534d"><span style="width:22px;height:22px;border-radius:6px;border:1.5px solid #cfccc2;box-sizing:border-box"></span>Filter with Tab</div>
+</div>
+<div style="margin-top:18px;padding-top:16px;border-top:1px solid #e4e2da;font-size:13.5px;color:#55534d">Next: press ⇧⌘V and type <b style="color:#141414">sup</b>.</div>
+</div>
+</div>
+<p style="margin:22px 0 0;font:500 12px 'JetBrains Mono',monospace;color:#6e6b63">In-browser model of the real panel · demo clipboard only · on phones, tap instead of typing keys</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":980}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
