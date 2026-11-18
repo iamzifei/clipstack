@@ -98,6 +98,8 @@ p { margin: 0; }
 .muted { color: var(--muted); }
 .lead { color: var(--muted); font-size: clamp(16.5px, 1.5vw, 19.5px); max-width: 34em; }
 :lang(zh-Hans) h1, :lang(zh-Hant) h1, :lang(ja) h1, :lang(ko) h1 { letter-spacing: -.02em; line-height: 1.1; }
+/* CJK glyphs are wider than Latin: size the hero so a phrase fits the column. */
+:lang(zh-Hans) h1, :lang(zh-Hant) h1, :lang(ja) h1 { font-size: clamp(40px, 5.6vw, 68px); }
 :lang(zh-Hans) h2, :lang(zh-Hant) h2, :lang(ja) h2, :lang(ko) h2 { letter-spacing: -.01em; line-height: 1.15; }
 :lang(ja) :is(h1,h2,h3) { word-break: auto-phrase; }
 
