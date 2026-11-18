@@ -45,6 +45,15 @@
 - 隐私：遵循 [nspasteboard.org](http://nspasteboard.org) 约定，密码管理器标记的 Concealed/Transient 内容不入库
 - 历史持久化：`~/Library/Application Support/ClipStack/`（history.json + images/*.png），默认上限 300 条（置顶不占淘汰位）
 
+## 安装
+
+- 下载：[最新版 DMG](https://github.com/iamzifei/clipstack/releases/latest)（已签名并公证，macOS 13+，Apple 芯片），拖进「应用程序」即可；之后 App 内自动更新。
+- Homebrew：
+
+```bash
+brew install --cask iamzifei/tap/clipstack
+```
+
 ## 构建 & 安装
 
 ```bash

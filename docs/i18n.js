@@ -45,7 +45,10 @@ window.CS_I18N = {
   "try.n4m": "Next: open it, type <b>sup</b>, tap the match.",
   "try.n5": "Next: in the panel, press <b>Tab</b> to show one type.",
   "try.n5m": "Next: in the panel, tap a <b>type</b> such as URL.",
-  "try.done": "Done — that's ClipStack. The real one does this in every app."
+  "try.done": "Done — that's ClipStack. The real one does this in every app.",
+  "brew.label": "Or install with Homebrew",
+  "brew.copy": "Copy",
+  "brew.copied": "Copied"
  },
  "zh-Hans": {
   "nav.what": "这是什么",
@@ -156,7 +159,7 @@ window.CS_I18N = {
   "q2": "真的免费吗？",
   "a2": "是的。ClipStack 免费开源（MIT 许可），没有订阅，也没有付费版。如果它帮你省了时间，可以在 Ko-fi 上随意打赏。",
   "q3": "怎么安装？",
-  "a3": "在发布页下载 DMG，把 ClipStack 拖进「应用程序」后打开。第一次打开会有一段简短的新手指导介绍快捷键。之后 ClipStack 会自己检查更新，在 App 内完成安装。",
+  "a3": "在发布页下载 DMG，把 ClipStack 拖进「应用程序」后打开。第一次打开会有一段简短的新手指导介绍快捷键。用 Homebrew 只要一行：brew install --cask iamzifei/tap/clipstack。之后 ClipStack 会自己检查更新，在 App 内完成安装。",
   "q4": "支持哪些 Mac？",
   "a4": "macOS 13 Ventura 及以上，搭载 Apple 芯片（M 系列）的 Mac。",
   "q5": "我的剪贴板数据安全吗？",
@@ -234,7 +237,10 @@ window.CS_I18N = {
   "try.n4m": "下一步：打开后输入 <b>sup</b>，点搜到的那条。",
   "try.n5": "下一步：在面板里按 <b>Tab</b>，只看一种类型。",
   "try.n5m": "下一步：在面板里点一个<b>类型</b>，比如 URL。",
-  "try.done": "完成！这就是 ClipStack。真正的 App 在任何程序里都这样用。"
+  "try.done": "完成！这就是 ClipStack。真正的 App 在任何程序里都这样用。",
+  "brew.label": "或者用 Homebrew 安装",
+  "brew.copy": "复制",
+  "brew.copied": "已复制"
  },
  "zh-Hant": {
   "nav.what": "這是什麼",
@@ -345,7 +351,7 @@ window.CS_I18N = {
   "q2": "真的免費嗎？",
   "a2": "是的。ClipStack 免費且以 MIT 授權開放原始碼，沒有訂閱，也沒有付費版。如果它幫你省了時間，歡迎到 Ko-fi 隨喜贊助。",
   "q3": "要怎麼安裝？",
-  "a3": "到發佈頁面下載 DMG，把 ClipStack 拖進「應用程式」後打開。第一次開啟時會有簡短的新手導覽介紹快速鍵。之後 ClipStack 會自動檢查更新，直接在 App 裡完成安裝。",
+  "a3": "到發佈頁面下載 DMG，把 ClipStack 拖進「應用程式」後打開。第一次開啟時會有簡短的新手導覽介紹快速鍵。用 Homebrew 只要一行：brew install --cask iamzifei/tap/clipstack。之後 ClipStack 會自動檢查更新，直接在 App 裡完成安裝。",
   "q4": "支援哪些 Mac？",
   "a4": "macOS 13 Ventura 或以上版本，搭載 Apple 晶片（M 系列）的 Mac。",
   "q5": "我的剪貼簿資料安全嗎？",
@@ -423,7 +429,10 @@ window.CS_I18N = {
   "try.n4m": "下一步：打開它，輸入 <b>sup</b>，點符合的那一筆。",
   "try.n5": "下一步：在面板裡按 <b>Tab</b>，只顯示一種類型。",
   "try.n5m": "下一步：在面板裡點一種<b>類型</b>，例如 URL。",
-  "try.done": "完成——這就是 ClipStack。正式版在每個 App 裡都能這樣用。"
+  "try.done": "完成——這就是 ClipStack。正式版在每個 App 裡都能這樣用。",
+  "brew.label": "或用 Homebrew 安裝",
+  "brew.copy": "複製",
+  "brew.copied": "已複製"
  },
  "ja": {
   "nav.what": "ClipStackとは",
@@ -534,7 +543,7 @@ window.CS_I18N = {
   "q2": "本当に無料ですか？",
   "a2": "はい。ClipStackはMITライセンスの無料オープンソースで、サブスクリプションも有料プランもありません。役に立ったと思ったら、Ko-fiで任意のチップをいただけるとうれしいです。",
   "q3": "インストール方法は？",
-  "a3": "リリースページからDMGをダウンロードし、ClipStackを「アプリケーション」にドラッグして開きます。初回起動時には、キー操作を紹介する短いガイドが表示されます。その後のアップデートは、ClipStackが自動で確認し、アプリ内からインストールします。",
+  "a3": "リリースページからDMGをダウンロードし、ClipStackを「アプリケーション」にドラッグして開きます。初回起動時には、キー操作を紹介する短いガイドが表示されます。Homebrew なら 1 行です：brew install --cask iamzifei/tap/clipstack。その後のアップデートは、ClipStackが自動で確認し、アプリ内からインストールします。",
   "q4": "対応しているMacは？",
   "a4": "macOS 13 Ventura以降を搭載した、Apple silicon（Mシリーズ）のMacです。",
   "q5": "クリップボードのデータは安全ですか？",
@@ -612,7 +621,10 @@ window.CS_I18N = {
   "try.n4m": "次：開いて <b>sup</b> と入力し、一致した項目をタップ。",
   "try.n5": "次：パネルで <b>Tab</b> を押して、ひとつの種類だけ表示。",
   "try.n5m": "次：パネルで URL などの<b>種類</b>をタップ。",
-  "try.done": "完了です。これが ClipStack。本物はどのアプリでも同じように使えます。"
+  "try.done": "完了です。これが ClipStack。本物はどのアプリでも同じように使えます。",
+  "brew.label": "Homebrew でもインストールできます",
+  "brew.copy": "コピー",
+  "brew.copied": "コピーしました"
  },
  "ko": {
   "nav.what": "소개",
@@ -723,7 +735,7 @@ window.CS_I18N = {
   "q2": "정말 무료인가요?",
   "a2": "네. ClipStack은 MIT 라이선스의 무료 오픈 소스이며, 구독도 유료 요금제도 없습니다. 시간을 아끼는 데 도움이 됐다면 Ko-fi로 원하는 만큼 후원하실 수 있습니다.",
   "q3": "어떻게 설치하나요?",
-  "a3": "릴리스 페이지에서 DMG를 다운로드하고 ClipStack을 응용 프로그램 폴더로 드래그한 뒤 실행하세요. 처음 실행하면 짧은 환영 가이드가 단축키를 알려 줍니다. 그 이후로는 ClipStack이 알아서 업데이트를 확인하고 앱 안에서 설치합니다.",
+  "a3": "릴리스 페이지에서 DMG를 다운로드하고 ClipStack을 응용 프로그램 폴더로 드래그한 뒤 실행하세요. 처음 실행하면 짧은 환영 가이드가 단축키를 알려 줍니다. Homebrew로는 한 줄이면 됩니다: brew install --cask iamzifei/tap/clipstack. 그 이후로는 ClipStack이 알아서 업데이트를 확인하고 앱 안에서 설치합니다.",
   "q4": "어떤 Mac에서 작동하나요?",
   "a4": "macOS 13 Ventura 이상이 설치된 Apple silicon(M 시리즈) Mac에서 작동합니다.",
   "q5": "클립보드 데이터는 안전한가요?",
@@ -801,7 +813,10 @@ window.CS_I18N = {
   "try.n4m": "다음: 열고 <b>sup</b>을 입력한 뒤 일치하는 항목을 탭하세요.",
   "try.n5": "다음: 패널에서 <b>Tab</b>을 눌러 한 종류만 보세요.",
   "try.n5m": "다음: 패널에서 URL 같은 <b>종류</b>를 탭하세요.",
-  "try.done": "완료! 이게 ClipStack입니다. 정식 앱은 모든 앱에서 이렇게 작동합니다."
+  "try.done": "완료! 이게 ClipStack입니다. 정식 앱은 모든 앱에서 이렇게 작동합니다.",
+  "brew.label": "Homebrew로 설치할 수도 있습니다",
+  "brew.copy": "복사",
+  "brew.copied": "복사됨"
  },
  "de": {
   "nav.what": "Was es ist",
@@ -912,7 +927,7 @@ window.CS_I18N = {
   "q2": "Ist es wirklich kostenlos?",
   "a2": "Ja. ClipStack ist kostenlos und Open Source unter der MIT-Lizenz, ohne Abo und ohne Bezahlversion. Wenn es dir Zeit spart, gibt es eine freiwillige Trinkgeldkasse auf Ko-fi.",
   "q3": "Wie installiere ich es?",
-  "a3": "Lade das DMG von der Release-Seite, zieh ClipStack in den Ordner „Programme“ und öffne es. Beim ersten Start zeigt dir eine kurze Einführung die Tasten. Danach sucht ClipStack selbst nach Updates und installiert sie direkt in der App.",
+  "a3": "Lade das DMG von der Release-Seite, zieh ClipStack in den Ordner „Programme“ und öffne es. Beim ersten Start zeigt dir eine kurze Einführung die Tasten. Mit Homebrew genügt eine Zeile: brew install --cask iamzifei/tap/clipstack. Danach sucht ClipStack selbst nach Updates und installiert sie direkt in der App.",
   "q4": "Auf welchen Macs läuft es?",
   "a4": "Ab macOS 13 Ventura, auf Macs mit Apple silicon (M-Serie).",
   "q5": "Sind meine Daten aus der Zwischenablage privat?",
@@ -990,7 +1005,10 @@ window.CS_I18N = {
   "try.n4m": "Weiter: Öffne es, tipp <b>sup</b> und dann auf den Treffer.",
   "try.n5": "Weiter: Drück im Fenster <b>Tab</b>, um nur einen Typ zu zeigen.",
   "try.n5m": "Weiter: Tipp im Fenster auf einen <b>Typ</b>, etwa URL.",
-  "try.done": "Fertig – das ist ClipStack. Die echte App macht das in jeder App."
+  "try.done": "Fertig – das ist ClipStack. Die echte App macht das in jeder App.",
+  "brew.label": "Oder mit Homebrew installieren",
+  "brew.copy": "Kopieren",
+  "brew.copied": "Kopiert"
  },
  "fr": {
   "nav.what": "C'est quoi",
@@ -1101,7 +1119,7 @@ window.CS_I18N = {
   "q2": "C'est vraiment gratuit ?",
   "a2": "Oui. ClipStack est gratuit et open source sous licence MIT, sans abonnement ni version payante. S'il vous fait gagner du temps, une cagnotte Ko-fi facultative est là pour vous.",
   "q3": "Comment l'installer ?",
-  "a3": "Téléchargez le DMG depuis la page des versions, glissez ClipStack dans Applications et ouvrez-le. Un court guide de bienvenue présente les touches au premier lancement. Ensuite, ClipStack recherche les mises à jour et les installe depuis l'app.",
+  "a3": "Téléchargez le DMG depuis la page des versions, glissez ClipStack dans Applications et ouvrez-le. Un court guide de bienvenue présente les touches au premier lancement. Avec Homebrew, une seule ligne suffit : brew install --cask iamzifei/tap/clipstack. Ensuite, ClipStack recherche les mises à jour et les installe depuis l'app.",
   "q4": "Sur quels Mac fonctionne-t-il ?",
   "a4": "macOS 13 Ventura ou ultérieur, sur les Mac avec Apple silicon (série M).",
   "q5": "Les données de mon presse-papiers restent-elles privées ?",
@@ -1179,7 +1197,10 @@ window.CS_I18N = {
   "try.n4m": "Ensuite : ouvrez-le, tapez <b>sup</b>, touchez le résultat.",
   "try.n5": "Ensuite : dans le panneau, appuyez sur <b>Tab</b> pour n'afficher qu'un type.",
   "try.n5m": "Ensuite : dans le panneau, touchez un <b>type</b>, par exemple URL.",
-  "try.done": "Terminé — voilà ClipStack. La vraie app fait la même chose dans toutes vos apps."
+  "try.done": "Terminé — voilà ClipStack. La vraie app fait la même chose dans toutes vos apps.",
+  "brew.label": "Ou installez avec Homebrew",
+  "brew.copy": "Copier",
+  "brew.copied": "Copié"
  },
  "es": {
   "nav.what": "Qué es",
@@ -1290,7 +1311,7 @@ window.CS_I18N = {
   "q2": "¿De verdad es gratis?",
   "a2": "Sí. ClipStack es gratuito y de código abierto con licencia MIT, sin suscripción ni versión de pago. Si te ahorra tiempo, hay un bote de propinas opcional en Ko-fi.",
   "q3": "¿Cómo se instala?",
-  "a3": "Descarga el DMG desde la página de versiones, arrastra ClipStack a Aplicaciones y ábrelo. La primera vez, una breve guía de bienvenida te enseña las teclas. Después, ClipStack busca actualizaciones y las instala desde la propia app.",
+  "a3": "Descarga el DMG desde la página de versiones, arrastra ClipStack a Aplicaciones y ábrelo. La primera vez, una breve guía de bienvenida te enseña las teclas. Con Homebrew basta una línea: brew install --cask iamzifei/tap/clipstack. Después, ClipStack busca actualizaciones y las instala desde la propia app.",
   "q4": "¿En qué Mac funciona?",
   "a4": "macOS 13 Ventura o posterior, en Mac con Apple silicon (serie M).",
   "q5": "¿Los datos de mi portapapeles son privados?",
@@ -1368,6 +1389,9 @@ window.CS_I18N = {
   "try.n4m": "Siguiente: ábrelo, escribe <b>sup</b> y toca el resultado.",
   "try.n5": "Siguiente: en el panel, pulsa <b>Tab</b> para ver un solo tipo.",
   "try.n5m": "Siguiente: en el panel, toca un <b>tipo</b>, como URL.",
-  "try.done": "Listo: eso es ClipStack. La app real lo hace en todas tus apps."
+  "try.done": "Listo: eso es ClipStack. La app real lo hace en todas tus apps.",
+  "brew.label": "O instálalo con Homebrew",
+  "brew.copy": "Copiar",
+  "brew.copied": "Copiado"
  }
 };

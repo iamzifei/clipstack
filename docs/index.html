@@ -3,8 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ClipStack — clipboard history for Mac</title>
-<meta name="description" content="ClipStack is a free Mac menu-bar app that remembers everything you copy — text, links, images and files. Press ⇧⌘V in any app, find what you need, press Return, paste. On-device, open source.">
+<title>ClipStack: free clipboard manager &amp; history for Mac</title>
+<meta name="description" content="Free, open-source clipboard manager for Mac. ClipStack keeps everything you copy — text, links, images, files. Press ⇧⌘V to search and paste it back.">
+<meta name="keywords" content="clipboard manager for Mac, Mac clipboard history, clipboard history app, paste history, free clipboard manager, open source clipboard manager, macOS menu bar app">
+<meta name="author" content="James">
 <meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121211" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="icon-256.png" sizes="256x256">
@@ -25,6 +27,134 @@
 <meta property="og:description" content="Everything you copy, kept. Press ⇧⌘V, pick one, press Return. Free, on-device, open source.">
 <meta property="og:image" content="https://getclipstack.app/og.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ClipStack: free clipboard manager &amp; history for Mac">
+<meta name="twitter:description" content="Everything you copy, kept. Press ⇧⌘V, pick one, press Return. Free, on-device, open source.">
+<meta name="twitter:image" content="https://getclipstack.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "SoftwareApplication",
+ "name": "ClipStack",
+ "alternateName": "ClipStack clipboard manager",
+ "description": "Free, open-source clipboard manager for macOS. Keeps the last 300 things you copy — text, links, images and files — and brings any of them back with ⇧⌘V.",
+ "applicationCategory": "UtilitiesApplication",
+ "operatingSystem": "macOS 13.0 or later (Apple silicon)",
+ "softwareVersion": "1.9.1",
+ "offers": {
+  "@type": "Offer",
+  "price": "0",
+  "priceCurrency": "USD"
+ },
+ "downloadUrl": "https://github.com/iamzifei/clipstack/releases/latest",
+ "installUrl": "https://github.com/iamzifei/clipstack/releases/latest",
+ "url": "https://getclipstack.app/",
+ "image": "https://getclipstack.app/og.png",
+ "screenshot": "https://getclipstack.app/flow-poster.jpg",
+ "license": "https://opensource.org/licenses/MIT",
+ "isAccessibleForFree": true,
+ "inLanguage": [
+  "en",
+  "zh-Hans",
+  "zh-Hant",
+  "ja",
+  "ko",
+  "de",
+  "fr",
+  "es"
+ ],
+ "featureList": [
+  "Clipboard history of text, links, images and files (300 entries by default)",
+  "Open from any app with ⇧⌘V; type to search",
+  "Type tags and Tab filtering",
+  "⌘K transforms: case, JSON, URL-encode, colour formats, on-device OCR",
+  "Merge several entries into one paste",
+  "Pin entries; floating notes",
+  "Optional hold ⇧⌘ and tap V to cycle and paste",
+  "On-device only; skips concealed passwords",
+  "Homebrew: brew install --cask iamzifei/tap/clipstack"
+ ],
+ "author": {
+  "@type": "Person",
+  "name": "James",
+  "url": "https://jamesai.dev"
+ },
+ "codeRepository": "https://github.com/iamzifei/clipstack"
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "What exactly is ClipStack?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "A clipboard manager for macOS. It sits in the menu bar and saves everything you copy — text, links, code, images, files — so you can bring any of it back later with ⇧⌘V instead of finding and copying it again."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is it really free?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. ClipStack is free and open source under the MIT licence, with no subscription and no paid tier. If it saves you time, there's an optional Ko-fi tip jar."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I install it?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Download the DMG from the releases page, drag ClipStack to Applications and open it. A short welcome guide shows the keys the first time. With Homebrew it is one line: brew install --cask iamzifei/tap/clipstack. After that, ClipStack checks for updates and installs them from inside the app."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Which Macs does it run on?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "macOS 13 Ventura or later, on Apple silicon (M-series) Macs."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is my clipboard data private?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Everything stays on your Mac, in ~/Library/Application Support/ClipStack. Nothing is uploaded, and entries a password manager marks as concealed are never saved. You can delete one entry with ⌘⌫ or clear everything from the menu-bar menu."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Does it need any permissions?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Not to work. Two optional settings — paste straight into the app you came from, and hold ⇧⌘ to cycle — need macOS Accessibility, and macOS only asks when you turn one on."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I change the shortcuts?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. In Settings, click any shortcut — open the panel, open Settings, clear history, or the hold-to-cycle combo — and press the new keys."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What languages does it speak?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "English, 简体中文, 繁體中文, 日本語, 한국어, Español, Français and Deutsch. It follows your Mac's language, or pick one in Settings."
+   }
+  }
+ ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -370,6 +500,20 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
   .tlist { max-height: none; flex: 1; }
 }
 
+
+/* Homebrew line: a copyable command under the download button. */
+.brew { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 16px; font-size: 14px; color: var(--dim); }
+.hero > * { min-width: 0; }
+.brew .cmd { display: flex; align-items: center; min-width: 0; max-width: 100%; flex: 0 1 auto; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface); overflow: hidden; }
+.brew code { font: 500 13px/1.3 var(--mono); color: var(--ink); padding: 10px 12px; white-space: nowrap; overflow-x: auto; min-width: 0; }
+.brew button { appearance: none; border: 0; border-left: 1px solid var(--line-2); background: transparent; color: var(--ink); font: 600 13px var(--body); min-height: 44px; padding: 0 14px; cursor: pointer; flex: none; }
+.brew button:hover { background: var(--paper); }
+.ink .brew { color: var(--deck-muted); }
+.ink .brew .cmd { background: var(--deck-2); border-color: var(--deck-line); }
+.ink .brew code, .ink .brew button { color: var(--deck-ink); }
+.ink .brew button { border-left-color: var(--deck-line); }
+.ink .brew button:hover { background: var(--deck-3); }
+
 /* Motion ------------------------------------------------------------------- */
 .js .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
 .js .reveal.in { opacity: 1; transform: none; }
@@ -427,6 +571,7 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
         </a>
         <a class="link" href="#try"><span data-i18n="cta.try">Try it right here</span>&nbsp;→</a>
       </div>
+      <div class="brew reveal"><span data-i18n="brew.label">Or install with Homebrew</span><span class="cmd"><code>brew install --cask iamzifei/tap/clipstack</code><button type="button" class="brewcopy" data-i18n="brew.copy">Copy</button></span></div>
       <p class="fine reveal" data-i18n="hero.fine">Free · Open source (MIT) · macOS 13+ · Apple silicon</p>
     </div>
 
@@ -670,7 +815,7 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
       <div class="faq reveal">
         <details open><summary data-i18n="q1">What exactly is ClipStack?</summary><p data-i18n="a1">A clipboard manager for macOS. It sits in the menu bar and saves everything you copy — text, links, code, images, files — so you can bring any of it back later with ⇧⌘V instead of finding and copying it again.</p></details>
         <details><summary data-i18n="q2">Is it really free?</summary><p data-i18n="a2">Yes. ClipStack is free and open source under the MIT licence, with no subscription and no paid tier. If it saves you time, there's an optional Ko-fi tip jar.</p></details>
-        <details><summary data-i18n="q3">How do I install it?</summary><p data-i18n="a3">Download the DMG from the releases page, drag ClipStack to Applications and open it. A short welcome guide shows the keys the first time. After that, ClipStack checks for updates and installs them from inside the app.</p></details>
+        <details><summary data-i18n="q3">How do I install it?</summary><p data-i18n="a3">Download the DMG from the releases page, drag ClipStack to Applications and open it. A short welcome guide shows the keys the first time. With Homebrew it is one line: brew install --cask iamzifei/tap/clipstack. After that, ClipStack checks for updates and installs them from inside the app.</p></details>
         <details><summary data-i18n="q4">Which Macs does it run on?</summary><p data-i18n="a4">macOS 13 Ventura or later, on Apple silicon (M-series) Macs.</p></details>
         <details><summary data-i18n="q5">Is my clipboard data private?</summary><p data-i18n="a5">Everything stays on your Mac, in ~/Library/Application Support/ClipStack. Nothing is uploaded, and entries a password manager marks as concealed are never saved. You can delete one entry with ⌘⌫ or clear everything from the menu-bar menu.</p></details>
         <details><summary data-i18n="q6">Does it need any permissions?</summary><p data-i18n="a6">Not to work. Two optional settings — paste straight into the app you came from, and hold ⇧⌘ to cycle — need macOS Accessibility, and macOS only asks when you turn one on.</p></details>
@@ -702,6 +847,7 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
         <a class="btn mark" href="https://github.com/iamzifei/clipstack/releases/latest" data-i18n="cta.download">Download for Mac</a>
         <a class="link" href="https://github.com/iamzifei/clipstack" rel="noopener" data-i18n="cta.source">Source on GitHub</a>
       </div>
+      <div class="brew reveal"><span data-i18n="brew.label">Or install with Homebrew</span><span class="cmd"><code>brew install --cask iamzifei/tap/clipstack</code><button type="button" class="brewcopy" data-i18n="brew.copy">Copy</button></span></div>
       <p class="fine reveal" data-i18n="final.fine">Free forever · No subscription · No account</p>
       <div class="foot">
         <nav>
@@ -927,6 +1073,16 @@ section.ink { background: var(--deck); color: var(--deck-ink); border-top-color:
     window.csTryRefresh = function () { paintSteps(); if (!panel.hidden) paint(); };
     reset();
   };
+
+
+  // Homebrew copy buttons.
+  document.querySelectorAll('.brewcopy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var cmd = b.parentNode.querySelector('code').textContent;
+      var done = function () { b.textContent = t('brew.copied') || 'Copied'; setTimeout(function () { b.textContent = t('brew.copy') || 'Copy'; }, 1500); };
+      if (navigator.clipboard) navigator.clipboard.writeText(cmd).then(done, done); else done();
+    });
+  });
 
   // Language: English is in the markup (snapshotted at load); other languages
   // come from i18n.js. ?lang= and the picker win over the browser language.

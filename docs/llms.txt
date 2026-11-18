@@ -1,0 +1,31 @@
+# ClipStack
+
+> ClipStack is a free, open-source clipboard manager for macOS. It lives in the menu bar, keeps the last 300 things you copy — text, links, images and files — and brings any of them back with ⇧⌘V.
+
+ClipStack fixes the fact that the Mac clipboard holds only one item. Every copy is saved on the device; pressing ⇧⌘V in any app opens a searchable panel, newest first, with a full preview. Choose an entry and press Return to put it back on the clipboard (or let Return paste it directly, an optional setting).
+
+Key facts:
+- Price: free. Licence: MIT. Source: https://github.com/iamzifei/clipstack
+- Requirements: macOS 13 Ventura or later, Apple silicon (M-series).
+- Current version: 1.9.1. Updates install from inside the app (Sparkle).
+- Install: download the DMG from the releases page, or `brew install --cask iamzifei/tap/clipstack`.
+- Privacy: history stays in ~/Library/Application Support/ClipStack; no account, no sync, no analytics; content that password managers mark as concealed or transient is never recorded (nspasteboard.org convention). No permissions needed by default.
+- Languages: English, Simplified Chinese, Traditional Chinese, Japanese, Korean, Spanish, French, German.
+
+Features:
+- Type tags (URL, EMAIL, CODE, COLOR, TEXT, IMAGE, FILE) and Tab to filter by type.
+- Type to search; ⌘1–9 copies one of the first nine entries.
+- ⌘K transforms: change case, trim, join lines, format or minify JSON, URL-encode/decode, convert colour formats, extract text from images (on-device OCR), copy file paths.
+- ⌘M marks several entries and Return copies them merged, in the order marked.
+- ⌘P pins an entry to the top; ⌘O opens an entry as a floating always-on-top note; ⌘T keeps the panel on top.
+- Optional "hold ⇧⌘ and tap V" cycling: step back through history like ⌘Tab and release to paste (needs Accessibility permission). Every global shortcut can be changed in Settings.
+
+## Links
+- Homepage: https://getclipstack.app/
+- Try it in the browser (interactive model of the panel): https://getclipstack.app/#try
+- Download (latest release): https://github.com/iamzifei/clipstack/releases/latest
+- Homebrew: brew install --cask iamzifei/tap/clipstack
+- Source code and README: https://github.com/iamzifei/clipstack
+- Changelog: https://github.com/iamzifei/clipstack/blob/main/CHANGELOG.md
+- Report an issue: https://github.com/iamzifei/clipstack/issues
+- Author: James — https://jamesai.dev
