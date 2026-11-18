@@ -66,32 +66,50 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         hotKeys.openSwitcher = { [weak self] in self?.switcher.toggle() }
         hotKeys.openSettings = { [weak self] in self?.settings.show() }
         hotKeys.clearAll = { [weak self] in self?.statusMenu.confirmAndClearAll() }
-        settings.model.onHotKeysChanged = { [weak self] in self?.hotKeys.reload() }
+        hotKeys.ringOwnsSwitcherCombo = { [weak self] in self?.ringSharesPanelCombo ?? false }
+        settings.model.onHotKeysChanged = { [weak self] in
+            self?.ring.reloadCombo()
+            self?.hotKeys.reload()
+        }
         settings.model.suspendHotKeys = { [weak self] in self?.hotKeys.suspend() }
-        hotKeys.reload()
 
-        // Opt-in hold-⌘-tap-V ring. Dormant (no event tap, no permission
-        // request) unless the user enabled it in Settings.
+        // Opt-in hold-and-tap ring (default hold ⇧⌘, tap V). Dormant (no
+        // event tap, no permission request) unless enabled in Settings.
         ring.canBegin = { [weak self] in
-            guard let self else { return false }
-            // Never hijack ⌘V inside ClipStack's own windows (settings,
-            // the panel's search field): there it must paste normally.
+            guard let self else { return .pass }
+            // While Settings records a shortcut, every key must reach it.
+            if self.settings.model.recordingTarget != nil { return .pass }
+            // Never start a ring inside ClipStack's own windows (settings,
+            // the panel's search field) or with nothing to cycle through.
             let front = NSWorkspace.shared.frontmostApplication?.processIdentifier
-            return !self.store.items.isEmpty
+            let canRing = !self.store.items.isEmpty
                 && !self.switcher.hasKeyFocus
                 && front != ProcessInfo.processInfo.processIdentifier
+            if canRing { return .ring }
+            // Shared with the panel shortcut: behave exactly like it.
+            return self.ringSharesPanelCombo ? .panel : .pass
         }
         ring.handler = { [weak self] event, immediate in
-            guard let switcher = self?.switcher else { return }
+            guard let self else { return }
             switch event {
-            case .begin: switcher.ringBegin()
-            case .step(let delta): switcher.ringStep(delta)
-            case .delete: switcher.ringDelete()
-            case .cancel: switcher.ringCancel()
-            case .commit: switcher.ringCommit(immediate: immediate)
+            case .begin: self.switcher.ringBegin()
+            case .step(let delta): self.switcher.ringStep(delta)
+            case .delete: self.switcher.ringDelete()
+            case .cancel: self.switcher.ringCancel()
+            case .commit:
+                // A single press of a combo shared with the panel opens the
+                // panel (no paste); otherwise it pastes like ⌘V always did.
+                self.switcher.ringCommit(immediate: immediate, untouchedOpensPanel: self.ringSharesPanelCombo)
+            case .panel: self.switcher.toggle()
             }
         }
+        ring.onInstalledChange = { [weak self] in
+            // Mid-recording the hotkeys stay suspended; endRecording reloads.
+            guard let self, self.settings.model.recordingTarget == nil else { return }
+            self.hotKeys.reload()
+        }
         settings.model.onPasteOptionsChanged = { [weak self] in self?.applyRingSetting() }
+        hotKeys.reload()
         applyRingSetting()
 
         // First-run welcome guide (also shown once to people upgrading from
@@ -99,6 +117,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         onboarding.onOpenPanel = { [weak self] in self?.switcher.show() }
         statusMenu.onShowGuide = { [weak self] in self?.onboarding.show() }
         onboarding.showIfNeeded()
+    }
+
+    /// The ring is live and uses the same combo as the panel shortcut.
+    private var ringSharesPanelCombo: Bool {
+        ring.isInstalled && CmdVRing.combo == HotKeys.switcherCombo
     }
 
     private func applyRingSetting() {

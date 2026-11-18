@@ -39,6 +39,8 @@
 "hk_recording" = "Press new shortcut…";
 "hk_need_mod" = "Must include ⌘, ⌥ or ⌃";
 "hk_conflict" = "Same as the other hotkey";
+"hk_ring_key" = "← → ⌫ and esc are used inside the cycle; pick another key";
+"hk_ring" = "Cycling shortcut";
 "hk_help" = "Click a shortcut, then press the new combination (must include ⌘/⌥/⌃). Esc cancels.";
 "version" = "Version";
 "empty_text" = "(empty text)";
@@ -53,7 +55,7 @@
 "menu_support" = "Support on Ko-fi…";
 "hint_ring_next" = "Next";
 "hint_ring_prev" = "Previous";
-"hint_ring_release" = "Release ⌘ to paste";
+"hint_ring_release" = "Release %@ to paste";
 "hint_copy_marked" = "Copy %d merged";
 "hint_transform" = "Transform";
 "hint_mark" = "Mark";
@@ -75,11 +77,11 @@
 "ocr_no_text" = "No text found in this image";
 "paste_section" = "Pasting";
 "paste_auto" = "Paste into the previous app after choosing";
-"paste_ring" = "Hold ⌘ and tap V to cycle history";
+"paste_ring" = "Hold the shortcut and tap again to cycle history";
 "ax_granted" = "Accessibility access granted";
 "ax_missing" = "Accessibility access needed";
 "ax_open" = "Open System Settings";
-"paste_help" = "Both options are off by default and need Accessibility access. With the ring on: hold ⌘, tap V to step back through history, ⇧V to go forward, release ⌘ to paste; a quick ⌘V still pastes as usual.";
+"paste_help" = "Both options are off by default and need Accessibility access. With cycling on: hold the shortcut’s modifiers (⇧⌘ by default) and tap its key again to step back through history, ← → to move either way, release to paste. When it matches the panel shortcut, a single press still just opens the panel.";
 
 /* 1.6: appearance + type filter */
 "appearance" = "Appearance";

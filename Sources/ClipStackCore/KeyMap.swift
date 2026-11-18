@@ -11,7 +11,9 @@ public enum PrefKey {
     public static let maxItems = "MaxItems"
     public static let keepOnTop = "KeepPanelOnTop"                  // switcher stays above other apps
     public static let autoPaste = "AutoPasteAfterSelect"            // opt-in: ⌘V into the previous app
-    public static let cmdVRing = "HoldCommandTapVRing"              // opt-in: hold ⌘, tap V to cycle
+    public static let cmdVRing = "HoldCommandTapVRing"              // opt-in: hold the combo's modifiers, tap its key to cycle
+    public static let ringHotKeyCode = "RingHotKeyKeyCode"          // that combo's key (default V)
+    public static let ringHotKeyMods = "RingHotKeyModifiers"        // and modifiers (default ⇧⌘)
     public static let appearance = "Appearance"                     // system / light / dark
     public static let onboardingSeen = "OnboardingVersionSeen"      // last welcome-guide version shown
     public static let appLanguage = "AppLanguage"                   // UI language code; absent = system

@@ -39,6 +39,8 @@
 "hk_recording" = "Pulsa el nuevo atajo…";
 "hk_need_mod" = "Debe incluir ⌘, ⌥ o ⌃";
 "hk_conflict" = "Igual que el otro atajo";
+"hk_ring_key" = "← → ⌫ y esc se usan durante el recorrido; elige otra tecla";
+"hk_ring" = "Atajo para recorrer";
 "hk_help" = "Haz clic en un atajo y pulsa la nueva combinación (debe incluir ⌘/⌥/⌃). Esc cancela.";
 "version" = "Versión";
 "empty_text" = "(texto vacío)";
@@ -53,7 +55,7 @@
 "menu_support" = "Apoyar en Ko-fi…";
 "hint_ring_next" = "Siguiente";
 "hint_ring_prev" = "Anterior";
-"hint_ring_release" = "Suelta ⌘ para pegar";
+"hint_ring_release" = "Suelta %@ para pegar";
 "hint_copy_marked" = "Copiar %d combinados";
 "hint_transform" = "Transformar";
 "hint_mark" = "Marcar";
@@ -75,11 +77,11 @@
 "ocr_no_text" = "No se encontró texto en la imagen";
 "paste_section" = "Pegado";
 "paste_auto" = "Pegar en la app anterior al elegir";
-"paste_ring" = "Mantén ⌘ y pulsa V para recorrer el historial";
+"paste_ring" = "Mantén el atajo y vuelve a pulsar para recorrer el historial";
 "ax_granted" = "Acceso de accesibilidad concedido";
 "ax_missing" = "Se necesita acceso de accesibilidad";
 "ax_open" = "Abrir Ajustes del Sistema";
-"paste_help" = "Ambas opciones vienen desactivadas y requieren acceso de accesibilidad. Con el recorrido activado: mantén ⌘ y pulsa V para retroceder, ⇧V para avanzar y suelta ⌘ para pegar; un ⌘V rápido sigue pegando como siempre.";
+"paste_help" = "Ambas opciones vienen desactivadas y requieren acceso de accesibilidad. Con el recorrido activado: mantén los modificadores del atajo (⇧⌘ por defecto) y vuelve a pulsar su tecla para retroceder, ← → para moverte en ambos sentidos y suelta para pegar. Si coincide con el atajo del panel, una sola pulsación sigue abriendo el panel.";
 
 /* 1.6: appearance + type filter */
 "appearance" = "Apariencia";

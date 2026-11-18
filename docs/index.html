@@ -552,7 +552,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
       <li><span class="keys"><span class="key">⌘</span><span class="key">K</span></span><span class="desc" data-i18n="k9">Transform the selected entry — case, JSON, URL encoding, colour formats, OCR</span></li>
       <li><span class="keys"><span class="key">⌘</span><span class="key">M</span></span><span class="desc" data-i18n="k10">Mark entries (or ⌘-click), then Return copies them merged</span></li>
       <li><span class="keys"><span class="key">⌘</span><span class="key">O</span></span><span class="desc" data-i18n="k11">Open the selected entry as a floating note</span></li>
-      <li><span class="keys"><span class="key">⌘</span><span class="key">V</span><span class="key">V</span></span><span class="desc" data-i18n="k12">Optional: hold ⌘ and tap V to step back through history, release to paste</span></li>
+      <li><span class="keys"><span class="key">⇧⌘</span><span class="key">V</span><span class="key">V</span></span><span class="desc" data-i18n="k12">Optional: hold ⇧⌘ and tap V again to step back through history, release to paste (rebindable)</span></li>
       <li><span class="keys"><span class="key">⌘</span><span class="key">,</span></span><span class="desc" data-i18n="k8">Settings — launch at login, light, dark or system appearance, and all three shortcuts are re-recordable</span></li>
     </ul>
   </section>
@@ -568,7 +568,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
         Anything a password manager marks as concealed or transient is never recorded, following the
         nspasteboard.org convention — so the password you just copied does not end up in a list.
       </p>
-      <p data-i18n="privacy.p3">Out of the box ClipStack needs no permissions at all. Two optional settings — paste straight into the app you came from, and hold ⌘ and tap V to cycle history — use macOS Accessibility, and nothing asks for it until you switch one on.</p>
+      <p data-i18n="privacy.p3">Out of the box ClipStack needs no permissions at all. Two optional settings — paste straight into the app you came from, and hold ⇧⌘ and tap V to cycle history — use macOS Accessibility, and nothing asks for it until you switch one on.</p>
     </div>
   </section>
 
@@ -682,8 +682,8 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k9": "转换选中项 —— 大小写、JSON、URL 编码、颜色写法、OCR",
           "k10": "标记多条（或 ⌘ 点击），回车合并复制",
           "k11": "把选中项弹成浮窗便签",
-          "k12": "可选：按住 ⌘ 连按 V 往回翻历史，松开即粘贴",
-          "privacy.p3": "默认情况下 ClipStack 不需要任何权限。两个可选设置 —— 选中后直接粘贴到原来的 App、按住 ⌘ 连按 V 翻历史 —— 需要 macOS 的辅助功能权限，不打开就不会申请。",
+          "k12": "可选：按住 ⇧⌘ 连按 V 往回翻历史，松开即粘贴（快捷键可改）",
+          "privacy.p3": "默认情况下 ClipStack 不需要任何权限。两个可选设置 —— 选中后直接粘贴到原来的 App、按住 ⇧⌘ 连按 V 翻历史 —— 需要 macOS 的辅助功能权限，不打开就不会申请。",
           "f9.h3": "只看链接，只看代码。",
           "f9.p": "搜索框下面一排小标签，标着历史里每种类型各有几条。按 Tab 切到下一种、⇧Tab 切回去，也可以直接点；它和搜索叠加生效，esc 清掉。想找的那条链接埋在四十段代码下面时最好用。",
           "f9.alt": "ClipStack 面板筛选为 CODE，只显示三条代码记录，上方是带数量的类型标签",
@@ -762,8 +762,8 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k9": "轉換選取項目 —— 大小寫、JSON、URL 編碼、顏色寫法、OCR",
           "k10": "標記多條（或 ⌘ 點按），按 Return 合併複製",
           "k11": "把選取項目開成浮動便條",
-          "k12": "選用：按住 ⌘ 連按 V 往回翻歷史，放開即貼上",
-          "privacy.p3": "預設情況下 ClipStack 不需要任何權限。兩個選用設定 —— 選取後直接貼到原本的 App、按住 ⌘ 連按 V 翻歷史 —— 需要 macOS 的輔助使用權限，沒打開就不會要求。",
+          "k12": "選用：按住 ⇧⌘ 連按 V 往回翻歷史，放開即貼上（快速鍵可改）",
+          "privacy.p3": "預設情況下 ClipStack 不需要任何權限。兩個選用設定 —— 選取後直接貼到原本的 App、按住 ⇧⌘ 連按 V 翻歷史 —— 需要 macOS 的輔助使用權限，沒打開就不會要求。",
           "f9.h3": "只看連結，只看程式碼。",
           "f9.p": "搜尋框下面一排小標籤，標著歷史裡每種類型各有幾條。按 Tab 切到下一種、⇧Tab 切回去，也可以直接點；它和搜尋疊加生效，esc 清掉。想找的那條連結埋在四十段程式碼下面時最好用。",
           "f9.alt": "ClipStack 面板篩選為 CODE，只顯示三條程式碼紀錄，上方是帶數量的類型標籤",
@@ -842,8 +842,8 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k9": "選択中の項目を変換 — 大文字小文字、JSON、URL エンコード、色の表記、OCR",
           "k10": "項目に印を付け（⌘ クリックでも可）、Return でまとめてコピー",
           "k11": "選択中の項目をフローティングメモとして開く",
-          "k12": "オプション: ⌘ を押したまま V を叩いて履歴をさかのぼり、離すとペースト",
-          "privacy.p3": "初期状態の ClipStack は権限を一切必要としません。オプションの 2 つの設定 — 元のアプリへそのままペースト、⌘ を押したまま V で履歴を切り替え — は macOS のアクセシビリティを使い、オンにするまで許可を求めることはありません。",
+          "k12": "オプション: ⇧⌘ を押したまま V を叩いて履歴をさかのぼり、離すとペースト（変更可）",
+          "privacy.p3": "初期状態の ClipStack は権限を一切必要としません。オプションの 2 つの設定 — 元のアプリへそのままペースト、⇧⌘ を押したまま V で履歴を切り替え — は macOS のアクセシビリティを使い、オンにするまで許可を求めることはありません。",
           "f9.h3": "リンクだけ。コードだけ。",
           "f9.p": "検索欄の下に、履歴の種類ごとの件数を示すチップが並びます。Tab で次へ、⇧Tab で前へ、クリックでも切り替えられます。検索と組み合わせて使え、esc で解除。欲しい URL が 40 個のコード片に埋もれているときに効きます。",
           "f9.alt": "CODE で絞り込んだ ClipStack のパネル。3 件のコード項目と件数付きの種類チップ",
@@ -922,8 +922,8 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k9": "선택한 항목 변환 — 대소문자, JSON, URL 인코딩, 색상 표기, OCR",
           "k10": "항목 표시(또는 ⌘-클릭) 후 Return으로 합쳐 복사",
           "k11": "선택한 항목을 플로팅 메모로 열기",
-          "k12": "선택 사항: ⌘를 누른 채 V를 눌러 기록을 거슬러 올라가고, 떼면 붙여넣기",
-          "privacy.p3": "기본 상태의 ClipStack은 어떤 권한도 필요하지 않습니다. 선택 설정 두 가지 — 원래 앱에 바로 붙여넣기, ⌘를 누른 채 V로 기록 순환 — 는 macOS 손쉬운 사용 권한을 쓰며, 켜기 전까지는 권한을 요청하지 않습니다.",
+          "k12": "선택 사항: ⇧⌘를 누른 채 V를 눌러 기록을 거슬러 올라가고, 떼면 붙여넣기(변경 가능)",
+          "privacy.p3": "기본 상태의 ClipStack은 어떤 권한도 필요하지 않습니다. 선택 설정 두 가지 — 원래 앱에 바로 붙여넣기, ⇧⌘를 누른 채 V로 기록 순환 — 는 macOS 손쉬운 사용 권한을 쓰며, 켜기 전까지는 권한을 요청하지 않습니다.",
           "f9.h3": "링크만. 코드만.",
           "f9.p": "검색창 아래 칩 한 줄이 기록 속 종류별 개수를 보여 줍니다. Tab으로 다음, ⇧Tab으로 이전으로 가거나 칩을 클릭하세요. 검색과 함께 적용되고 esc로 해제됩니다. 원하는 URL이 코드 조각 40개 밑에 묻혀 있을 때 유용합니다.",
           "f9.alt": "CODE로 필터링된 ClipStack 패널. 코드 항목 세 개와 개수가 표시된 종류 칩",
@@ -1002,8 +1002,8 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k9": "Ausgewählten Eintrag umwandeln — Schreibweise, JSON, URL-Kodierung, Farbformate, OCR",
           "k10": "Einträge markieren (oder ⌘-Klick), dann kopiert Return sie zusammengeführt",
           "k11": "Ausgewählten Eintrag als schwebende Notiz öffnen",
-          "k12": "Optional: ⌘ halten und V tippen, um durch den Verlauf zu gehen, loslassen fügt ein",
-          "privacy.p3": "Im Auslieferungszustand braucht ClipStack keinerlei Berechtigungen. Zwei optionale Einstellungen — direkt in die vorherige App einfügen und ⌘ halten, V tippen, um den Verlauf durchzugehen — nutzen die macOS-Bedienungshilfen, und erst wenn du eine davon einschaltest, wird danach gefragt.",
+          "k12": "Optional: ⇧⌘ halten und V tippen, um durch den Verlauf zu gehen, loslassen fügt ein (änderbar)",
+          "privacy.p3": "Im Auslieferungszustand braucht ClipStack keinerlei Berechtigungen. Zwei optionale Einstellungen — direkt in die vorherige App einfügen und ⇧⌘ halten, V tippen, um den Verlauf durchzugehen — nutzen die macOS-Bedienungshilfen, und erst wenn du eine davon einschaltest, wird danach gefragt.",
           "f9.h3": "Nur die Links. Nur der Code.",
           "f9.p": "Eine Reihe Chips unter dem Suchfeld zählt jede Art in deinem Verlauf. Tab springt zur nächsten, ⇧Tab zurück, oder klick einen Chip an; der Filter wirkt zusammen mit der Suche, esc hebt ihn auf. Praktisch, wenn die gesuchte URL unter vierzig Snippets liegt.",
           "f9.alt": "Das ClipStack-Panel, gefiltert auf CODE, mit drei Code-Einträgen und den Art-Chips samt Anzahl",
@@ -1082,8 +1082,8 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k9": "Transformer l'entrée sélectionnée — casse, JSON, encodage d'URL, formats de couleur, OCR",
           "k10": "Marquer des entrées (ou ⌘-clic), puis Retour les copie fusionnées",
           "k11": "Ouvrir l'entrée sélectionnée en note flottante",
-          "k12": "En option : maintenir ⌘ et taper V pour remonter l'historique, relâcher pour coller",
-          "privacy.p3": "Tel qu'installé, ClipStack ne demande aucune autorisation. Deux réglages optionnels — coller directement dans l'app d'origine, et maintenir ⌘ en tapant V pour parcourir l'historique — utilisent l'accessibilité de macOS, et rien n'est demandé tant que vous n'en activez pas un.",
+          "k12": "En option : maintenir ⇧⌘ et taper V pour remonter l'historique, relâcher pour coller (modifiable)",
+          "privacy.p3": "Tel qu'installé, ClipStack ne demande aucune autorisation. Deux réglages optionnels — coller directement dans l'app d'origine, et maintenir ⇧⌘ en tapant V pour parcourir l'historique — utilisent l'accessibilité de macOS, et rien n'est demandé tant que vous n'en activez pas un.",
           "f9.h3": "Rien que les liens. Rien que le code.",
           "f9.p": "Une rangée de pastilles sous le champ de recherche compte chaque type de votre historique. Tab passe au suivant, ⇧Tab revient, ou cliquez une pastille ; le filtre se combine à la recherche, et esc l'efface. Pratique quand l'URL voulue est enfouie sous quarante extraits.",
           "f9.alt": "Le panneau ClipStack filtré sur CODE, avec trois entrées de code et les pastilles de type et leur nombre",
@@ -1162,8 +1162,8 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
           "k9": "Transformar la entrada seleccionada — mayúsculas, JSON, codificación de URL, formatos de color, OCR",
           "k10": "Marcar entradas (o ⌘-clic) y Retorno las copia combinadas",
           "k11": "Abrir la entrada seleccionada como nota flotante",
-          "k12": "Opcional: mantén ⌘ y toca V para retroceder en el historial; al soltar, se pega",
-          "privacy.p3": "Tal como viene, ClipStack no necesita ningún permiso. Dos ajustes opcionales — pegar directamente en la app de la que venías, y mantener ⌘ tocando V para recorrer el historial — usan la accesibilidad de macOS, y nada lo pide hasta que activas uno.",
+          "k12": "Opcional: mantén ⇧⌘ y toca V para retroceder en el historial; al soltar, se pega (configurable)",
+          "privacy.p3": "Tal como viene, ClipStack no necesita ningún permiso. Dos ajustes opcionales — pegar directamente en la app de la que venías, y mantener ⇧⌘ tocando V para recorrer el historial — usan la accesibilidad de macOS, y nada lo pide hasta que activas uno.",
           "f9.h3": "Solo los enlaces. Solo el código.",
           "f9.p": "Una fila de etiquetas bajo el campo de búsqueda cuenta cada tipo de tu historial. Tab pasa al siguiente y ⇧Tab vuelve, o haz clic en una; se combina con la búsqueda y esc lo quita. Útil cuando la URL que buscas está enterrada bajo cuarenta fragmentos.",
           "f9.alt": "El panel de ClipStack filtrado por CODE, con tres entradas de código y las etiquetas de tipo con su número",

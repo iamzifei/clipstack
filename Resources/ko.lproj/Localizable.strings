@@ -39,6 +39,8 @@
 "hk_recording" = "새 단축키를 누르세요…";
 "hk_need_mod" = "⌘, ⌥ 또는 ⌃가 포함되어야 합니다";
 "hk_conflict" = "다른 단축키와 동일합니다";
+"hk_ring_key" = "← → ⌫ esc는 넘기는 중에 쓰이므로 다른 키를 고르세요";
+"hk_ring" = "기록 넘기기 단축키";
 "hk_help" = "단축키를 클릭한 뒤 새 조합을 누르세요(⌘/⌥/⌃ 필요). Esc로 취소합니다.";
 "version" = "버전";
 "empty_text" = "(빈 텍스트)";
@@ -53,7 +55,7 @@
 "menu_support" = "Ko-fi에서 후원하기…";
 "hint_ring_next" = "다음";
 "hint_ring_prev" = "이전";
-"hint_ring_release" = "⌘에서 손을 떼면 붙여넣기";
+"hint_ring_release" = "%@에서 손을 떼면 붙여넣기";
 "hint_copy_marked" = "%d개 합쳐서 복사";
 "hint_transform" = "변환";
 "hint_mark" = "표시";
@@ -75,11 +77,11 @@
 "ocr_no_text" = "이미지에서 텍스트를 찾지 못했습니다";
 "paste_section" = "붙여넣기";
 "paste_auto" = "선택하면 원래 앱에 바로 붙여넣기";
-"paste_ring" = "⌘을 누른 채 V로 기록 넘기기";
+"paste_ring" = "단축키를 누른 채 반복해 기록 넘기기";
 "ax_granted" = "손쉬운 사용 권한 있음";
 "ax_missing" = "손쉬운 사용 권한이 필요합니다";
 "ax_open" = "시스템 설정 열기";
-"paste_help" = "두 옵션은 기본으로 꺼져 있으며, 켜면 손쉬운 사용 권한이 필요합니다. 기록 넘기기를 켜면 ⌘을 누른 채 V로 이전 항목, ⇧V로 다음 항목, ⌘에서 손을 떼면 붙여넣습니다. ⌘V를 짧게 누르면 평소처럼 붙여넣습니다.";
+"paste_help" = "두 옵션은 기본으로 꺼져 있으며, 켜면 손쉬운 사용 권한이 필요합니다. 기록 넘기기를 켜면 단축키의 보조 키(기본 ⇧⌘)를 누른 채 키를 반복해 이전 항목으로, ← →로 앞뒤로 이동하고, 손을 떼면 붙여넣습니다. 패널 단축키와 같으면 한 번만 누를 때는 패널이 열립니다.";
 
 /* 1.6: appearance + type filter */
 "appearance" = "모양";

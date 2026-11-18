@@ -39,6 +39,8 @@
 "hk_recording" = "按下新的快速鍵…";
 "hk_need_mod" = "需包含 ⌘、⌥ 或 ⌃";
 "hk_conflict" = "與另一個快速鍵相同";
+"hk_ring_key" = "← → ⌫ 和 esc 在翻閱歷史時另有用途，請換一個鍵";
+"hk_ring" = "翻閱歷史快速鍵";
 "hk_help" = "點按快速鍵後按下新組合（需包含 ⌘/⌥/⌃），按 Esc 取消。";
 "version" = "版本";
 "empty_text" = "（空白文字）";
@@ -53,7 +55,7 @@
 "menu_support" = "在 Ko-fi 支持我…";
 "hint_ring_next" = "下一則";
 "hint_ring_prev" = "上一則";
-"hint_ring_release" = "放開 ⌘ 即貼上";
+"hint_ring_release" = "放開 %@ 即貼上";
 "hint_copy_marked" = "合併拷貝 %d 則";
 "hint_transform" = "轉換";
 "hint_mark" = "標記";
@@ -75,11 +77,11 @@
 "ocr_no_text" = "圖片中沒有辨識到文字";
 "paste_section" = "貼上";
 "paste_auto" = "選取後直接貼到原本的 App";
-"paste_ring" = "按住 ⌘ 連按 V 翻閱歷史";
+"paste_ring" = "按住快速鍵連按，翻閱歷史貼上";
 "ax_granted" = "已取得輔助使用權限";
 "ax_missing" = "需要輔助使用權限";
 "ax_open" = "打開系統設定";
-"paste_help" = "兩個選項預設關閉，開啟後需要輔助使用權限。開啟翻閱歷史後：按住 ⌘ 連按 V 往前翻，⇧V 往回翻，放開 ⌘ 貼上；快速按一下 ⌘V 仍是一般貼上。";
+"paste_help" = "兩個選項預設關閉，開啟後需要輔助使用權限。開啟翻閱歷史後：按住快速鍵的修飾鍵（預設 ⇧⌘），再連按它的按鍵往前翻，← → 前後移動，放開即貼上。快速鍵與面板快速鍵相同時，只按一下仍是打開面板。";
 
 /* 1.6: appearance + type filter */
 "appearance" = "外觀";

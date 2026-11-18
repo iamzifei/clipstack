@@ -22,7 +22,7 @@ enum Appearance {
 /// Backing model for the settings window: launch-at-login toggle plus a
 /// click-to-record editor for the two global hotkeys.
 final class SettingsModel: ObservableObject {
-    enum Target { case switcher, settings, clearAll }
+    enum Target { case switcher, settings, clearAll, ring }
 
     @Published var switcherCode: Int
     @Published var switcherMods: Int
@@ -30,6 +30,9 @@ final class SettingsModel: ObservableObject {
     @Published var settingsMods: Int
     @Published var clearAllCode: Int
     @Published var clearAllMods: Int
+    /// Hold-and-tap ring combo (default ⇧⌘V — may equal the panel shortcut).
+    @Published var ringCode: Int
+    @Published var ringMods: Int
     @Published var launchAtLogin = false
     @Published var loginError: String?
     @Published var recordingTarget: Target?
@@ -57,6 +60,9 @@ final class SettingsModel: ObservableObject {
         settingsMods = settings.mods
         clearAllCode = clearAll.code
         clearAllMods = clearAll.mods
+        let ring = CmdVRing.combo
+        ringCode = ring.code
+        ringMods = ring.mods
         refreshLoginState()
     }
 
@@ -127,6 +133,8 @@ final class SettingsModel: ObservableObject {
             return KeyMap.displayString(keyCode: settingsCode, carbonModifiers: UInt32(settingsMods))
         case .clearAll:
             return KeyMap.displayString(keyCode: clearAllCode, carbonModifiers: UInt32(clearAllMods))
+        case .ring:
+            return KeyMap.displayString(keyCode: ringCode, carbonModifiers: UInt32(ringMods))
         }
     }
 
@@ -158,12 +166,20 @@ final class SettingsModel: ObservableObject {
         }
         let code = Int(event.keyCode)
         let mods = Int(carbon)
-        // Reject a combo already bound to either of the other two hotkeys.
+        // The ring uses ← → ⌫ esc while it is open, so none can be its key.
+        if target == .ring, [51, 117, 53, 123, 124, 125, 126].contains(code) {
+            recordHint = L("hk_ring_key")
+            return
+        }
+        // Reject a combo already bound to another shortcut. The ring and the
+        // panel may share one (the default ⇧⌘V): a single press opens the
+        // panel, holding and tapping again cycles.
         let others: [(Int, Int)]
         switch target {
         case .switcher: others = [(settingsCode, settingsMods), (clearAllCode, clearAllMods)]
-        case .settings: others = [(switcherCode, switcherMods), (clearAllCode, clearAllMods)]
-        case .clearAll: others = [(switcherCode, switcherMods), (settingsCode, settingsMods)]
+        case .settings: others = [(switcherCode, switcherMods), (clearAllCode, clearAllMods), (ringCode, ringMods)]
+        case .clearAll: others = [(switcherCode, switcherMods), (settingsCode, settingsMods), (ringCode, ringMods)]
+        case .ring: others = [(settingsCode, settingsMods), (clearAllCode, clearAllMods)]
         }
         guard !others.contains(where: { $0 == (code, mods) }) else {
             recordHint = L("hk_conflict")
@@ -187,6 +203,11 @@ final class SettingsModel: ObservableObject {
             clearAllMods = mods
             defaults.set(code, forKey: PrefKey.clearAllHotKeyCode)
             defaults.set(mods, forKey: PrefKey.clearAllHotKeyMods)
+        case .ring:
+            ringCode = code
+            ringMods = mods
+            defaults.set(code, forKey: PrefKey.ringHotKeyCode)
+            defaults.set(mods, forKey: PrefKey.ringHotKeyMods)
         }
         endRecording()
     }
@@ -247,7 +268,7 @@ struct SettingsView: View {
                 recorderRow(L("hk_switcher"), .switcher)
                 recorderRow(L("hk_settings"), .settings)
                 recorderRow(L("hk_clear_all"), .clearAll)
-                if let hint = model.recordHint {
+                if model.recordingTarget != .ring, let hint = model.recordHint {
                     Text(hint).font(.caption).foregroundStyle(.orange)
                 }
                 Text(L("hk_help"))
@@ -263,6 +284,12 @@ struct SettingsView: View {
                     get: { model.cmdVRing },
                     set: { model.setCmdVRing($0) }
                 ))
+                if model.cmdVRing {
+                    recorderRow(L("hk_ring"), .ring)
+                    if model.recordingTarget == .ring, let hint = model.recordHint {
+                        Text(hint).font(.caption).foregroundStyle(.orange)
+                    }
+                }
                 if model.autoPaste || model.cmdVRing {
                     HStack {
                         Image(systemName: model.accessibilityGranted ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
@@ -288,6 +315,7 @@ struct SettingsView: View {
                 Text(L("paste_help"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             Section {
                 HStack {
@@ -305,7 +333,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 440, height: 640)
+        .frame(width: 440, height: 700)
     }
 
     private var appVersion: String {
@@ -352,7 +380,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     func show() {
         if window == nil {
             let w = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 440, height: 640),
+                contentRect: NSRect(x: 0, y: 0, width: 440, height: 700),
                 styleMask: [.titled, .closable],
                 backing: .buffered,
                 defer: false

@@ -158,7 +158,7 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
         deliver(item)
     }
 
-    // MARK: ⌘V ring (hold ⌘, tap V)
+    // MARK: hold-and-tap ring (default hold ⇧⌘, tap V)
 
     /// The ring panel is shown WITHOUT taking key focus, so the app being
     /// pasted into stays focused the whole time and receives the final ⌘V.
@@ -201,14 +201,32 @@ final class SwitcherWindowController: NSObject, NSWindowDelegate {
 
     /// `immediate`: post the ⌘V synchronously (a held-back key is about to
     /// be replayed and must land after the paste); otherwise wait a beat for
-    /// the ⌘ release to settle.
-    func ringCommit(immediate: Bool = false) {
+    /// the modifier release to settle.
+    /// `untouchedOpensPanel`: the ring combo is also the panel shortcut, so a
+    /// single press-and-release means "open the panel", not "paste".
+    func ringCommit(immediate: Bool = false, untouchedOpensPanel: Bool = false) {
         guard model.ringMode else { return }
         let target = ringTarget
         let item = model.selected
         // Back on the first row with nothing deleted = the plain ⌘V case,
         // even if the user cycled all the way round.
         let untouched = model.selectionIndex == 0 && !ringDeleted
+        if untouched && untouchedOpensPanel {
+            // A held-back key is about to be replayed into the app: it must
+            // not land in the panel's search field, so just close the ring.
+            if immediate { endRing(); return }
+            if panelWasPinnedBeforeRing {
+                // Already on screen: focus it, like the panel hotkey does.
+                endRing()
+                toggle()
+            } else {
+                // Turn the ring panel into the normal, focused panel in place
+                // (no hide-then-show flicker).
+                ringTarget = nil
+                show()
+            }
+            return
+        }
         endRing()
         // ⌘V then ⌘Tab: the paste was meant for the app the ring started in,
         // not whatever is frontmost now — drop it rather than guess.

@@ -39,6 +39,8 @@
 "hk_recording" = "Appuyez sur le nouveau raccourci…";
 "hk_need_mod" = "Doit inclure ⌘, ⌥ ou ⌃";
 "hk_conflict" = "Identique à l'autre raccourci";
+"hk_ring_key" = "← → ⌫ et esc servent pendant le parcours ; choisissez une autre touche";
+"hk_ring" = "Raccourci de parcours";
 "hk_help" = "Cliquez sur un raccourci puis appuyez sur la nouvelle combinaison (⌘/⌥/⌃ requis). Échap annule.";
 "version" = "Version";
 "empty_text" = "(texte vide)";
@@ -53,7 +55,7 @@
 "menu_support" = "Soutenir sur Ko-fi…";
 "hint_ring_next" = "Suivant";
 "hint_ring_prev" = "Précédent";
-"hint_ring_release" = "Relâchez ⌘ pour coller";
+"hint_ring_release" = "Relâchez %@ pour coller";
 "hint_copy_marked" = "Copier %d fusionnés";
 "hint_transform" = "Transformer";
 "hint_mark" = "Marquer";
@@ -75,11 +77,11 @@
 "ocr_no_text" = "Aucun texte trouvé dans l’image";
 "paste_section" = "Collage";
 "paste_auto" = "Coller dans l’app précédente après le choix";
-"paste_ring" = "Maintenir ⌘ et taper V pour parcourir l’historique";
+"paste_ring" = "Maintenir le raccourci et retaper pour parcourir l’historique";
 "ax_granted" = "Accès Accessibilité accordé";
 "ax_missing" = "Accès Accessibilité requis";
 "ax_open" = "Ouvrir Réglages Système";
-"paste_help" = "Les deux options sont désactivées par défaut et nécessitent l’accès Accessibilité. Avec le parcours activé : maintenez ⌘ et tapez V pour reculer, ⇧V pour avancer, relâchez ⌘ pour coller ; un ⌘V rapide colle comme d’habitude.";
+"paste_help" = "Les deux options sont désactivées par défaut et nécessitent l’accès Accessibilité. Avec le parcours activé : maintenez les modificateurs du raccourci (⇧⌘ par défaut) et retapez sa touche pour reculer, ← → pour aller dans les deux sens, relâchez pour coller. S’il est identique au raccourci du panneau, un seul appui ouvre toujours le panneau.";
 
 /* 1.6: appearance + type filter */
 "appearance" = "Apparence";

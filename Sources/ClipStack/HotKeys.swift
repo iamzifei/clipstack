@@ -9,6 +9,10 @@ final class HotKeys {
     var openSwitcher: () -> Void = {}
     var openSettings: () -> Void = {}
     var clearAll: () -> Void = {}
+    /// True while the hold-and-tap ring's event tap owns the panel combo
+    /// (both are ⇧⌘V by default): the ring then opens the panel itself on a
+    /// single press, and a Carbon registration would fire on top of it.
+    var ringOwnsSwitcherCombo: () -> Bool = { false }
     private var registeredIDs: [UInt32] = []
 
     /// Switcher panel combo, default ⇧⌘V.
@@ -41,12 +45,14 @@ final class HotKeys {
     /// (Re-)registers both hotkeys from the current defaults.
     func reload() {
         suspend()
-        let switcher = Self.switcherCombo
-        let switcherID = HotKeyCenter.shared.register(
-            keyCode: UInt32(switcher.code),
-            carbonModifiers: UInt32(switcher.mods)
-        ) { [weak self] in self?.openSwitcher() }
-        if switcherID != 0 { registeredIDs.append(switcherID) }
+        if !ringOwnsSwitcherCombo() {
+            let switcher = Self.switcherCombo
+            let switcherID = HotKeyCenter.shared.register(
+                keyCode: UInt32(switcher.code),
+                carbonModifiers: UInt32(switcher.mods)
+            ) { [weak self] in self?.openSwitcher() }
+            if switcherID != 0 { registeredIDs.append(switcherID) }
+        }
 
         let settings = Self.settingsCombo
         let settingsID = HotKeyCenter.shared.register(

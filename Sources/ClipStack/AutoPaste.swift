@@ -64,43 +64,75 @@ enum Paster {
     }
 }
 
-/// "Hold ⌘, tap V" history cycling, modelled on ⌘Tab.
+/// "Hold the modifiers, tap the key" history cycling (default hold ⇧⌘,
+/// tap V), modelled on ⌘Tab. The combo is recorded in Settings.
 ///
 /// This class only owns the CGEventTap plumbing; every decision about which
 /// keystrokes to swallow lives in `RingMachine` (ClipStackCore, unit-tested):
-///   1st ⌘V          → swallowed; the ring opens on the newest entry
-///   more V (⌘ held) → next entry;  ⇧V → previous entry
-///   ⌫ / esc         → delete highlighted entry / cancel
-///   release ⌘       → paste the highlighted entry into the frontmost app
+///   1st combo press        → swallowed; the ring opens on the newest entry
+///   key again (mods held)  → next entry;  ← / ↑ previous, → / ↓ next
+///   ⌫ / esc                → delete highlighted entry / cancel
+///   release a modifier     → paste the highlighted entry into the frontmost app
 ///
 /// If ClipStack ever stalls, macOS disables the tap on timeout; the machine
-/// then cancels any ring in progress and ⌘V falls back to the system paste
-/// until the tap is re-enabled.
+/// then cancels any ring in progress and the keys fall back to their normal
+/// meaning until the tap is re-enabled.
 final class CmdVRing {
     /// Driven on the main thread (the tap's run-loop source lives there).
     /// `immediate` is true when a held-back key will be replayed right after
     /// a commit, so the paste must be posted synchronously, before it.
     var handler: ((RingMachine.Effect, _ immediate: Bool) -> Void)?
-    /// Asked on the first ⌘V; returning false lets the keystroke through
-    /// (history empty, ClipStack itself frontmost, …).
-    var canBegin: (() -> Bool)?
+    /// Asked on the first combo press (history empty, ClipStack itself
+    /// frontmost, …).
+    var canBegin: (() -> RingMachine.Begin)?
+    /// Called whenever the tap comes or goes, so the panel hotkey can step
+    /// aside while the ring owns a shared combo.
+    var onInstalledChange: (() -> Void)?
 
-    private var machine = RingMachine()
+    private var machine = RingMachine(triggerCode: RingMachine.defaultTriggerCode,
+                                      holdModifiers: RingMachine.defaultHoldModifiers)
     private var tap: CFMachPort?
     private var source: CFRunLoopSource?
     private var retryTimer: Timer?
+    /// While installed: notices Accessibility being revoked (the tap then
+    /// goes silent without telling us) so the panel hotkey comes back.
+    private var healthTimer: Timer?
+
+    /// True while the event tap is live (enabled AND Accessibility granted).
+    var isInstalled: Bool { tap != nil }
+
+    /// The combo currently in effect (stored in UserDefaults, default ⇧⌘V).
+    static var combo: (code: Int, mods: Int) {
+        let defaults = UserDefaults.standard
+        return (
+            defaults.object(forKey: PrefKey.ringHotKeyCode) as? Int ?? RingMachine.defaultTriggerCode,
+            defaults.object(forKey: PrefKey.ringHotKeyMods) as? Int ?? Int(RingMachine.defaultHoldModifiers)
+        )
+    }
+
+    /// Re-reads the combo. An open ring is cancelled first so a half-held
+    /// old combo can never leave keys swallowed.
+    func reloadCombo() {
+        if let effect = machine.handle(.tapDisabled, canBegin: { .pass }).effect {
+            handler?(effect, false)
+        }
+        let c = Self.combo
+        machine = RingMachine(triggerCode: c.code, holdModifiers: UInt32(c.mods))
+    }
 
     /// Installs the tap, or keeps retrying every 2s until Accessibility is
     /// granted (the user is typically in System Settings right now).
     func enable() {
+        reloadCombo()
         guard tap == nil else { return }
-        if install() { return }
+        if install() { onInstalledChange?(); return }
         guard retryTimer == nil else { return }
         retryTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] t in
             guard let self else { t.invalidate(); return }
             if self.install() {
                 t.invalidate()
                 self.retryTimer = nil
+                self.onInstalledChange?()
             }
         }
     }
@@ -108,14 +140,18 @@ final class CmdVRing {
     func disable() {
         retryTimer?.invalidate()
         retryTimer = nil
+        healthTimer?.invalidate()
+        healthTimer = nil
+        let wasInstalled = tap != nil
         if let source { CFRunLoopRemoveSource(CFRunLoopGetMain(), source, .commonModes) }
         if let tap { CFMachPortInvalidate(tap) }
         tap = nil
         source = nil
         // Treat teardown like a lost tap so an open ring is cancelled.
-        if let effect = machine.handle(.tapDisabled, canBegin: { false }).effect {
+        if let effect = machine.handle(.tapDisabled, canBegin: { .pass }).effect {
             handler?(effect, false)
         }
+        if wasInstalled { onInstalledChange?() }
     }
 
     private func install() -> Bool {
@@ -138,7 +174,24 @@ final class CmdVRing {
         CGEvent.tapEnable(tap: tap, enable: true)
         self.tap = tap
         self.source = src
+        healthTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { [weak self] _ in
+            guard let self, !Accessibility.isTrusted() else { return }
+            // Revoked: tear down (re-registers the Carbon panel hotkey via
+            // onInstalledChange) and wait for it to be granted again.
+            self.disable()
+            self.enable()
+        }
         return true
+    }
+
+    /// CGEventFlags → the Carbon modifier bits RingMachine works in.
+    private static func carbonModifiers(_ flags: CGEventFlags) -> UInt32 {
+        var mods: UInt32 = 0
+        if flags.contains(.maskCommand) { mods |= KeyMap.carbonCmd }
+        if flags.contains(.maskShift) { mods |= KeyMap.carbonShift }
+        if flags.contains(.maskAlternate) { mods |= KeyMap.carbonOption }
+        if flags.contains(.maskControl) { mods |= KeyMap.carbonControl }
+        return mods
     }
 
     /// Translates a raw event into a `RingMachine.Input`, then obeys the output.
@@ -149,22 +202,11 @@ final class CmdVRing {
             if let tap { CGEvent.tapEnable(tap: tap, enable: true) }
             input = .tapDisabled
         case .flagsChanged:
-            input = .flagsChanged(command: event.flags.contains(.maskCommand))
+            input = .flagsChanged(modifiers: Self.carbonModifiers(event.flags))
         case .keyDown:
-            let code = Int(event.getIntegerValueField(.keyboardEventKeycode))
-            let key: RingMachine.Key
-            switch code {
-            case kVK_ANSI_V: key = .v
-            case kVK_Delete, kVK_ForwardDelete: key = .delete
-            case kVK_Escape: key = .escape
-            default: key = .other
-            }
-            let flags = event.flags
             input = .keyDown(
-                key,
-                command: flags.contains(.maskCommand),
-                shift: flags.contains(.maskShift),
-                otherModifiers: flags.contains(.maskAlternate) || flags.contains(.maskControl),
+                code: Int(event.getIntegerValueField(.keyboardEventKeycode)),
+                modifiers: Self.carbonModifiers(event.flags),
                 autorepeat: event.getIntegerValueField(.keyboardEventAutorepeat) != 0,
                 synthetic: event.getIntegerValueField(.eventSourceUserData) == Paster.syntheticMarker
             )
@@ -172,7 +214,7 @@ final class CmdVRing {
             return Unmanaged.passUnretained(event)
         }
 
-        let output = machine.handle(input) { [weak self] in self?.canBegin?() ?? false }
+        let output = machine.handle(input) { [weak self] in self?.canBegin?() ?? .pass }
         if let effect = output.effect { handler?(effect, output.replay) }
         if output.replay, let copy = event.copy() {
             // Re-post the held-back key (e.g. ⌘A) after our ⌘V. Marked as

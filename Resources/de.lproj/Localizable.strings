@@ -39,6 +39,8 @@
 "hk_recording" = "Neuen Kurzbefehl drücken…";
 "hk_need_mod" = "Muss ⌘, ⌥ oder ⌃ enthalten";
 "hk_conflict" = "Identisch mit dem anderen Kurzbefehl";
+"hk_ring_key" = "← → ⌫ und esc werden beim Blättern gebraucht; bitte eine andere Taste wählen";
+"hk_ring" = "Kurzbefehl zum Blättern";
 "hk_help" = "Auf einen Kurzbefehl klicken und die neue Kombination drücken (muss ⌘/⌥/⌃ enthalten). Esc bricht ab.";
 "version" = "Version";
 "empty_text" = "(leerer Text)";
@@ -53,7 +55,7 @@
 "menu_support" = "Auf Ko-fi unterstützen…";
 "hint_ring_next" = "Weiter";
 "hint_ring_prev" = "Zurück";
-"hint_ring_release" = "⌘ loslassen zum Einsetzen";
+"hint_ring_release" = "%@ loslassen zum Einsetzen";
 "hint_copy_marked" = "%d zusammengefügt kopieren";
 "hint_transform" = "Umwandeln";
 "hint_mark" = "Markieren";
@@ -75,11 +77,11 @@
 "ocr_no_text" = "Kein Text im Bild gefunden";
 "paste_section" = "Einsetzen";
 "paste_auto" = "Nach der Auswahl in die vorige App einsetzen";
-"paste_ring" = "⌘ halten und V tippen, um durch den Verlauf zu blättern";
+"paste_ring" = "Kurzbefehl halten und erneut tippen, um durch den Verlauf zu blättern";
 "ax_granted" = "Bedienungshilfen-Zugriff erteilt";
 "ax_missing" = "Bedienungshilfen-Zugriff nötig";
 "ax_open" = "Systemeinstellungen öffnen";
-"paste_help" = "Beide Optionen sind standardmäßig aus und brauchen Bedienungshilfen-Zugriff. Mit Blättern: ⌘ halten und V tippen geht zurück, ⇧V vor, ⌘ loslassen setzt ein; ein kurzes ⌘V setzt wie gewohnt ein.";
+"paste_help" = "Beide Optionen sind standardmäßig aus und brauchen Bedienungshilfen-Zugriff. Mit Blättern: die Sondertasten des Kurzbefehls (standardmäßig ⇧⌘) halten und seine Taste erneut tippen geht zurück, ← → in beide Richtungen, loslassen setzt ein. Ist er gleich dem Panel-Kurzbefehl, öffnet ein einzelner Druck weiterhin das Panel.";
 
 /* 1.6: appearance + type filter */
 "appearance" = "Erscheinungsbild";

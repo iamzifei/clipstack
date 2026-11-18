@@ -1,102 +1,153 @@
 import XCTest
 @testable import ClipStackCore
 
-/// The ⌘V ring swallows system-wide keystrokes, so its failure mode is
-/// "the user can no longer type v anywhere". These tests pin the rules that
-/// prevent that, including the stuck-state scenarios found in review.
+/// The ring swallows system-wide keystrokes, so its failure mode is "the
+/// user can no longer type v anywhere". These tests pin the rules that
+/// prevent that, including the stuck-state scenarios found in review, for
+/// both the default ⇧⌘V combo and a recorded plain ⌘V.
 final class RingMachineTests: XCTestCase {
 
-    private var m = RingMachine()
+    private let cmd = KeyMap.carbonCmd
+    private let shift = KeyMap.carbonShift
+    private let opt = KeyMap.carbonOption
+    private let V = 9, A = 0, delete = 51, escape = 53, left = 123, right = 124
 
-    private func key(_ k: RingMachine.Key, cmd: Bool = true, shift: Bool = false,
-                     other: Bool = false, repeat_: Bool = false, synthetic: Bool = false,
-                     canBegin: Bool = true) -> RingMachine.Output {
-        m.handle(.keyDown(k, command: cmd, shift: shift, otherModifiers: other,
-                          autorepeat: repeat_, synthetic: synthetic), canBegin: { canBegin })
+    private var m = RingMachine(triggerCode: RingMachine.defaultTriggerCode,
+                                holdModifiers: RingMachine.defaultHoldModifiers)
+
+    private func key(_ code: Int, _ mods: UInt32, repeat_: Bool = false, synthetic: Bool = false,
+                     begin: RingMachine.Begin = .ring) -> RingMachine.Output {
+        m.handle(.keyDown(code: code, modifiers: mods, autorepeat: repeat_, synthetic: synthetic),
+                 canBegin: { begin })
     }
 
-    private func flags(cmd: Bool) -> RingMachine.Output {
-        m.handle(.flagsChanged(command: cmd), canBegin: { true })
+    private func flags(_ mods: UInt32) -> RingMachine.Output {
+        m.handle(.flagsChanged(modifiers: mods), canBegin: { .ring })
     }
 
-    func testQuickCommandVBeginsThenCommitsOnRelease() {
-        XCTAssertEqual(key(.v), .init(swallow: true, effect: .begin))
+    // MARK: default combo: hold ⇧⌘, tap V
+
+    func testDefaultComboIsShiftCommandV() {
+        XCTAssertEqual(RingMachine.defaultTriggerCode, V)
+        XCTAssertEqual(RingMachine.defaultHoldModifiers, cmd | shift)
+    }
+
+    func testShiftCommandVBeginsAndCommitsWhenEitherModifierIsReleased() {
+        XCTAssertEqual(key(V, cmd | shift), .init(swallow: true, effect: .begin))
         XCTAssertTrue(m.isActive)
-        XCTAssertEqual(flags(cmd: false), .init(swallow: false, effect: .commit))
+        XCTAssertEqual(flags(cmd | shift), .init(swallow: false), "still holding both")
+        XCTAssertEqual(flags(cmd), .init(swallow: false, effect: .commit), "⇧ let go first")
         XCTAssertFalse(m.isActive)
     }
 
-    func testTapsStepAndShiftStepsBack() {
-        _ = key(.v)
-        XCTAssertEqual(key(.v), .init(swallow: true, effect: .step(1)))
-        XCTAssertEqual(key(.v, shift: true), .init(swallow: true, effect: .step(-1)))
-        XCTAssertEqual(key(.delete), .init(swallow: true, effect: .delete))
+    func testPlainCommandVIsLeftToTheSystemByDefault() {
+        XCTAssertEqual(key(V, cmd), .init(swallow: false), "⌘V must paste normally")
+        XCTAssertEqual(key(V, 0), .init(swallow: false), "typing v")
+        XCTAssertEqual(key(V, cmd | shift | opt), .init(swallow: false), "⌥⇧⌘V is not the combo")
+        XCTAssertEqual(key(V, cmd | shift, repeat_: true), .init(swallow: false))
+        XCTAssertEqual(key(A, cmd | shift), .init(swallow: false))
+        XCTAssertFalse(m.isActive)
+    }
+
+    func testTapsStepForwardAndArrowsStepBothWays() {
+        _ = key(V, cmd | shift)
+        XCTAssertEqual(key(V, cmd | shift), .init(swallow: true, effect: .step(1)))
+        XCTAssertEqual(key(left, cmd | shift), .init(swallow: true, effect: .step(-1)))
+        XCTAssertEqual(key(right, cmd | shift), .init(swallow: true, effect: .step(1)))
+        XCTAssertEqual(key(delete, cmd | shift), .init(swallow: true, effect: .delete))
+        XCTAssertTrue(m.isActive)
     }
 
     func testEscapeCancels() {
-        _ = key(.v)
-        XCTAssertEqual(key(.escape), .init(swallow: true, effect: .cancel))
+        _ = key(V, cmd | shift)
+        XCTAssertEqual(key(escape, cmd | shift), .init(swallow: true, effect: .cancel))
         XCTAssertFalse(m.isActive)
-        // ⌘ release afterwards is a no-op, not a second commit.
-        XCTAssertEqual(flags(cmd: false), .init(swallow: false))
+        // The release afterwards is a no-op, not a second commit.
+        XCTAssertEqual(flags(0), .init(swallow: false))
     }
 
-    func testDoesNotBeginWhenNotAllowed() {
-        XCTAssertEqual(key(.v, canBegin: false), .init(swallow: false))
+    func testBeginDecisions() {
+        XCTAssertEqual(key(V, cmd | shift, begin: .pass), .init(swallow: false))
         XCTAssertFalse(m.isActive)
-    }
-
-    func testOnlyPlainCommandVBegins() {
-        XCTAssertEqual(key(.v, cmd: false), .init(swallow: false), "typing v")
-        XCTAssertEqual(key(.v, shift: true), .init(swallow: false), "⇧⌘V belongs to the switcher hotkey")
-        XCTAssertEqual(key(.v, other: true), .init(swallow: false), "⌥⌘V")
-        XCTAssertEqual(key(.v, repeat_: true), .init(swallow: false))
-        XCTAssertEqual(key(.other), .init(swallow: false))
+        // Combo is also the panel shortcut and a ring can't start (empty
+        // history, ClipStack focused): swallow and open the panel instead.
+        XCTAssertEqual(key(V, cmd | shift, begin: .panel), .init(swallow: true, effect: .panel))
         XCTAssertFalse(m.isActive)
     }
 
     func testOwnSyntheticPasteAlwaysPasses() {
-        _ = key(.v)
-        XCTAssertEqual(key(.v, synthetic: true), .init(swallow: false))
+        _ = key(V, cmd | shift)
+        XCTAssertEqual(key(V, cmd, synthetic: true), .init(swallow: false))
         XCTAssertTrue(m.isActive)
     }
 
     func testAutorepeatDoesNotRaceThroughHistory() {
-        _ = key(.v)
-        XCTAssertEqual(key(.v, repeat_: true), .init(swallow: true, effect: nil))
+        _ = key(V, cmd | shift)
+        XCTAssertEqual(key(V, cmd | shift, repeat_: true), .init(swallow: true, effect: nil))
     }
 
-    /// ⌘V then ⌘A / ⌘Return / ⌘S: the paste must land BEFORE that key,
+    /// Ring then ⌘A / ⌘Return / ⌘S: the paste must land BEFORE that key,
     /// so the ring commits now and the key is held back to be replayed.
-    func testOtherCommandShortcutCommitsFirstThenReplays() {
-        _ = key(.v)
-        XCTAssertEqual(key(.other), .init(swallow: true, effect: .commit, replay: true))
+    func testOtherShortcutCommitsFirstThenReplays() {
+        _ = key(V, cmd | shift)
+        XCTAssertEqual(key(A, cmd | shift), .init(swallow: true, effect: .commit, replay: true))
         XCTAssertFalse(m.isActive)
-        // ⌘ release afterwards is a no-op.
-        XCTAssertEqual(flags(cmd: false), .init(swallow: false))
+        XCTAssertEqual(flags(0), .init(swallow: false))
+    }
+
+    // MARK: a recorded combo: plain ⌘V (the pre-1.9 behaviour)
+
+    func testRecordedCommandVCombo() {
+        m = RingMachine(triggerCode: V, holdModifiers: cmd)
+        XCTAssertEqual(key(V, cmd | shift), .init(swallow: false), "⇧⌘V keeps opening the panel")
+        XCTAssertEqual(key(V, cmd), .init(swallow: true, effect: .begin))
+        XCTAssertEqual(key(V, cmd | shift), .init(swallow: true, effect: .step(-1)), "extra ⇧ steps back")
+        XCTAssertEqual(key(V, cmd), .init(swallow: true, effect: .step(1)))
+        XCTAssertEqual(flags(0), .init(swallow: false, effect: .commit))
+    }
+
+    func testCapsLockAndFnBitsAreIgnored() {
+        let capsLock: UInt32 = 0x0400
+        XCTAssertEqual(key(V, cmd | shift | capsLock), .init(swallow: true, effect: .begin))
     }
 
     // MARK: review regressions — the ring must never get stuck
 
-    func testTapDisabledWhileActiveCancels() {
-        _ = key(.v)
-        XCTAssertEqual(m.handle(.tapDisabled, canBegin: { true }), .init(swallow: false, effect: .cancel))
-        XCTAssertFalse(m.isActive)
-        // ⌘ release was missed; plain typing must work again.
-        XCTAssertEqual(key(.v, cmd: false), .init(swallow: false))
-        XCTAssertEqual(key(.delete, cmd: false), .init(swallow: false))
-        XCTAssertEqual(key(.escape, cmd: false), .init(swallow: false))
+    func testHoldingThePanelPressDoesNotLeakRepeats() {
+        XCTAssertEqual(key(V, cmd | shift, begin: .panel), .init(swallow: true, effect: .panel))
+        XCTAssertEqual(key(V, cmd | shift, repeat_: true), .init(swallow: true), "repeat eaten, like the one-shot hotkey")
+        XCTAssertEqual(flags(0), .init(swallow: false))
+        XCTAssertEqual(key(V, cmd | shift, repeat_: true), .init(swallow: false), "after release, back to normal")
     }
 
-    func testKeyWithoutCommandWhileActiveEndsRingAndPasses() {
-        _ = key(.v)
-        // ⌘-up never arrived, now the user types a plain "v".
-        XCTAssertEqual(key(.v, cmd: false), .init(swallow: false, effect: .cancel))
+    func testComboWithoutCommandOptionOrControlFallsBackToDefault() {
+        m = RingMachine(triggerCode: V, holdModifiers: 0)
+        XCTAssertEqual(key(V, 0), .init(swallow: false), "plain v must never start a ring")
+        m = RingMachine(triggerCode: V, holdModifiers: shift)
+        XCTAssertEqual(key(V, shift), .init(swallow: false), "⇧V either")
+        XCTAssertEqual(m.holdModifiers, RingMachine.defaultHoldModifiers)
+    }
+
+    func testTapDisabledWhileActiveCancels() {
+        _ = key(V, cmd | shift)
+        XCTAssertEqual(m.handle(.tapDisabled, canBegin: { .ring }), .init(swallow: false, effect: .cancel))
         XCTAssertFalse(m.isActive)
-        XCTAssertEqual(key(.v, cmd: false), .init(swallow: false))
+        // The release was missed; plain typing must work again.
+        XCTAssertEqual(key(V, 0), .init(swallow: false))
+        XCTAssertEqual(key(delete, 0), .init(swallow: false))
+        XCTAssertEqual(key(escape, 0), .init(swallow: false))
+        XCTAssertEqual(key(left, 0), .init(swallow: false))
+    }
+
+    func testKeyWithoutTheHeldModifiersEndsRingAndPasses() {
+        _ = key(V, cmd | shift)
+        // ⇧-up never arrived, now the user types ⌘V.
+        XCTAssertEqual(key(V, cmd), .init(swallow: false, effect: .cancel))
+        XCTAssertFalse(m.isActive)
+        XCTAssertEqual(key(V, 0), .init(swallow: false))
     }
 
     func testTapDisabledWhenIdleIsNoOp() {
-        XCTAssertEqual(m.handle(.tapDisabled, canBegin: { true }), .init(swallow: false))
+        XCTAssertEqual(m.handle(.tapDisabled, canBegin: { .ring }), .init(swallow: false))
     }
 }

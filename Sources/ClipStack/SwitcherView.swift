@@ -285,12 +285,12 @@ struct SwitcherView: View {
     private var footer: some View {
         HStack(spacing: 12) {
             if model.ringMode {
-                // Hold-⌘ ring: only these keys mean anything right now.
-                hint("V", L("hint_ring_next"))
-                hint("⇧V", L("hint_ring_prev"))
+                // Hold-and-tap ring: only these keys mean anything right now.
+                hint(ringKey, L("hint_ring_next"))
+                hint("←", L("hint_ring_prev"))
                 hint("⌫", L("hint_delete"))
                 hint("esc", L("hint_close"))
-                Text(L("hint_ring_release"))
+                Text(String(format: L("hint_ring_release"), ringModifiers))
                     .font(.system(size: 10, weight: .medium))
                     .foregroundStyle(Color.accentColor)
             } else {
@@ -324,6 +324,10 @@ struct SwitcherView: View {
             hint(clearAllKey, L("hint_clear_all"))
             hint("esc", L("hint_close"))
     }
+
+    /// The ring combo's key and held modifiers, as the user recorded them.
+    private var ringKey: String { KeyMap.keyName(forKeyCode: CmdVRing.combo.code) }
+    private var ringModifiers: String { KeyMap.modifierSymbols(carbon: UInt32(CmdVRing.combo.mods)) }
 
     private var clearAllKey: String {
         let combo = HotKeys.clearAllCombo
